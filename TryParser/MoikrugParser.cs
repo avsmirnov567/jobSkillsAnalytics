@@ -16,7 +16,7 @@ namespace TryParser
         private static List<string> RSS_PagesURLs = new List<string>();
         private static List<string> vacanciesPagesURLs = new List<string>();
         private static List<Vacancy> vacanciesForDatabase = new List<Vacancy>();
-        public static void GetRSS_PagesURLs()
+        public static void CrawlRSS_PagesURLs()
         {           
             //HTML document loading
             HtmlDocument searchResultsPage = new HtmlDocument();
@@ -52,7 +52,7 @@ namespace TryParser
             while (nextPageUrl != "");
         }
 
-        public static void GetVacanciesURLsFromSingleRSS_Page(string RSS_PageURL)
+        public static void CrawlVacanciesURLsFromSingleRSS_Page(string RSS_PageURL)
         {
             //browsing RSS Page
             HtmlDocument RSS_Page = new HtmlDocument();
@@ -81,10 +81,10 @@ namespace TryParser
 
         public static void CrawlAllVacanciesURLs()
         {
-            GetRSS_PagesURLs();
+            CrawlRSS_PagesURLs();
             foreach (string URL in RSS_PagesURLs)
             {
-                GetVacanciesURLsFromSingleRSS_Page(URL);
+                CrawlVacanciesURLsFromSingleRSS_Page(URL);
             }       
         }
 

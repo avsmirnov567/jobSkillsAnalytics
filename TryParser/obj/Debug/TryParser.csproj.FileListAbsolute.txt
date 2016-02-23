@@ -1,0 +1,13 @@
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\TryParser.exe.config
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\TryParser.exe
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\TryParser.pdb
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\EntityFramework.dll
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\EntityFramework.xml
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\obj\Debug\TryParser.csprojResolveAssemblyReference.cache
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\obj\Debug\TryParser.exe
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\obj\Debug\TryParser.pdb
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Александр\Documents\Visual Studio 2015\Projects\TryParser\TryParser\bin\Debug\HtmlAgilityPack.xml

@@ -10,5 +10,5 @@ Parser used for calculations (associative rules between required skills) in [htt
 _@Alexander Smirnov_
 _@Vladislav Rudskoy_
 
-
+[test]:https://www.vk.com
 

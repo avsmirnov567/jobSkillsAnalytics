@@ -11,5 +11,5 @@ Contact us:
 _[Alexander Smirnov](https://vk.com/smirnov_a_v)_,
 _[Vladislav Rudskoy](https://vk.com/vladislav_rudskoy)_
 
-![](http://imgur.com/BbUY1DH)
+![Moikrug logo](http://i.imgur.com/BbUY1DH.png)
 

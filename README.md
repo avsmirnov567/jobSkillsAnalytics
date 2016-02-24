@@ -5,10 +5,11 @@ Output:
 1. .xlsx (Excel format) file
 2. Parser (in parallel) write in SMSS database on Azure
 
-Parser used for calculations (associative rules between required skills) in  [test](vk.com) 
+Parser used for calculations (associative rules between required skills) in [this project](https://github.com/rudskoy/skills_associations). 
 
-_@Alexander Smirnov_
-_@Vladislav Rudskoy_
+Contact us: 
+_[Alexander Smirnov](vk.com/smirnov_a_v)_
+_[Vladislav Rudskoy](vk.com/vladislav_rudskoy)_
 
 
 

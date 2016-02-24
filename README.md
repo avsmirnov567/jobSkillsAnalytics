@@ -8,8 +8,8 @@ Output:
 Parser used for calculations (associative rules between required skills) in [this project](https://github.com/rudskoy/skills_associations). 
 
 Contact us: 
-_[Alexander Smirnov](vk.com/smirnov_a_v)_
-_[Vladislav Rudskoy](vk.com/vladislav_rudskoy)_
+_[Alexander Smirnov](https://vk.com/smirnov_a_v)_
+_[Vladislav Rudskoy](https://vk.com/vladislav_rudskoy)_
 
 
 

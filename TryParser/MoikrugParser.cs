@@ -16,6 +16,7 @@ namespace TryParser
         private static List<string> RSS_PagesURLs = new List<string>();
         private static List<string> vacanciesPagesURLs = new List<string>();
         private static List<Vacancy> vacanciesForDatabase = new List<Vacancy>();
+        
         public static void CrawlRSS_PagesURLs()
         {           
             //HTML document loading
@@ -71,7 +72,7 @@ namespace TryParser
             }
 
             //browsing vacancies URLs from the collection of HTML nodes
-            for (int i=0; i<vacanciesNodes.Count; i++) 
+            for (int i=0; i < vacanciesNodes.Count; i++) 
             {
                 string URL = "https://moikrug.ru/vacancies/" + vacanciesNodes[i].Id.Replace("job_", "");
                 vacanciesPagesURLs.Add(URL);
@@ -101,15 +102,31 @@ namespace TryParser
             //TODO: organise exceptions catching correctly
             try//one by one, searching for nodes which contains field info, and browsing InnerText
             {
-                HtmlNode vacancyDescriptionNode = vacancyPage.DocumentNode.SelectSingleNode("//div[contains(@class,'vacancy_description')]");
+              
+                HtmlNode vacancyDescriptionNode = vacancyPage
+                                            .DocumentNode
+                                            .SelectSingleNode("//div[contains(@class,'vacancy_description')]");
+                                           
+                HtmlNode publisherNode = vacancyPage
+                                            .DocumentNode
+                                            .SelectSingleNode("//div[contains(@class,'company_name')]");
+               
+                HtmlNode nameNode = vacancyPage
+                                            .DocumentNode
+                                            .SelectSingleNode("//h1[contains(@class,'title')]");
+                                                            
+                HtmlNode dateNode = vacancyPage
+                                            .DocumentNode
+                                            .SelectSingleNode("//span[contains(@class,'date')]");
+                                            
+                HtmlNode salaryNode = vacancyPage
+                                            .DocumentNode
+                                            .SelectSingleNode("//span[contains(@class,'salary')]");
+                                            
                 parsingVacancy.Content = vacancyDescriptionNode.InnerHtml; //TODO: remove html tags from text correctly
-                HtmlNode publisherNode = vacancyPage.DocumentNode.SelectSingleNode("//div[contains(@class,'company_name')]");
                 parsingVacancy.Publisher = publisherNode.InnerText;
-                HtmlNode nameNode = vacancyPage.DocumentNode.SelectSingleNode("//h1[contains(@class,'title')]");
                 parsingVacancy.Name = nameNode.InnerText;
-                HtmlNode dateNode = vacancyPage.DocumentNode.SelectSingleNode("//span[contains(@class,'date')]");
                 parsingVacancy.PublishingDate = ParseDateFromString(dateNode.InnerText);
-                HtmlNode salaryNode = vacancyPage.DocumentNode.SelectSingleNode("//span[contains(@class,'salary')]");
 
                 if (salaryNode != null)
                 {
@@ -117,6 +134,7 @@ namespace TryParser
                 }
 
                 HtmlNodeCollection skillsNodes = vacancyPage.DocumentNode.SelectNodes("//a[contains(@class,'skill')]");
+                
                 if (skillsNodes != null)
                 {
                     foreach (HtmlNode skillNode in skillsNodes)
@@ -125,6 +143,7 @@ namespace TryParser
                     }
                 }
             }
+            
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -137,6 +156,7 @@ namespace TryParser
         public static void ParseAllVacancies()
         {
             int count = 0;
+            
             foreach (string URL in vacanciesPagesURLs)
             {
                 Vacancy currentVacancy = ParseSingleVacancyByURL(URL);
@@ -144,6 +164,7 @@ namespace TryParser
                 {
                     vacanciesForDatabase.Add(ParseSingleVacancyByURL(URL));
                     count++;
+                    
                     Console.WriteLine(count);
                 }
             }
@@ -153,6 +174,7 @@ namespace TryParser
         {
             var root = Node;
             var sb = new StringBuilder();
+            
             foreach (var node in root.DescendantsAndSelf())
             {
                 if (!node.HasChildNodes)
@@ -182,6 +204,7 @@ namespace TryParser
                 .Replace(" ноября ", ".11.")
                 .Replace(" декабря ", ".12.")
                 .Replace(" &bull; ", "");
+                
             return Convert.ToDateTime(date);            
         }
 
@@ -191,8 +214,10 @@ namespace TryParser
                            .Replace(" ", "")
                            .Replace("до", ":")
                            .Replace("От", ":");
+                           
             string currency = salary.Substring(salary.Length - 4, 4);
-            salary = salary.Replace(currency, ":" + currency);                           
+            salary = salary.Replace(currency, ":" + currency);       
+                                
             return salary.Split(':').ToArray();
         }//TODO: fix (make an algorythm for correct parsing of salaries)
     }

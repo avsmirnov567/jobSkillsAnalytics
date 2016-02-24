@@ -1,4 +1,5 @@
 # Vacancy parser
+<<<<<<< HEAD
 _It contains windows service parser for moikrug.ru_
 
 Output: 
@@ -12,4 +13,6 @@ _[Alexander Smirnov](https://vk.com/smirnov_a_v)_,
 _[Vladislav Rudskoy](https://vk.com/vladislav_rudskoy)_
 
 ![Moikrug logo](http://i.imgur.com/BbUY1DH.png)
+=======
+>>>>>>> master
 

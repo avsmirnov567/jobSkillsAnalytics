@@ -6,9 +6,11 @@ Output:
 2. Parser (in parallel) write in SMSS database on Azure
 
 Parser used for calculations (associative rules between required skills) in [https://github.com/rudskoy/skills_associations](server module). 
+TEST TEST TEST TEST 
+
 
 _@Alexander Smirnov_
 _@Vladislav Rudskoy_
 
-[test]:https://www.vk.com
+
 

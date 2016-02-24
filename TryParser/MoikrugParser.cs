@@ -102,27 +102,9 @@ namespace TryParser
             //TODO: organise exceptions catching correctly
             try//one by one, searching for nodes which contains field info, and browsing InnerText
             {
-              
-                HtmlNode vacancyDescriptionNode = vacancyPage
-                                            .DocumentNode
-                                            .SelectSingleNode("//div[contains(@class,'vacancy_description')]");
-                                           
-                HtmlNode publisherNode = vacancyPage
-                                            .DocumentNode
-                                            .SelectSingleNode("//div[contains(@class,'company_name')]");
-               
-                HtmlNode nameNode = vacancyPage
-                                            .DocumentNode
-                                            .SelectSingleNode("//h1[contains(@class,'title')]");
-                                                            
-                HtmlNode dateNode = vacancyPage
-                                            .DocumentNode
-                                            .SelectSingleNode("//span[contains(@class,'date')]");
-                                            
-                HtmlNode salaryNode = vacancyPage
-                                            .DocumentNode
-                                            .SelectSingleNode("//span[contains(@class,'salary')]");
-                                            
+                HtmlNode vacancyDescriptionNode, publisherNode, nameNode, dateNode, salaryNode;
+                GetHtmlNodeValues(vacancyPage, out vacancyDescriptionNode, out publisherNode, out nameNode, out dateNode, out salaryNode);
+
                 parsingVacancy.Content = vacancyDescriptionNode.InnerHtml; //TODO: remove html tags from text correctly
                 parsingVacancy.Publisher = publisherNode.InnerText;
                 parsingVacancy.Name = nameNode.InnerText;
@@ -134,7 +116,7 @@ namespace TryParser
                 }
 
                 HtmlNodeCollection skillsNodes = vacancyPage.DocumentNode.SelectNodes("//a[contains(@class,'skill')]");
-                
+
                 if (skillsNodes != null)
                 {
                     foreach (HtmlNode skillNode in skillsNodes)
@@ -143,7 +125,7 @@ namespace TryParser
                     }
                 }
             }
-            
+
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -151,6 +133,25 @@ namespace TryParser
             }
             
             return parsingVacancy;
+        }
+
+        private static void GetHtmlNodeValues(HtmlDocument vacancyPage, out HtmlNode vacancyDescriptionNode, out HtmlNode publisherNode, out HtmlNode nameNode, out HtmlNode dateNode, out HtmlNode salaryNode)
+        {
+            vacancyDescriptionNode = vacancyPage
+                                        .DocumentNode
+                                        .SelectSingleNode("//div[contains(@class,'vacancy_description')]");
+            publisherNode = vacancyPage
+                                        .DocumentNode
+                                        .SelectSingleNode("//div[contains(@class,'company_name')]");
+            nameNode = vacancyPage
+                                        .DocumentNode
+                                        .SelectSingleNode("//h1[contains(@class,'title')]");
+            dateNode = vacancyPage
+                                        .DocumentNode
+                                        .SelectSingleNode("//span[contains(@class,'date')]");
+            salaryNode = vacancyPage
+                                        .DocumentNode
+                                        .SelectSingleNode("//span[contains(@class,'salary')]");
         }
 
         public static void ParseAllVacancies()

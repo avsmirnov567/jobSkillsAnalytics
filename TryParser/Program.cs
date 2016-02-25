@@ -15,7 +15,6 @@ namespace TryParser
             MoikrugParser.CrawlAllVacanciesURLs();
             MoikrugParser.ParseAllVacancies();
             Console.ReadKey();
-            Console.ReadKey();
         }
     }
 }

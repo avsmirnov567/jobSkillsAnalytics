@@ -111,18 +111,14 @@ namespace TryParser
                 parsingVacancy.PublishingDate = ParseDateFromString(dateNode.InnerText);
 
                 if (salaryNode != null)
-                {
                     parsingVacancy.Salary = salaryNode.InnerText;
-                }
 
                 HtmlNodeCollection skillsNodes = vacancyPage.DocumentNode.SelectNodes("//a[contains(@class,'skill')]");
 
                 if (skillsNodes != null)
                 {
                     foreach (HtmlNode skillNode in skillsNodes)
-                    {
                         parsingVacancy.Skills.Add(skillNode.InnerText);
-                    }
                 }
             }
 

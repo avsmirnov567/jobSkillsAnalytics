@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Parser
 {
-    class Vacancy
+    public class Vacancy
     {
         public int IDfromSite { get; set; }
         public string Name{ get; set; }

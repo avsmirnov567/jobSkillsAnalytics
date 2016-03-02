@@ -5,36 +5,37 @@ namespace Parser
 {
     public class Vacancy
     {
-        public int IDfromSite { get; set; }
-        public string Name{ get; set; }
+        public string IDfromSite { get; set; }
+        public string Title{ get; set; }
         public string Salary { get; set; }
-        public string Content { get; set; }
+        public string ContentText { get; set; }
+        public string ContentHtml { get; set; }
         public string Link { get; set; }
-        public string Publisher { get; set; }
-        public DateTime PublishingDate { get; set; }
+        public string Employer { get; set; }
+        public DateTime? PublishingDate { get; set; }
         public List<string> Skills { get; set; }
 
         public Vacancy()
         {
-            IDfromSite = 0;
-            Name = "";
+            IDfromSite = "";
+            Title = "";
             Salary = "";
-            Content = "";
+            ContentText = "";
             Link = "";
-            Publisher = "";
+            Employer = "";
             PublishingDate = DateTime.Now;
             Skills = new List<string>();
         }
-        public Vacancy(List<string> skills, string name, string content, string link, string publisher, DateTime publDate, int idFromSite, string salary)
-        {
-            IDfromSite = idFromSite;
-            Name = name;
-            Salary = salary;
-            Content = content;
-            Link = link;
-            Publisher = publisher;
-            PublishingDate = publDate;
-            Skills = skills;
-        }
+        //public Vacancy(List<string> skills, string title, string content, string link, string employer, DateTime publDate, int idFromSite, string salary)
+        //{
+        //    IDfromSite = idFromSite;
+        //    Title = name;
+        //    Salary = salary;
+        //    Content = content;
+        //    Link = link;
+        //    Employer = publisher;
+        //    PublishingDate = publDate;
+        //    Skills = skills;
+        //}
     }
 }

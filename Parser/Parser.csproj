@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MoiKrugParser.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="VacancyParserBase.cs" />
     <Compile Include="Archive\MoikrugParserOld.cs" />
     <Compile Include="Program.cs" />

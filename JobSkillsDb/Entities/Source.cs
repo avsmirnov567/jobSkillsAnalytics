@@ -1,4 +1,4 @@
-namespace JobSkillsDb
+namespace JobSkillsDb.Entities
 {
     using System;
     using System.Collections.Generic;
@@ -9,17 +9,17 @@ namespace JobSkillsDb
     [Table("Source")]
     public partial class Source
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int source_id { get; set; }
+        [Key]        
+        [Column("source_id")]
+        public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string source_name { get; set; }
+        [Column("source_name")]
+        public string Name { get; set; }
 
-        [StringLength(100)]
+        [Column("source_link")]
         public string source_link { get; set; }
 
-        public virtual Vacancies Vacancies { get; set; }
+        public virtual Vacancy Vacancies { get; set; }
     }
 }

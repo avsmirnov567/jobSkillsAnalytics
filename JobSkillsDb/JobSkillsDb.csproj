@@ -54,19 +54,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="database_firewall_rules.cs" />
-    <Compile Include="DataModel.cs" />
-    <Compile Include="Newskillset.cs" />
+    <Compile Include="Entities\MarkedZone.cs" />
+    <Compile Include="JobSkillsContext.cs" />
+    <Compile Include="Entities\AprioriSkillSet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Skills.cs" />
-    <Compile Include="Source.cs" />
-    <Compile Include="Vacancies.cs" />
-    <Compile Include="Vacancies_content.cs" />
+    <Compile Include="Entities\Skills.cs" />
+    <Compile Include="Entities\Source.cs" />
+    <Compile Include="Entities\Vacancy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

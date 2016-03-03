@@ -10,11 +10,7 @@ namespace Parser
     {
         static void Main(string[] args)
         {
-            //MoikrugParserOld.CrawlAllVacanciesURLs();
-            //MoikrugParserOld.ParseAllVacancies();
-            //Console.ReadKey();
-            MoiKrugParser test = new MoiKrugParser();
-            
+            VacancyParserBase test = new HeadHunterParser();
 
             var links = test.GetLinks();
             var start = DateTime.Now;

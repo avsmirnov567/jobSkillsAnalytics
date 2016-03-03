@@ -11,8 +11,8 @@ namespace Parser
 {
     class MoiKrugParser : VacancyParserBase
     {
-        const string DefSearchPageLink = @"/vacancies?page=1";
-        const string Domain = @"http://moikrug.ru";
+        const string DefSearchPageLink = @"/vacancies?page=1"; //Default first search page
+        const string Domain = @"http://moikrug.ru"; //
 
         public override List<string> GetLinks(string searchPage = null)
         {
@@ -167,9 +167,35 @@ namespace Parser
             return skills;
         }
 
+        private List<Vacancy> ParseForParallel(IEnumerable<string> links)
+        {
+            return links.Select(l => Parse(l)).ToList();
+        }
+
         public override Dictionary<Vacancy, bool> ParseAll(IEnumerable<string> links)
         {
-            return links.Take(25).ToDictionary(l => Parse(l), l => true);
+            int take = 25;
+            List<List<string>> splitedList = new List<List<string>>();
+            var tempList = links;
+            while (tempList.Any())
+            {
+                splitedList.Add(tempList.Take(take).ToList());
+                tempList = tempList.Skip(take);
+            }
+
+            List<Vacancy> vacancies = new List<Vacancy>();
+
+            Parallel.ForEach(splitedList, linkList =>
+            {
+                vacancies.AddRange(ParseForParallel(linkList));
+            });
+
+            return vacancies.ToDictionary(x => x, x => true);
+        }
+
+        public Dictionary<Vacancy, bool> ParseAllStrait(IEnumerable<string> links)
+        {
+            return links.ToDictionary(x => Parse(x), x => true);
         }
     }
 }

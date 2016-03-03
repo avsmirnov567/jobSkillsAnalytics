@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "Parser\Parser.csproj", "{EFAEDEE3-A63F-4183-869F-115C4777A17B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBContext", "test2\DBContext.csproj", "{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobSkillsDb", "JobSkillsDb\JobSkillsDb.csproj", "{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

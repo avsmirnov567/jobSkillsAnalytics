@@ -1,4 +1,4 @@
-namespace test2
+namespace JobSkillsDb
 {
     using System;
     using System.Data.Entity;

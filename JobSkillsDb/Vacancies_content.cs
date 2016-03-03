@@ -1,4 +1,4 @@
-namespace test2
+namespace JobSkillsDb
 {
     using System;
     using System.Collections.Generic;
@@ -6,25 +6,21 @@ namespace test2
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Newskillset")]
-    public partial class Newskillset
+    public partial class Vacancies_content
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Newskillset()
+        public Vacancies_content()
         {
-            Skills = new HashSet<Skills>();
+            Vacancies = new HashSet<Vacancies>();
         }
 
         [Key]
-        public int newskillset_id { get; set; }
+        public int vacancy_content_id { get; set; }
 
-        public int skillset_number { get; set; }
-
-        public decimal? skillset_support { get; set; }
-
-        public decimal? skillset_confidence { get; set; }
+        [Required]
+        public string vacancy_content { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Skills> Skills { get; set; }
+        public virtual ICollection<Vacancies> Vacancies { get; set; }
     }
 }

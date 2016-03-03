@@ -20,7 +20,7 @@ namespace Parser
         public void ExportVacancies(string fileName = "")
         {
             string name = String.IsNullOrEmpty(fileName) ? "vacancies_" + Guid.NewGuid().ToString() + ".csv" : fileName;
-            using (StreamWriter writer = new StreamWriter(name))
+            using (StreamWriter writer = new StreamWriter(name, false, Encoding.UTF8))
             {
                 var csvWriter = new CsvWriter(writer);
                 csvWriter.Configuration.RegisterClassMap<VacancyCsvMapping>();
@@ -31,7 +31,7 @@ namespace Parser
         public void ExportSkills(string fileName = "")
         {
             string name = String.IsNullOrEmpty(fileName) ? "skills_" + Guid.NewGuid().ToString() + ".csv" : fileName;
-            using (StreamWriter writer = new StreamWriter(name))
+            using (StreamWriter writer = new StreamWriter(name, false, Encoding.UTF8))
             {
                 var csvWriter = new CsvWriter(writer);
                 csvWriter.WriteField("vacancy_id");

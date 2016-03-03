@@ -20,11 +20,11 @@ namespace Parser
             var start = DateTime.Now;
             var dictParallel = test.ParseAll(links);
             var end = DateTime.Now.Subtract(start).TotalSeconds;
-            Console.WriteLine("Parallel finished in " + end + " second(s)");
-
+            Console.WriteLine("Parallel finished in " + end + " second(s)");            
             CsvVacancyExporter exporter = new CsvVacancyExporter(dictParallel.Keys.ToList());
             exporter.ExportVacancies();
             exporter.ExportSkills();
+            Console.ReadKey();
         }
     }
 }

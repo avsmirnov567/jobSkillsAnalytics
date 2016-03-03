@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "Parser\Parser.csproj", "{EFAEDEE3-A63F-4183-869F-115C4777A17B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBContext", "test2\DBContext.csproj", "{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EFAEDEE3-A63F-4183-869F-115C4777A17B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFAEDEE3-A63F-4183-869F-115C4777A17B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFAEDEE3-A63F-4183-869F-115C4777A17B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

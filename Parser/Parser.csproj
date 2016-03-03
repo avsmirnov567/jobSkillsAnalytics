@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CsvVacancyExporter.cs" />
+    <Compile Include="HeadHunterParser.cs" />
     <Compile Include="MoiKrugParser.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="VacancyCsvMapping.cs" />

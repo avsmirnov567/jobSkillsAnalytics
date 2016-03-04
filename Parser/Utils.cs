@@ -14,5 +14,6 @@ namespace Parser
             Uri fullUri = new Uri(domainUri, link);
             return fullUri.ToString();
         }
+
     }
 }

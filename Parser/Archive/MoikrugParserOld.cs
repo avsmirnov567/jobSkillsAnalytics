@@ -95,7 +95,7 @@
 
 //            Vacancy parsingVacancy = new Vacancy();
 //            parsingVacancy.Link = URL;
-//            parsingVacancy.IDfromSite = Convert.ToInt32(URL.Replace("https://moikrug.ru/vacancies/", ""));
+//            parsingVacancy.InnerId = Convert.ToInt32(URL.Replace("https://moikrug.ru/vacancies/", ""));
 
 //            //TODO: organise exceptions catching correctly
 //            try//one by one, searching for nodes which contains field info, and browsing InnerText

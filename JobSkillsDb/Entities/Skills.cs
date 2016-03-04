@@ -19,6 +19,7 @@ namespace JobSkillsDb.Entities
 
         [Required]
         [StringLength(50)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
 
         public virtual ICollection<AprioriSkillSet> AprioriSkillSet { get; set; }

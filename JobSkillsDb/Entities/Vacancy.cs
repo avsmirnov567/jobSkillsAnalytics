@@ -17,7 +17,7 @@ namespace JobSkillsDb.Entities
         [Key]
         public int Id { get; set; }
 
-        public int InnerId { get; set; }
+        public string InnerId { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -26,16 +26,19 @@ namespace JobSkillsDb.Entities
 
         public int? SalaryTo { get; set; }
 
+        public string Currency { get; set; }
+
         public string ContentText { get; set; }
 
         public string ContentHtml { get; set; }
 
         [Required]
+        [Index(IsUnique = true)]
         public string Link { get; set; }
 
         public string Employer { get; set; }
 
-        public virtual Source Source { get; set; }        
+        public DateTime Date { get; set; }     
 
         public virtual ICollection<Skill> Skills { get; set; }
 

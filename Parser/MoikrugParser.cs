@@ -36,13 +36,13 @@ namespace Parser
             return links;
         }
 
-        public override Vacancy Parse(string link)
+        public override VacancyView Parse(string link)
         {
             HtmlWeb webStream = new HtmlWeb();
             HtmlDocument doc = webStream.Load(link);
-            Vacancy vacancy = new Vacancy()
+            VacancyView vacancy = new VacancyView()
             {
-                IDfromSite = GetId(link),
+                InnerId = GetId(link),
                 Link = link,
                 Title = GetTitle(doc),
                 Employer = GetEmployer(doc),
@@ -168,12 +168,12 @@ namespace Parser
             return skills;
         }
 
-        private List<Vacancy> ParseForParallel(IEnumerable<string> links)
+        private List<VacancyView> ParseForParallel(IEnumerable<string> links)
         {
             return links.Select(l => Parse(l)).ToList();
         }
 
-        public override Dictionary<Vacancy, bool> ParseAll(IEnumerable<string> links)
+        public override Dictionary<VacancyView, bool> ParseAll(IEnumerable<string> links)
         {
             int take = 25;
             List<List<string>> splitedList = new List<List<string>>();
@@ -184,7 +184,7 @@ namespace Parser
                 tempList = tempList.Skip(take);
             }
 
-            List<Vacancy> vacancies = new List<Vacancy>();
+            List<VacancyView> vacancies = new List<VacancyView>();
 
             Parallel.ForEach(splitedList, linkList =>
             {
@@ -194,7 +194,7 @@ namespace Parser
             return vacancies.ToDictionary(x => x, x => true);
         }
 
-        public Dictionary<Vacancy, bool> ParseAllStrait(IEnumerable<string> links)
+        public Dictionary<VacancyView, bool> ParseAllStrait(IEnumerable<string> links)
         {
             return links.ToDictionary(x => Parse(x), x => true);
         }

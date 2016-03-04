@@ -1,4 +1,4 @@
-namespace JobSkillsDb
+namespace JobSkillsDb.Entities
 {
     using System;
     using System.Data.Entity;
@@ -10,13 +10,11 @@ namespace JobSkillsDb
     {
         public JobSkillsContext()
             : base("name=JobSkillsContext")
-        {
-            Database.SetInitializer<JobSkillsContext>(new DropCreateDatabaseAlways<JobSkillsContext>());
+        {            
         }
 
         public virtual DbSet<AprioriSkillSet> AprioriSkillSet { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }
-        public virtual DbSet<Source> Source { get; set; }
         public virtual DbSet<Vacancy> Vacancies { get; set; }  
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

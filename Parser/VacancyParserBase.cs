@@ -23,7 +23,7 @@ namespace Parser
         /// </summary>
         /// <param name="link">Link to vacancy's page</param>
         /// <returns>Parser vacancy</returns>
-        public abstract Vacancy Parse(string link);
+        public abstract VacancyView Parse(string link);
 
 
         /// <summary>
@@ -33,6 +33,6 @@ namespace Parser
         /// <returns>Dictionary where key is parsed vacancy, and value is flag showing was everything
         /// fine or data was not valid (or other errors fired)
         /// </returns>
-        public abstract Dictionary<Vacancy, bool> ParseAll(IEnumerable<string> links);
+        public abstract Dictionary<VacancyView, bool> ParseAll(IEnumerable<string> links);
     }
 }

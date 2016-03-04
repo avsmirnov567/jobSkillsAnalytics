@@ -8,11 +8,11 @@ using CsvHelper.Configuration;
 
 namespace Parser
 {
-    public sealed class VacancyCsvMapping : CsvClassMap<Vacancy>
+    public sealed class VacancyCsvMapping : CsvClassMap<VacancyView>
     {
         public VacancyCsvMapping()
         {
-            Map(v => v.IDfromSite).Name("IdFromSite");
+            Map(v => v.InnerId).Name("IdFromSite");
             Map(v => v.Title).Name("Title");
             Map(v => v.Link).Name("Link");
             Map(v => v.ContentHtml).Name("ContentHtml");

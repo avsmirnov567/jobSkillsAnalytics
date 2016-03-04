@@ -10,9 +10,9 @@ namespace Parser
 {
     class CsvVacancyExporter
     {
-        private List<Vacancy> vacancies;
+        private List<VacancyView> vacancies;
 
-        public CsvVacancyExporter(List<Vacancy> vacancies)
+        public CsvVacancyExporter(List<VacancyView> vacancies)
         {
             this.vacancies = vacancies;
         }
@@ -42,7 +42,7 @@ namespace Parser
                     foreach (var skill in vacancy.Skills)
                     {
                         csvWriter.NextRecord();
-                        csvWriter.WriteField(vacancy.IDfromSite);
+                        csvWriter.WriteField(vacancy.InnerId);
                         csvWriter.WriteField(vacancy.Link);
                         csvWriter.WriteField(skill);
                     }

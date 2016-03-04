@@ -5,14 +5,14 @@ namespace JobSkillsDb.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<JobSkillsDb.JobSkillsContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<JobSkillsDb.Entities.JobSkillsContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(JobSkillsDb.JobSkillsContext context)
+        protected override void Seed(JobSkillsDb.Entities.JobSkillsContext context)
         {
             //  This method will be called after migrating to the latest version.
 

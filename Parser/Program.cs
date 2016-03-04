@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -15,8 +16,8 @@ namespace Parser
         {
             using (JobSkillsContext db = new JobSkillsContext())
             {
-                Vacancy vacancy = new Vacancy();
-                vacancy.InnerId = vacancyView.InnerId;
+                Vacancy vacancy = new Vacancy();// db.Vacancies.Single(v => v.Link == vacancyView.Link);
+                vacancy.InnerNumber = vacancyView.InnerId;
                 vacancy.Link = vacancyView.Link;
                 vacancy.Title = vacancyView.Title;
                 vacancy.Employer = vacancyView.Employer;
@@ -59,6 +60,15 @@ namespace Parser
                     Skill skill = db.Skills.Single(s => s.Name == skillName) ?? new Skill() {Name = skillName};
                     vacancy.Skills.Add(skill);                    
                 }
+                var row = db.Vacancies.Single(v => v.Link == vacancyView.Link);
+                if (row!=null)
+                {
+                    db.Entry(row).CurrentValues.SetValues(vacancy);
+                }
+                else
+                {
+                    db.Vacancies.Add(vacancy);
+                }
                 db.SaveChanges();
             }
         }
@@ -74,7 +84,7 @@ namespace Parser
             foreach (VacancyParserBase adapter in adapters)
             {
                 var links = test.GetLinks();
-                var dictParallel = test.ParseAll(links);
+                var dictParallel = test.ParseAll(links.Take(50));
                 views.AddRange(dictParallel.Keys);
             }
             Parallel.ForEach(views, (x) =>

@@ -10,7 +10,6 @@ namespace JobSkillsDb.Entities
 {
     public class MarkedZone
     {
-        [Key]
         public int Id { get; set; }
         
         public int IndexStart { get; set; }

@@ -14,10 +14,9 @@ namespace JobSkillsDb.Entities
             MarkedZones = new HashSet<MarkedZone>();
         }
 
-        [Key]
         public int Id { get; set; }
 
-        public string InnerId { get; set; }
+        public string InnerNumber { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -34,6 +33,7 @@ namespace JobSkillsDb.Entities
 
         [Required]
         [Index(IsUnique = true)]
+        [MaxLength(255)]
         public string Link { get; set; }
 
         public string Employer { get; set; }

@@ -26,16 +26,6 @@ namespace JobSkillsDb.Entities
             modelBuilder.Entity<AprioriSkillSet>()
                 .Property(e => e.Confidence)
                 .HasPrecision(18, 0);
-
-            //modelBuilder.Entity<AprioriSkillSet>()
-            //    .HasMany(e => e.Skills)
-            //    .WithMany(e => e.AprioriSkillSet)
-            //    .Map(m => m.ToTable("Newskillset_skill").MapLeftKey("newskillset_id").MapRightKey("skill_id"));
-
-            //modelBuilder.Entity<Skill>()
-            //    .HasMany(e => e.Vacancies)
-            //    .WithMany(e => e.Skills)
-            //    .Map(m => m.ToTable("Skillset").MapLeftKey("skill_id").MapRightKey("skillset_id"));
         }
     }
 }

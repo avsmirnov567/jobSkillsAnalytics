@@ -1,0 +1,7 @@
+﻿namespace Apriori
+{
+    class TestAprioriImplementation
+    {
+
+    }
+}

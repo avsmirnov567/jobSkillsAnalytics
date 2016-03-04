@@ -16,14 +16,17 @@ namespace JobSkillsDb.Entities
 
         [Key]
         public int Id { get; set; }
-
+        
         [Required]
         [StringLength(50)]
         [Index(IsUnique = true)]
         public string Name { get; set; }
 
+        //public float Support { get; set; }
+
         public virtual ICollection<AprioriSkillSet> AprioriSkillSet { get; set; }
 
         public virtual ICollection<Vacancy> Vacancies { get; set; }
+        
     }
 }

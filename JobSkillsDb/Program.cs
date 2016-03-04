@@ -11,8 +11,8 @@ namespace JobSkillsDb
     {
         static void Main(string[] args)
         {
-            JobSkillsContext context = new JobSkillsContext();
-            var v = context.Vacancies.ToList();
+            //JobSkillsContext context = new JobSkillsContext();
+            //var v = context.Vacancy.ToList();
         }
     }
 }

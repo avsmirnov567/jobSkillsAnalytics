@@ -6,20 +6,21 @@ namespace JobSkillsDb.Entities
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Source")]
     public partial class Source
     {
-        [Key]        
-        [Column("source_id")]
+        public Source()
+        {
+            Vacancies = new HashSet<Vacancy>();
+        }
+
+        [Key]
         public int Id { get; set; }
 
         [Required]
-        [Column("source_name")]
         public string Name { get; set; }
 
-        [Column("source_link")]
-        public string source_link { get; set; }
+        public string SourceLink { get; set; }
 
-        public virtual Vacancy Vacancies { get; set; }
+        public virtual ICollection<Vacancy> Vacancies { get; set; }
     }
 }

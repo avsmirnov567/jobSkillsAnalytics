@@ -8,20 +8,15 @@ using System.Threading.Tasks;
 
 namespace JobSkillsDb.Entities
 {
-    [Table("marked_zones")]
     public class MarkedZone
     {
         [Key]
-        [Column("marked_zone_id")]
         public int Id { get; set; }
         
-        [Column("index_start")]
         public int IndexStart { get; set; }
 
-        [Column("index_end")]
         public int IndexEnd { get; set; }
 
-        [Column("highlighted_text")]
         public string HighlightedText { get; set; }
 
         public virtual Vacancy Vacancy { get; set; }

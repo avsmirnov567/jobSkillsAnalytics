@@ -139,15 +139,16 @@ namespace Parser
         public string NormalizeSalary(string rawSalary)
         {
             string salary = "";
-            rawSalary = rawSalary.Replace(" ", "");
+            Regex rgx = new Regex(@"\s+");
+            string rawTempSalary = rgx.Replace(rawSalary, "");
             List<string> salaryRange = Regex
-                .Matches(rawSalary, @"\d+")
+                .Matches(rawTempSalary, @"\d+")
                 .Cast<Match>()
                 .Select(m => m.Value)
                 .ToList();
-            if (salaryRange.Count == 2)
+            if (salaryRange.Count >= 2)
             {
-                salary = salaryRange[0] + ":" + salaryRange[1];                
+                salary = salaryRange[0] + ":" + salaryRange[1];
             }
             else
             {

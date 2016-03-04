@@ -13,7 +13,7 @@ namespace JobSkillsDb
         {
             using (JobSkillsContext db = new JobSkillsContext())
             {
-                var v = db.Vacancies.Select(x => x);
+                var v = db.Vacancies.ToList();
             }
         }
     }

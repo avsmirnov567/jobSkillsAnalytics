@@ -22,6 +22,8 @@ namespace JobSkillsDb.Entities
         [Index(IsUnique = true)]
         public string Name { get; set; }
 
+        public decimal? Support { get; set; }
+
         public virtual ICollection<AprioriSkillSet> AprioriSkillSet { get; set; }
 
         public virtual ICollection<Vacancy> Vacancies { get; set; }

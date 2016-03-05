@@ -26,6 +26,11 @@ namespace Parser
             Employer = "";
             PublishingDate = DateTime.Now;
             Skills = new List<string>();
-        }                
+        }
+
+        public bool IsValid()
+        {
+            return !String.IsNullOrEmpty(Title); //hot fix
+        }
     }
 }

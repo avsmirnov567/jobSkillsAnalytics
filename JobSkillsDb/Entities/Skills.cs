@@ -17,8 +17,8 @@ namespace JobSkillsDb.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(255)]
         [Index(IsUnique = true)]
         public string Name { get; set; }
 

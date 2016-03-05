@@ -18,7 +18,7 @@ namespace JobSkillsDb.Entities
 
         public string InnerNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Title is required!")]
         public string Title { get; set; }
 
         public int? SalaryFrom { get; set; }
@@ -31,7 +31,7 @@ namespace JobSkillsDb.Entities
 
         public string ContentHtml { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Link is required")]
         [Index(IsUnique = true)]
         [MaxLength(255)]
         public string Link { get; set; }

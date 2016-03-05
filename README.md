@@ -1,4 +1,4 @@
-# Vacancy parser
+# Vacancy parser (Alexander, Alexey)
 _It contains windows service parser for moikrug.ru and hh.ru_
 
 Output: 
@@ -7,5 +7,11 @@ Output:
 
 Parser used for calculations (associative rules between required skills) in [this project](https://github.com/rudskoy/skills_associations). 
 
+#Apriori implementation (Vladislav)
+
+Implementation based on a given in the project database (EF) structure
+Apriori algorithm is based on first associative rules algorithms (1994) by Agarwal and Srikant.
+
+Output: Associative rules and filled database for future usage.
+
 Team: Alexey, Alexandr, Vladislav
-_Higher School of Economics_

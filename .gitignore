@@ -7,6 +7,7 @@ cst.txt
 *.user
 *.userosscache
 *.sln.docstates
+DbConfig.config
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

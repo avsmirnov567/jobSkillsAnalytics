@@ -15,6 +15,7 @@ namespace Apriori
 
         static void Main(string[] args)
         {
+
         }
     }
 }

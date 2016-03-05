@@ -12,7 +12,7 @@ using JobSkillsDb.Entities;
 namespace Apriori
 {
     [TestFixture]
-    class TestAprioriImplementation
+    internal class TestAprioriImplementation
     {
         [Test]
         public void SubsettingTest()
@@ -27,7 +27,14 @@ namespace Apriori
         [Test]
         public void GettingSupportTest()
         {
-            
+            var vac = new Vacancy();
+            var sk = new Skill {Name = "Test1"};
+            var sk2 = new Skill {Name = "Test2"};
+
+            vac.Skills.Add(sk);
+            vac.Skills.Add(sk2);
+
+            //Assert.AreEqual();
         }
 
         [Test]

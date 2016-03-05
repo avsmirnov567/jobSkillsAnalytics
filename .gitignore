@@ -3,6 +3,7 @@
 
 cst.txt
 DbConfig.config
+Db.config
 # User-specific files
 *.suo
 *.user

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CsvHelper;
 using JobSkillsDb.Entities;
+using System.Diagnostics;
 
 namespace Parser
 {
@@ -17,8 +18,9 @@ namespace Parser
             using (JobSkillsContext db = new JobSkillsContext())
             {
                 Vacancy vacancy = db.Vacancies.SingleOrDefault(v => v.Link == vacancyView.Link) ?? new Vacancy();
+                Debug.WriteLineIf(vacancy.Id > 0, "Vacancy exists: "+vacancy.Link);
                 if (vacancy.Id == 0) //I desided not to update records
-                {
+                {                    
                     vacancy.InnerNumber = vacancyView.InnerId;
                     vacancy.Link = vacancyView.Link;
                     vacancy.Title = vacancyView.Title;
@@ -49,10 +51,10 @@ namespace Parser
                         }
                         else
                         {
-                            throw new Exception("Нет з/п");
+                            throw new Exception("No salary");
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         vacancy.SalaryFrom = null;
                         vacancy.SalaryTo = null;
@@ -61,28 +63,29 @@ namespace Parser
                     {
                         foreach (string skillName in vacancyView.Skills)
                         {
-                            var skill = db.Skills.SingleOrDefault(s => s.Name == skillName);
-                            if (skill == null)
-                            {
-                                skill = new Skill();
-                                skill.Name = skillName;
-                            }
+                            var skill = db.Skills
+                                .SingleOrDefault(s => s.Name == skillName) ?? 
+                                new Skill() { Name = skillName };
                             vacancy.Skills.Add(skill);
                         }
                         var row = db.Vacancies.SingleOrDefault(v => v.Link == vacancyView.Link);
                         if (row != null)
                         {
+                            Debug.WriteLine("Update vacancy: "+vacancy.Link);
                             db.Entry(row).CurrentValues.SetValues(vacancy);
                         }
                         else
                         {
+                            Debug.WriteLine("Add vacancy: " + vacancy.Link);
                             db.Vacancies.Add(vacancy);
                         }
+                        Debug.WriteLine("Started saving vacancy to database");
                         db.SaveChanges();
+                        Debug.WriteLine("Finished saving vacancy to database");
                     }
                     else
-                    {
-                        throw new Exception("Битая ссылка:"+vacancyView.Link);
+                    {                        
+                        throw new Exception("Link is corrupt: "+vacancyView.Link);
                     }
                 }
             }
@@ -90,35 +93,49 @@ namespace Parser
 
         static void Main(string[] args)
         {
+            List<string> existingLinks = new List<string>();
             using (JobSkillsContext db = new JobSkillsContext())
             {
-                db.Vacancies.RemoveRange(db.Vacancies);
-                db.Skills.RemoveRange(db.Skills);
-                db.SaveChanges();
+                existingLinks.AddRange(db.Vacancies.Select(v => v.Link).ToList());
             }
             List<VacancyParserBase> adapters = new List<VacancyParserBase>();
             adapters.Add(new MoiKrugParser());
-            //adapters.Add(new HeadHunterParser());
+            adapters.Add(new HeadHunterParser());
             List<VacancyView> views = new List<VacancyView>();
 
             foreach (VacancyParserBase adapter in adapters)
             {
-                var links = adapter.GetLinks();
+                Debug.WriteLine("Started parsing links: "+adapter.GetType().ToString());
+                var links = adapter.GetLinks().Where(l => !existingLinks.Contains(l)).ToList();
+                Debug.WriteLine("New links: " + links.Count + " item(s)");
+                Debug.WriteLine("Started parsing vacancies: " + adapter.GetType().ToString());
                 var dictParallel = adapter.ParseAll(links);
+                Debug.WriteLine("Parsed vacancies: " + dictParallel.Count + " item(s)");
                 views.AddRange(dictParallel.Keys);
             }
+            Debug.WriteLine("Total number of vacanies: " + views.Count + " item(s)");
+            Debug.WriteLine("Started saving vacancies to database");
             List<string> errors = new List<string>();
             views.ForEach(v =>
             {
                 try
                 {
+                    Debug.WriteLine("Started adding vacancy: " + v.Link);
                     AddVacancy(v);
                 }
                 catch (Exception e)
                 {
+                    Debug.WriteLine(e.Message);
                     errors.Add(e.Message);
                 }                
             });
+            using(JobSkillsContext db = new JobSkillsContext())
+            {
+                int countVacancies = db.Vacancies.Count();
+                int countSkills = db.Skills.Count();
+                Debug.WriteLine(string.Format("Now we have {0} vacancies and {1} skills",
+                    countVacancies, countSkills));
+            }
             using (StreamWriter sw = new StreamWriter("log-"+Guid.NewGuid()+".txt"))
             {
                 errors.ForEach(e => sw.WriteLine(e));

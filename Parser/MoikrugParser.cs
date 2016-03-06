@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace Parser
 {
@@ -22,16 +23,38 @@ namespace Parser
             do
             {
                 string absPath = Utils.GetAbsUrl(Domain, searchPageLink);
-                HtmlDocument doc = webStream.Load(absPath);
-                var jobLinks = doc.DocumentNode.SelectNodes(@"//ancestor::div[contains(@class,'title')]/a");
-                var tempList = jobLinks
-                   .Where(a => a.Attributes["href"] != null)
-                   .Select(a => Utils.GetAbsUrl(Domain, a.Attributes["href"].Value))
-                   .ToList();
-                links.AddRange(tempList);
-                var nextPageLink = doc.DocumentNode
-                    .SelectSingleNode(@"//a[contains(@class,'next_page')]");
-                searchPageLink = nextPageLink != null ? nextPageLink.Attributes["href"].Value : "";
+                HtmlDocument doc = null;
+                int maxCount = 3;
+                while (doc == null && maxCount>0)
+                {
+                    try
+                    {
+                        doc = webStream.Load(absPath);
+                    }
+                    catch
+                    {
+                        Debug.WriteLine("Can't access: " + absPath);
+                        doc = null;
+                        maxCount--;
+                    }
+                }
+                if (maxCount > 0)
+                {
+                    var jobLinks = doc.DocumentNode.SelectNodes(@"//ancestor::div[contains(@class,'title')]/a");
+                    var tempList = jobLinks
+                       .Where(a => a.Attributes["href"] != null)
+                       .Select(a => Utils.GetAbsUrl(Domain, a.Attributes["href"].Value))
+                       .ToList();
+                    links.AddRange(tempList);
+                    var nextPageLink = doc.DocumentNode
+                        .SelectSingleNode(@"//a[contains(@class,'next_page')]");
+                    searchPageLink = nextPageLink != null ? nextPageLink.Attributes["href"].Value : "";
+                }
+                else
+                {
+                    Debug.WriteLine("Can't continue parsing vacancy links: "+absPath);
+                    searchPageLink = null;                    
+                }
             } while (!String.IsNullOrEmpty(searchPageLink));
             return links;
         }
@@ -39,19 +62,38 @@ namespace Parser
         public override VacancyView Parse(string link)
         {
             HtmlWeb webStream = new HtmlWeb();
-            HtmlDocument doc = webStream.Load(link);
-            VacancyView vacancy = new VacancyView()
+            HtmlDocument doc = null;
+            int maxCount = 3;
+            while (doc == null && maxCount>0)
             {
-                InnerId = GetId(link),
-                Link = link,
-                Title = GetTitle(doc),
-                Employer = GetEmployer(doc),
-                Salary = NormalizeSalary(GetSalary(doc)),
-                PublishingDate = NormalizeDate(GetDate(doc)),
-                ContentText = GetDescriptionText(doc),
-                ContentHtml = GetDescriptionHtml(doc),
-                Skills = GetSkillSet(doc)
-            };
+                try
+                {
+                    doc = webStream.Load(link);
+                }
+                catch
+                {
+                    Debug.WriteLine("Can't access: " + link);
+                    doc = null;
+                    maxCount--;
+                }
+            }
+            VacancyView vacancy = new VacancyView();
+            Debug.WriteLineIf(maxCount > 0, "Can't continue parsing vacancy: " + vacancy.Link);
+            if (maxCount > 0)
+            {
+                vacancy = new VacancyView()
+                {
+                    InnerId = GetId(link),
+                    Link = link,
+                    Title = GetTitle(doc),
+                    Employer = GetEmployer(doc),
+                    Salary = NormalizeSalary(GetSalary(doc)),
+                    PublishingDate = NormalizeDate(GetDate(doc)),
+                    ContentText = GetDescriptionText(doc),
+                    ContentHtml = GetDescriptionHtml(doc),
+                    Skills = GetSkillSet(doc)
+                };
+            }
             return vacancy;
         }
 

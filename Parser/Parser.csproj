@@ -80,6 +80,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <Fakes Include="Fakes\CsvHelper.fakes" />
+    <None Include="Db.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

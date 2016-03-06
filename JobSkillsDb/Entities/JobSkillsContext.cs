@@ -10,7 +10,8 @@ namespace JobSkillsDb.Entities
     {
         public JobSkillsContext()
             : base("name=JobSkillsContext")
-        {            
+        {
+            Database.SetInitializer<JobSkillsContext>(null);
         }
 
         public virtual DbSet<AprioriSkillSet> AprioriSkillSet { get; set; }

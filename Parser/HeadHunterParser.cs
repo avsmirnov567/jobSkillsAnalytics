@@ -13,15 +13,20 @@ namespace Parser
     {
         const string XPathForLinks = @"//a[contains(@class,'search-result-item__name')]";
         const string DefSearchPageLink = @"http://perm.hh.ru/search/vacancy?enable_snippets=true&industry=7&clusters=true&area=113&page=0";
+        readonly string[] DefSearchPageLinkList =
+            { @"http://perm.hh.ru/search/vacancy?enable_snippets=true&industry=7.540&clusters=true&area=113&page=0",
+                @"http://perm.hh.ru/search/vacancy?enable_snippets=true&industry=7.539&clusters=true&area=113&page=0",
+                @"http://perm.hh.ru/search/vacancy?enable_snippets=true&industry=7.541&clusters=true&area=113&page=0" };
         const string Domain = "http://perm.hh.ru";
         public override List<string> GetLinks(string searchPage = null)
         {
             string searchPageLink = string.IsNullOrEmpty(searchPage) ? DefSearchPageLink : searchPage;
             HtmlWeb webStream = new HtmlWeb();
-            List<string> links = new List<string>();
+            List<string> links = new List<string>();            
             do
-            {
+            {                
                 string absPath = Utils.GetAbsUrl(Domain, searchPageLink);
+                Debug.WriteLine("Parsing search page: " + absPath);
                 HtmlDocument doc = null;
                 int maxCount = 3;
                 while (doc == null && maxCount > 0)
@@ -77,9 +82,10 @@ namespace Parser
                 }
             }
             VacancyView vacancy = new VacancyView();
-            Debug.WriteLineIf(maxCount > 0, "Can't continue parsing vacancy: " + vacancy.Link);
+            Debug.WriteLineIf(maxCount == 0, "Can't continue parsing vacancy: " + link);
             if (maxCount > 0)
             {
+                Debug.WriteLine("Parsing vacancy: " + link);
                 vacancy = new VacancyView()
                 {
                     InnerId = GetId(link),
@@ -238,6 +244,17 @@ namespace Parser
         public Dictionary<VacancyView, bool> ParseAllStrait(IEnumerable<string> links)
         {
             return links.ToDictionary(x => Parse(x), x => true);
+        }
+
+        public override List<string> GetAllLinks(IEnumerable<string> searchPages = null)
+        {
+            var startWith = searchPages ?? DefSearchPageLinkList;
+            List<string> links = new List<string>();
+            Parallel.ForEach(startWith, searchPage =>
+            {
+                links.AddRange(GetLinks(searchPage));
+            });
+            return links.Distinct().ToList();
         }
     }
 }

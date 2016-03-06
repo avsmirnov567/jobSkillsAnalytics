@@ -23,6 +23,7 @@ namespace Parser
             do
             {
                 string absPath = Utils.GetAbsUrl(Domain, searchPageLink);
+                Debug.WriteLine("Parsing search page: " + absPath);
                 HtmlDocument doc = null;
                 int maxCount = 3;
                 while (doc == null && maxCount>0)
@@ -78,9 +79,10 @@ namespace Parser
                 }
             }
             VacancyView vacancy = new VacancyView();
-            Debug.WriteLineIf(maxCount > 0, "Can't continue parsing vacancy: " + vacancy.Link);
+            Debug.WriteLineIf(maxCount == 0, "Can't continue parsing vacancy: " + link);
             if (maxCount > 0)
             {
+                Debug.WriteLine("Parsing vacancy: " + link);
                 vacancy = new VacancyView()
                 {
                     InnerId = GetId(link),
@@ -239,6 +241,11 @@ namespace Parser
         public Dictionary<VacancyView, bool> ParseAllStrait(IEnumerable<string> links)
         {
             return links.ToDictionary(x => Parse(x), x => true);
+        }
+
+        public override List<string> GetAllLinks(IEnumerable<string> searchPages = null)
+        {
+            return GetLinks();
         }
     }
 }

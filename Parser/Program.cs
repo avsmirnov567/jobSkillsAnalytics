@@ -12,7 +12,20 @@ using System.Diagnostics;
 namespace Parser
 {
     class Program
-    {        
+    {
+
+        public static void AddNewSkills(List<Skill> skills)
+        {
+            using(JobSkillsContext db = new JobSkillsContext())
+            {
+                var existingSkills = db.Skills.ToList();
+                var newSkills = skills.Where(s => !existingSkills.Contains(s));
+                Debug.WriteLine("New skills: " + newSkills.Count());
+                db.Skills.AddRange(newSkills);
+                db.SaveChanges();
+            }
+        }
+
         public static void AddVacancy(VacancyView vacancyView)
         {
             using (JobSkillsContext db = new JobSkillsContext())
@@ -106,10 +119,10 @@ namespace Parser
             foreach (VacancyParserBase adapter in adapters)
             {
                 Debug.WriteLine("Started parsing links: "+adapter.GetType().ToString());
-                var links = adapter.GetLinks().Where(l => !existingLinks.Contains(l)).ToList();
-                Debug.WriteLine("New links: " + links.Count + " item(s)");
+                var newLinks = adapter.GetAllLinks().Where(l => !existingLinks.Contains(l)).ToList();
+                Debug.WriteLine("New links: " + newLinks.Count + " item(s)");
                 Debug.WriteLine("Started parsing vacancies: " + adapter.GetType().ToString());
-                var dictParallel = adapter.ParseAll(links);
+                var dictParallel = adapter.ParseAll(newLinks);
                 Debug.WriteLine("Parsed vacancies: " + dictParallel.Count + " item(s)");
                 views.AddRange(dictParallel.Keys);
             }

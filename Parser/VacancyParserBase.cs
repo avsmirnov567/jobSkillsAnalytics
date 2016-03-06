@@ -18,6 +18,14 @@ namespace Parser
         /// <returns>URLs</returns>
         public abstract List<string> GetLinks(string searchPage = null);
 
+
+        /// <summary>
+        /// Get all vacancies URLs
+        /// </summary>
+        /// <param name="searchPages">list of search pages to start with</param>
+        /// <returns>URLs</returns>
+        public abstract List<string> GetAllLinks(IEnumerable<string> searchPages = null);
+
         /// <summary>
         /// Parse vacancy if content is valid
         /// </summary>

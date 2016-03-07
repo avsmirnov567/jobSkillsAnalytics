@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "Parser\Parser.csproj", "{EFAEDEE3-A63F-4183-869F-115C4777A17B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobSkillsDb", "JobSkillsDb\JobSkillsDb.csproj", "{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apriori", "Apriori\Apriori.csproj", "{9EB53A35-8221-4D1A-B971-8C49255A8A81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5519E12-EBD7-4725-9C6A-89E885C4071D}"
+	ProjectSection(SolutionItems) = preProject
+		..\Db.config = ..\Db.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

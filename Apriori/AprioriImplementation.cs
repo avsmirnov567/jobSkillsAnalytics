@@ -7,17 +7,26 @@ using System.Runtime.Remoting.Messaging;
 using JobSkillsDb;
 using JobSkillsDb.Entities;
 
+
 namespace Apriori
 {
     class AprioriProcessTransaction
     {
         public AprioriProcessTransaction(float minsupport, float minconfidence, IEnumerable<Skill> skills, IEnumerable<Vacancy> vacancies)
         {
-            AprioriImplementation processingClass = new AprioriImplementation();
+            //JobSkillsContext databaseContext = new JobSkillsContext();
+            var databaseContext = new JobSkillsContext();
+            var vacanciesAmount = databaseContext.Vacancies.Count();
+
+            var processingClass = new AprioriImplementation();
             var frequentItems = processingClass.GetL1FrequentItems(minsupport, skills, vacancies);
 
-            var allFrequentItems = frequentItems.ToList();
+            var allFrequentItems = frequentItems.ToList(); //concat     
+            IDictionary<Skill, double> candidates = new Dictionary<Skill, double>();
 
+                
+
+            
         }
 
 
@@ -69,7 +78,7 @@ namespace Apriori
 
         private Dictionary<Skill, int> GenerateCandidates(IList<Skill> frequentSkills, IEnumerable<Vacancy> vacancies)
         {
-         
+            return null;
         } 
     }
 }

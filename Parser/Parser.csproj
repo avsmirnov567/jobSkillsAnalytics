@@ -80,6 +80,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <Fakes Include="Fakes\CsvHelper.fakes" />
+    <None Include="Db.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

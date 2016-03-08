@@ -1,6 +1,6 @@
 namespace Apriori
 {
-    class Output
+    public class Output
     {
 
     }

@@ -23,27 +23,28 @@ namespace Apriori
     {
         private ISorter _sorter;
 
-        public List<Skill> GetL1FrequentItems(double minSupport, IEnumerable<Skill> skills,
-            IEnumerable<Vacancy> vacancies)
+        public List<Skill> GetL1FrequentItems(double minSupport, IList<Skill> skills,
+            IList<Vacancy> vacancies)
         {
-            //var enumiratingVacancies = vacancies as IList<Vacancy> ?? vacancies.ToList();
             var transactionsCount= vacancies.Count();
+            var frequentItemsL1 = new List<Skill>();
+           
+            foreach (var skill in skills)
+            {
+                var support = GetSupport(skill, vacancies);
 
-            var frequentItemsL1 = (
-                from item
-                    in skills
-                let support = GetSupport(item, vacancies)
-                where support/transactionsCount >= minSupport
-                select new Skill {Name = item.Name, Support = item.Support}
-                ).ToList();
-
-            //SORT
-            frequentItemsL1.Sort();
-
-            return frequentItemsL1;
+                if (support/transactionsCount >= minSupport)
+                {
+                    var newskill = skill;
+                    newskill.Support = (decimal?)support;
+                    frequentItemsL1.Add(newskill);
+                }
+            }
+            
+            return frequentItemsL1.OrderBy(i => i.Id).ToList();
         }
 
-         double GetSupport(Skill generatedCandidate, IEnumerable<Vacancy> vacancies)
+         public double GetSupport(Skill generatedCandidate, IList<Vacancy> vacancies)
         {
             double support = 0;
 

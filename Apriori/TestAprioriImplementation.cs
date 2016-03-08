@@ -16,17 +16,22 @@ namespace Apriori
     [TestFixture]
     internal class TestAprioriImplementation
     {
-        private readonly double _minsupport;
-        private readonly double _minconfidence;
-        private readonly IEnumerable<Skill> _itemSkills;
-        private readonly IEnumerable<Vacancy> _transactionsVacancies;
+        private double _minsupport;
+        private double _minconfidence;
+        private IList<Skill> _skills;
+        private IList<Vacancy> _vacancies;
+        private AprioriProcessTransactions contextProcesor;
+        private AprioriImplementation implementation;
+        
         //private readonly Apriori_Accessor _target;
 
         public TestAprioriImplementation()
         {
-            _minsupport = .5;
-            _minconfidence = .8;
-            _transactionsVacancies = new List<Vacancy>(3);
+            implementation = new AprioriImplementation();
+            
+            _minsupport = .01;
+            _minconfidence = .01;
+            _vacancies = new List<Vacancy>(3);
 
             var listOfSkillsetInVacanciesList = new List<List<string>>();
 
@@ -39,12 +44,20 @@ namespace Apriori
 
         private void FillTestVacanciesAndSkills(List<List<string>> listOfSkillsetInVacanciesList)
         {
+            _vacancies = new List<Vacancy>();
             for (var i = 0; i < 2; i++)
             {
-                var vacancy = new Vacancy();
                 for (var j = 0; j < 2; j++)
                 {
-                    _transactionsVacancies.ToList().Add(vacancy);
+                    var vacancy = new Vacancy
+                    {
+                        Id = j,
+                        Title = "VacancyTitle#" + j,
+                        Link = "TestLink#" + j
+                    };
+                    
+                    _vacancies.Add(vacancy);
+                    _vacancies.ToList()[j].Skills = new List<Skill>();
                     for (var skillItem = 0; skillItem < 2; skillItem++)
                     {
                         var skill = new Skill
@@ -52,7 +65,7 @@ namespace Apriori
                             Id = skillItem,
                             Name = listOfSkillsetInVacanciesList[j][skillItem]
                         };
-                        _transactionsVacancies.ToList()[j].Skills.Add(skill);
+                        _vacancies.ToList()[j].Skills.Add(skill);
                     }
                 }
             }
@@ -61,7 +74,10 @@ namespace Apriori
         [Test]
         public void GetL1FrequentItemsTest()
         {
+            implementation = new AprioriImplementation();
+            var frequentItems = implementation.GetL1FrequentItems(_minsupport, _skills, _vacancies);
 
+            Assert.AreEqual(5, frequentItems.Count());
         }
 
         [Test]
@@ -79,7 +95,11 @@ namespace Apriori
         [Test]
         public void GettingSupportTest()
         {
+            //contextProcesor = new AprioriProcessTransactions(_minsupport, _minconfidence, _skills, _vacancies);
+            var generatedCandidate = _vacancies[0].Skills.ElementAt(0); //C
+            var t = implementation.GetSupport(generatedCandidate, _vacancies);
 
+            Assert.AreEqual(2, t, "Couldn't find support value for " + generatedCandidate);
         }
 
         [Test]

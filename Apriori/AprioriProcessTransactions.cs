@@ -5,9 +5,9 @@ using JobSkillsDb.Entities;
 
 namespace Apriori
 {
-    class AprioriProcessTransactions
+    public class AprioriProcessTransactions
     {
-        public AprioriProcessTransactions(double minsupport, double minconfidence, IEnumerable<Skill> givenskillsSkills, IEnumerable<Vacancy> givenVacancies)
+        public AprioriProcessTransactions(double minsupport, double minconfidence, IList<Skill> givenskillsSkills, IList<Vacancy> givenVacancies)
         {
             //need to connect earlier (in implementation and pass these 
             //parameters to the method
@@ -61,7 +61,7 @@ namespace Apriori
         }
 
         //convert List<Skill> into List<AprioriSkillset> that contains ICollection<Skill>
-        private static List<AprioriSkillSet> DividedIntoSkillsetsFrequentItems(IEnumerable<Skill> frequentSkills, out List<AprioriSkillSet> frequentItems)
+        private static List<AprioriSkillSet> DividedIntoSkillsetsFrequentItems(IList<Skill> frequentSkills, out List<AprioriSkillSet> frequentItems)
         {
 
             var dividedFrequentItems = new List<AprioriSkillSet>();

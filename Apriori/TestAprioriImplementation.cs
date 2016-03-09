@@ -16,8 +16,8 @@ namespace Apriori
     [TestFixture]
     internal class TestAprioriImplementation
     {
-        private double _minsupport;
-        private double _minconfidence;
+        private decimal _minsupport;
+        private decimal _minconfidence;
         private IList<Skill> _skills;
         private IList<Vacancy> _vacancies;
         private AprioriProcessTransactions contextProcesor;
@@ -29,8 +29,8 @@ namespace Apriori
         {
             implementation = new AprioriImplementation();
             
-            _minsupport = .01;
-            _minconfidence = .01;
+            _minsupport = (decimal).01;
+            _minconfidence = (decimal).01;
             _vacancies = new List<Vacancy>();
             _skills = new List<Skill>();
 

@@ -7,7 +7,7 @@ namespace Apriori
 {
     public class AprioriProcessTransactions
     {
-        public AprioriProcessTransactions(double minsupport, double minconfidence, IList<Skill> givenskillsSkills, IList<Vacancy> givenVacancies)
+        public AprioriProcessTransactions(decimal minsupport, decimal minconfidence, IList<Skill> givenskillsSkills, IList<Vacancy> vacancies)
         {
             //need to connect earlier (in implementation and pass these 
             //parameters to the method
@@ -16,18 +16,19 @@ namespace Apriori
 
             var processingClass = new AprioriImplementation();
 
-            Debug.Assert(givenVacancies != null, "vacancies != null");
+            Debug.Assert(vacancies != null, "vacancies != null");
             Debug.Assert(givenskillsSkills != null, "skills != null");
 
             //convert from ienumerable 
             //does anyone could be converted? 
-            var vacancies = givenVacancies as IList<Vacancy> ?? givenVacancies.ToList();
+            
 
             //get list of skills and their supports
             var frequentSkills = processingClass.GetL1FrequentItems(minsupport, givenskillsSkills, vacancies);
 
             //transform list of skills into a list of AprioriSkillset that contains 
             //ICollection<Skill>
+            //TRANSFORM!!!!
             List<AprioriSkillSet> frequentItems = DividedIntoSkillsetsFrequentItems(frequentSkills, out frequentItems);
             
             var allFrequentItems = new List<AprioriSkillSet>();
@@ -41,7 +42,7 @@ namespace Apriori
             //fun begins
             do
             {
-                Debug.Assert(givenVacancies != null, "vacancies != null");
+                Debug.Assert(vacancies != null, "vacancies != null");
                 
                 IList<AprioriSkillSet> skillset = new List<AprioriSkillSet>();
 

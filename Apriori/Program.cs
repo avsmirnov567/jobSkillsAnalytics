@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using JobSkillsDb;
-using Parser;
+//using Parser;
 
 namespace Apriori
 {
@@ -12,7 +12,6 @@ namespace Apriori
 
     class Program
     {
-
         static void Main(string[] args)
         {
 

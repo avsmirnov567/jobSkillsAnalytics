@@ -23,20 +23,22 @@ namespace Apriori
     {
         private ISorter _sorter;
 
-        public List<Skill> GetL1FrequentItems(double minSupport, IList<Skill> skills,
+        public List<Skill> GetL1FrequentItems(decimal minSupport, IList<Skill> skills,
             IList<Vacancy> vacancies)
         {
-            var transactionsCount= vacancies.Count();
+            int vacanciesCount = vacancies.Count();
             var frequentItemsL1 = new List<Skill>();
            
             foreach (var skill in skills)
             {
-                var support = GetSupport(skill, vacancies);
+                skill.Support = (decimal)GetSupport(skill, vacancies);
+                //skill.Support = GetSupport(skill, vacancies);
 
-                if (support/transactionsCount >= minSupport)
+                var temp = skill.Support/vacanciesCount >= minSupport;
+                if (temp)
                 {
                     var newskill = skill;
-                    newskill.Support = (decimal?)support;
+                    newskill.Support = skill.Support;
                     frequentItemsL1.Add(newskill);
                 }
             }
@@ -45,41 +47,50 @@ namespace Apriori
         }
 
          public double GetSupport(Skill generatedCandidate, IList<Vacancy> vacancies)
-        {
-            double support = 0;
+         {
+             var support = 0;
 
-            foreach (var vac in vacancies)
-            {
-                foreach (var skill in vac.Skills)
-                {
-                    if (CheckIsSubset(generatedCandidate, vac))
-                    {
-                        support++;
-                    }
-                }
-            }
-            return support;
-        }
+             foreach (var vac in vacancies)
+             {
+                 foreach (var skill in vac.Skills)
+                 {
+                     if (skill.Id == generatedCandidate.Id && skill.Name == generatedCandidate.Name)
+                         support++;
+                 }
+             }
+             return support;
+         }
 
+         //CHECK FUCKING SUPPORT GENERATOR
          public double GetSupport(Skill generatedCandidate, IList<AprioriSkillSet> skillsets)
          {
              double support = 0;
+
              foreach (var skillset in skillsets)
              {
                  foreach (var skill in skillset.Skills)
                  {
                      if (CheckIsSubset(generatedCandidate, skillset))
                      {
-                         support++;
+                         skillset.Support++;
                      }
                  }
              }
              return support;
          }
 
-         public static bool CheckIsSubset(Skill generatedCandidate, Vacancy vac)
+         public static int CheckIsSubset(Skill generatedCandidate, Vacancy vac)
          {
-             return vac.Skills.Any(skill => skill.Id == generatedCandidate.Id);
+             int yesno = 0;
+             foreach (var skill in vac.Skills)
+             {
+                 if (skill.Id == generatedCandidate.Id && skill.Name == generatedCandidate.Name)
+                 {
+                     return yesno = 1;
+                 }
+             }
+
+             return yesno = 0;
          }
 
          public static bool CheckIsSubset(Skill generatedCandidate, AprioriSkillSet skillset)
@@ -123,8 +134,8 @@ namespace Apriori
             return candidate;
         }
 
-        public List<AprioriSkillSet> GetFrequentSkills(IList<AprioriSkillSet> candidates, double minSupport,
-            double vacancyCount)
+        public List<AprioriSkillSet> GetFrequentSkills(IList<AprioriSkillSet> candidates, decimal? minSupport,
+            int vacancyCount)
         {
             var frequentItems = new List<AprioriSkillSet>();
 
@@ -132,7 +143,7 @@ namespace Apriori
             {
                 var skillset = new AprioriSkillSet();
                 Debug.Assert(candidate.Support == 0, "this shit is a fucking null");
-                if (candidate.Support != null && (double) candidate.Support.Value/vacancyCount >= minSupport)
+                if (candidate.Support != null && candidate.Support.Value/vacancyCount >= minSupport)
                 {
                     frequentItems.Add(candidate);
                 }

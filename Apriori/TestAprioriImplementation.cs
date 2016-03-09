@@ -179,7 +179,6 @@ namespace Apriori
         [Test]
         public void GetL1FrequentItemsTest()
         {
-            implementation = new AprioriImplementation();
             var frequentItems = implementation.GetL1FrequentItems(_minsupport, _skills, _vacancies);
 
             Assert.AreEqual(5, frequentItems.Count());
@@ -201,10 +200,11 @@ namespace Apriori
         public void GettingSupportTest()
         {
             //contextProcesor = new AprioriProcessTransactions(_minsupport, _minconfidence, _skills, _vacancies);
-            var generatedCandidate = _vacancies[0].Skills.ElementAt(0); //C
+            
+            var generatedCandidate = _vacancies[0].Skills.ElementAt(0); //C#
             var t = implementation.GetSupport(generatedCandidate, _vacancies);
 
-            Assert.AreEqual(2, t, "Couldn't find support value for " + generatedCandidate);
+            Assert.AreEqual(3, t, "Couldn't find support value for " + generatedCandidate);
         }
 
         [Test]

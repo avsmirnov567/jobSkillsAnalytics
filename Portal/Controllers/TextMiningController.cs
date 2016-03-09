@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using JobSkillsDb.Entities;
+using System.Threading.Tasks;
 
 namespace Portal.Controllers
 {
@@ -15,14 +16,22 @@ namespace Portal.Controllers
             return View();
         }
 
-        public ActionResult Details(int id = 0)
+        public async Task<ActionResult> Details(int id = 0)
         {
             using(JobSkillsContext db = new JobSkillsContext())
             {
-                Vacancy vacancy = id > 0 ? db.Vacancies.Find(id) : db.Vacancies.First();
+                Vacancy vacancy = id > 0 ? await db.Vacancies.FindAsync(id) : db.Vacancies.First();
                 return View(vacancy);
             }
         }
 
+        public async Task<ActionResult> Edit(int id = 0)
+        {
+            using (JobSkillsContext db = new JobSkillsContext())
+            {
+                Vacancy vacancy = id > 0 ? await db.Vacancies.FindAsync(id) : db.Vacancies.First();
+                return View(vacancy);
+            }
+        }
     }
 }

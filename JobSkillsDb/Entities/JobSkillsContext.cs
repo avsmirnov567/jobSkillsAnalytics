@@ -16,7 +16,8 @@ namespace JobSkillsDb.Entities
 
         public virtual DbSet<AprioriSkillSet> AprioriSkillSet { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }
-        public virtual DbSet<Vacancy> Vacancies { get; set; }  
+        public virtual DbSet<Vacancy> Vacancies { get; set; }
+        public virtual DbSet<MarkedZone> MarkedZones { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

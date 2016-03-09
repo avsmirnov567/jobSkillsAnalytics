@@ -90,7 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JobSkillsDb\JobSkillsDb.csproj">
-      <Project>{d955fab2-a8c2-4332-a6a6-af294be7e6ae}</Project>
+      <Project>{67b27a53-1a82-4a4f-bda7-39308c99e065}</Project>
       <Name>JobSkillsDb</Name>
     </ProjectReference>
   </ItemGroup>

@@ -61,7 +61,31 @@ namespace Apriori
             return support;
         }
 
-        public static bool CheckIsSubset(Skill generatedCandidate, Vacancy vac) => !vac.Skills.Contains(generatedCandidate);
+         public double GetSupport(Skill generatedCandidate, IList<AprioriSkillSet> skillsets)
+         {
+             double support = 0;
+             foreach (var skillset in skillsets)
+             {
+                 foreach (var skill in skillset.Skills)
+                 {
+                     if (CheckIsSubset(generatedCandidate, skillset))
+                     {
+                         support++;
+                     }
+                 }
+             }
+             return support;
+         }
+
+         public static bool CheckIsSubset(Skill generatedCandidate, Vacancy vac)
+         {
+             return vac.Skills.Any(skill => skill.Id == generatedCandidate.Id);
+         }
+
+         public static bool CheckIsSubset(Skill generatedCandidate, AprioriSkillSet skillset)
+         {
+                 return skillset.Skills.Any(skill => skill.Id == generatedCandidate.Id);
+         }
 
         public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills, IEnumerable<Vacancy> vacancies)
         {

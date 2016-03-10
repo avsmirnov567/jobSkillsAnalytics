@@ -7,8 +7,18 @@ namespace Apriori
 {
     public class AprioriProcessTransactions
     {
-        public AprioriProcessTransactions(decimal minsupport, decimal minconfidence, IList<Skill> givenskillsSkills, IList<Vacancy> vacancies)
+        public AprioriProcessTransactions(decimal minsupport, decimal minconfidence, IList<Skill> givenSkills, IList<Vacancy> vacancies)
         {
+            //transform IList<Vacancy> to IList<AprioriSkillset>
+            //var transactions = new List<AprioriSkillSet>();
+            //Debug.Assert(vacancies.Count == 0, "shit vacancies parameter at apriori transaction");
+            //foreach (var vac in vacancies)
+            //{
+            //    AprioriSkillSet vacancyTransformed = new AprioriSkillSet();
+            //    vacancyTransformed.Skills = vac.Skills;
+            //}
+            
+
             //need to connect earlier (in implementation and pass these 
             //parameters to the method
             var databaseContext = new JobSkillsContext();
@@ -17,14 +27,14 @@ namespace Apriori
             var processingClass = new AprioriImplementation();
 
             Debug.Assert(vacancies != null, "vacancies != null");
-            Debug.Assert(givenskillsSkills != null, "skills != null");
+            Debug.Assert(givenSkills != null, "skills != null");
 
             //convert from ienumerable 
             //does anyone could be converted? 
             
 
             //get list of skills and their supports
-            var frequentSkills = processingClass.GetL1FrequentItems(minsupport, givenskillsSkills, vacancies);
+            var frequentSkills = processingClass.GetL1FrequentSkills(minsupport, givenSkills, vacancies);
 
             //transform list of skills into a list of AprioriSkillset that contains 
             //ICollection<Skill>
@@ -47,7 +57,6 @@ namespace Apriori
                 IList<AprioriSkillSet> skillset = new List<AprioriSkillSet>();
 
                 candidates = processingClass.GenerateCandidates(skillset, vacancies);
-                frequentItems = new List<AprioriSkillSet>();
                 frequentItems = processingClass.GetFrequentSkills(candidates, minsupport, vacanciesAmount);
                 
                 allFrequentItems.AddRange(frequentItems);
@@ -64,7 +73,6 @@ namespace Apriori
         //convert List<Skill> into List<AprioriSkillset> that contains ICollection<Skill>
         private static List<AprioriSkillSet> DividedIntoSkillsetsFrequentItems(IList<Skill> frequentSkills, out List<AprioriSkillSet> frequentItems)
         {
-
             var dividedFrequentItems = new List<AprioriSkillSet>();
             foreach (var skill in frequentSkills)
             {

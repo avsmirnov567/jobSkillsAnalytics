@@ -1,7 +1,64 @@
 ﻿@model Vacancy
 @{
     ViewBag.Title = "Details";
+    List<Skill> skills = ViewBag.SkillsList;
+    List<MarkedZone> zones = ViewBag.ZonesList;
 }
 
 <h2>@Model.Title</h2>
-@Html.Raw(Model.ContentHtml)
+<div class="row">
+    <div class="col-md-8">
+        @Html.Raw(Model.ContentHtml)
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            @Html.DropDownList("SkillId", new SelectList(skills, "Id", "Name"))
+        </div>
+        <div class="row">
+            <input id="btnAddZone" type="submit" name="AddZone" value="Добавить"/>
+        </div>
+    </div>
+</div>
+<div id="markedZones">@Html.Partial("VacancyMarkedZones",zones)</div>
+
+@section scripts
+{
+    <script>
+        var copiedText = "";
+
+        $(function () {
+
+            $("#btnAddZone").click(function (event) {
+                getSelectionText();
+                alert(copiedText);
+                $('#btnSave').click(function (e) {
+                    e.preventDefault();
+                    var element = this;
+                    $.ajax({
+                        url: "/Home/SaveDetailedInfo",
+                        type: "POST",
+                        data: JSON.stringify({ 'Options': someData }),
+                        dataType: "json",
+                        traditional: true,
+                        contentType: "application/json; charset=utf-8",
+                        success: function(data) {
+                            
+                        },
+                        error: function () {
+                            alert("An error has occured!!!");
+                        }
+                    });
+                });
+            });
+        });
+
+        function getSelectionText() {
+            if (window.getSelection) {
+                copiedText = window.getSelection().toString();
+            } else if (document.selection && document.selection.type != "Control") {
+                copiedText = document.selection.createRange().text;
+            }
+        }
+
+    </script>
+}

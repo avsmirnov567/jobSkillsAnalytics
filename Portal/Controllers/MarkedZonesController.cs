@@ -17,7 +17,7 @@ namespace Portal.Controllers
         {
             using (JobSkillsContext db = new JobSkillsContext())
             {
-                return await db.MarkedZones.ToListAsync();
+                return await db.MarkedZones.Include(z => z.Vacancy).Include(z=>z.Skill).ToListAsync();
             }
         }
 
@@ -26,13 +26,26 @@ namespace Portal.Controllers
         {
             using (JobSkillsContext db = new JobSkillsContext())
             {
-                return await db.MarkedZones.FindAsync(id);
+                return await db.MarkedZones.Include(z => z.Vacancy).Include(z => z.Skill).SingleOrDefaultAsync(z=>z.Id == id);
+            }
+        }
+
+        public async Task<IEnumerable<MarkedZone>> ZonesForVacancy(int vacancyId)
+        {
+            using (JobSkillsContext db = new JobSkillsContext())
+            {
+                return await db.MarkedZones.Include(z => z.Skill).Where(z => z.Vacancy.Id == vacancyId).ToListAsync();
             }
         }
 
         // POST: api/MarkedZones
         public void Post([FromBody]MarkedZone markedZone)
         {
+            using (JobSkillsContext db = new JobSkillsContext())
+            {
+                db.MarkedZones.Add(markedZone);
+                db.SaveChanges();
+            }
         }
 
         // PUT: api/MarkedZones/5

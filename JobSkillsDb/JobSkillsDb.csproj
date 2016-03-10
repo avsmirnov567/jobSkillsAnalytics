@@ -58,6 +58,10 @@
     <Compile Include="Migrations\201603050434522_UpdateSkills.Designer.cs">
       <DependentUpon>201603050434522_UpdateSkills.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.cs" />
+    <Compile Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.Designer.cs">
+      <DependentUpon>201603101150050_MarkedZonesAddForeignKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -65,9 +69,13 @@
     <EmbeddedResource Include="Migrations\201603050434522_UpdateSkills.resx">
       <DependentUpon>201603050434522_UpdateSkills.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.resx">
+      <DependentUpon>201603101150050_MarkedZonesAddForeignKeys.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Db.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

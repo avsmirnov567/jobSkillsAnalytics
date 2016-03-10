@@ -45,6 +45,10 @@ namespace Portal.Controllers
             {
                 db.MarkedZones.Add(markedZone);
                 db.SaveChanges();
+                MarkedZone textZone =
+                    db.MarkedZones.Include(z => z.Skill)
+                        .Include(z => z.Vacancy)
+                        .SingleOrDefault(z => z.Id == markedZone.Id);
             }
         }
 

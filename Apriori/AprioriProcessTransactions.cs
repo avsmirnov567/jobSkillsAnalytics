@@ -52,8 +52,6 @@ namespace Apriori
             //fun begins
             do
             {
-                Debug.Assert(vacancies != null, "vacancies != null");
-                
                 IList<AprioriSkillSet> skillset = new List<AprioriSkillSet>();
 
                 candidates = processingClass.GenerateCandidates(skillset, vacancies);
@@ -63,10 +61,12 @@ namespace Apriori
 
             } while (candidates.Count != 0);
 
-            //var rules = processingClass.GenerateRules(allFrequentItems);
-            //var strongRules = processingClass.GetStrongRules(minconfidence, rules, allFrequentItems);
-            //var closedItemsets = processingClass.GetClosedItemsSets(allFrequentItems);
-            //var maximalItemSets = processingClass.GetMaximalItemSets(closedItemsets);
+
+            var rules = processingClass.GenerateRules(allFrequentItems);
+
+            var strongRules = processingClass.GetStrongRules(minconfidence, rules, allFrequentItems);
+            var closedItemsets = processingClass.GetClosedItemsSets(allFrequentItems);
+            var maximalItemSets = processingClass.GetMaximalItemSets(closedItemsets);
 
         }
 

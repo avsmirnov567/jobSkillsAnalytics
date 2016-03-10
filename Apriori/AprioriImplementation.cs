@@ -23,7 +23,7 @@ namespace Apriori
     {
         private ISorter _sorter;
 
-        public List<Skill> GetL1FrequentItems(decimal minSupport, IList<Skill> skills,
+        public List<Skill> GetL1FrequentSkills(decimal minSupport, IList<Skill> skills,
             IList<Vacancy> vacancies)
         {
             int vacanciesCount = vacancies.Count();
@@ -70,7 +70,7 @@ namespace Apriori
              {
                  foreach (var skill in skillset.Skills)
                  {
-                     if (CheckIsSubset(generatedCandidate, skillset))
+                    if (skill.Id == generatedCandidate.Id)
                      {
                          skillset.Support++;
                      }
@@ -79,6 +79,25 @@ namespace Apriori
              return support;
          }
 
+         public double GetSupport(AprioriSkillSet skillset, IList<AprioriSkillSet> skillsets)
+         {
+             double support = 0;
+
+             List<Skill> skills = skillset.Skills as List<Skill>;
+
+             var howManySkills = skills.Count;
+             var counter = 0;
+
+             foreach (var set in skillsets)
+             {
+                 foreach (var skill in set.Skills)
+                 {
+                     
+                 }
+             }
+
+             return support;
+         }
          public static int CheckIsSubset(Skill generatedCandidate, Vacancy vac)
          {
              int yesno = 0;
@@ -98,7 +117,7 @@ namespace Apriori
                  return skillset.Skills.Any(skill => skill.Id == generatedCandidate.Id);
          }
 
-        public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills, IEnumerable<Vacancy> vacancies)
+        public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills, IList<Vacancy> vacancies)
         {
 
             IList<AprioriSkillSet> candidates = new List<AprioriSkillSet>();
@@ -112,11 +131,23 @@ namespace Apriori
                     var secondSkill = new AprioriSkillSet {Skills = _sorter.Sort(frequentSkills[j].Skills)};
 
                     var generatedCandidate = GenerateCandidate(firstSkill, secondSkill);
-                }
 
+                    if (generatedCandidate.Skills.Count != 0)
+                    {
+                        var support = GetSupport(generatedCandidate,);
+                    }
+                }
             }
             return candidates;
         }
+
+         public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills,
+             IList<AprioriSkillSet> transactions)
+         {
+             IList<AprioriSkillSet> candidates = new List<AprioriSkillSet>();
+            //for (var i =0; i < frequentSkills.Coun)
+             return null;
+         }
 
         public AprioriSkillSet GenerateCandidate(AprioriSkillSet firstSkill, AprioriSkillSet secondSkill)
         {
@@ -142,7 +173,9 @@ namespace Apriori
             foreach (var candidate in candidates)
             {
                 var skillset = new AprioriSkillSet();
+
                 Debug.Assert(candidate.Support == 0, "this shit is a fucking null");
+
                 if (candidate.Support != null && candidate.Support.Value/vacancyCount >= minSupport)
                 {
                     frequentItems.Add(candidate);

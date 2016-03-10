@@ -48,5 +48,18 @@ namespace Portal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
         }
+
+        public ActionResult ShowSkillsStats()
+        {
+            using(JobSkillsContext db = new JobSkillsContext())
+            {                
+                Dictionary<Skill, int> stats = db.Skills
+                    .Include(s=>s.Vacancies)
+                    .OrderByDescending(s => s.Vacancies.Count)
+                    .ToDictionary(s => s, s => s.Vacancies.Count);
+                ViewBag.SkillRating = stats;
+                return View();
+            }
+        }
     }
 }

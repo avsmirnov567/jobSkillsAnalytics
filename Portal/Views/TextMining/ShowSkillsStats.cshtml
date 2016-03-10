@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "ShowSkillsStats";
+    Dictionary<Skill, int> stats = ViewBag.SkillRating;
+}
+
+<h2>Skills Stats and Rating</h2>
+@foreach(var item in stats)
+{
+    <div class="row">
+        <div class="col-md-4">@item.Key.Name</div>
+        <div class="col-md-2">@item.Value</div>
+    </div>
+}

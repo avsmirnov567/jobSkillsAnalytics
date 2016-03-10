@@ -189,6 +189,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\TextMining\Details.cshtml" />
     <Content Include="Views\TextMining\VacancyMarkedZones.cshtml" />
+    <Content Include="Views\TextMining\ShowSkillsStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

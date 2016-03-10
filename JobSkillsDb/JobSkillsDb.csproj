@@ -52,7 +52,9 @@
     <Compile Include="Entities\AprioriSkillSet.cs" />
     <Compile Include="Entities\JobSkillsContext.cs" />
     <Compile Include="Entities\MarkedZone.cs" />
+    <Compile Include="Entities\SkillGroup.cs" />
     <Compile Include="Entities\Skills.cs" />
+    <Compile Include="Entities\SkillToGroupConnection.cs" />
     <Compile Include="Entities\Vacancy.cs" />
     <Compile Include="Migrations\201603050434522_UpdateSkills.cs" />
     <Compile Include="Migrations\201603050434522_UpdateSkills.Designer.cs">
@@ -61,6 +63,10 @@
     <Compile Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.cs" />
     <Compile Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.Designer.cs">
       <DependentUpon>201603101150050_MarkedZonesAddForeignKeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603101623122_AddSkillsGroups.cs" />
+    <Compile Include="Migrations\201603101623122_AddSkillsGroups.Designer.cs">
+      <DependentUpon>201603101623122_AddSkillsGroups.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,10 +78,12 @@
     <EmbeddedResource Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.resx">
       <DependentUpon>201603101150050_MarkedZonesAddForeignKeys.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603101623122_AddSkillsGroups.resx">
+      <DependentUpon>201603101623122_AddSkillsGroups.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Db.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

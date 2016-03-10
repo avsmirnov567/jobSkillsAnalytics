@@ -12,6 +12,7 @@ namespace JobSkillsDb.Entities
         {
             AprioriSkillSet = new HashSet<AprioriSkillSet>();
             Vacancies = new HashSet<Vacancy>();
+            SkillToGroupConnections = new HashSet<SkillToGroupConnection>();
         }
 
         [Key]
@@ -27,5 +28,7 @@ namespace JobSkillsDb.Entities
         public virtual ICollection<AprioriSkillSet> AprioriSkillSet { get; set; }
 
         public virtual ICollection<Vacancy> Vacancies { get; set; }
+
+        public virtual ICollection<SkillToGroupConnection> SkillToGroupConnections { get; set; }
     }
 }

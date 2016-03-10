@@ -4,16 +4,15 @@
 @if (Model.Count() > 0)
 {
     <div class="row">
-        <div class="col-md-7">Текст</div>
-        <div class="col-md-4">Навык</div>
-        <div class="col-md-1">X</div>
+        <div class="col-md-7"><b>Текст в вакансии</b></div>
+        <div class="col-md-5"><b>Навык</b></div>
     </div>
     foreach (MarkedZone zone in Model)
     {
         <div class="row">
             <div class="col-md-7">@zone.HighlightedText</div>
             <div class="col-md-4">@zone.Skill.Name</div>
-            <div class="col-md-1">X</div>
+            <div class="col-md-1"><input id="@zone.Id" class="btnDelZone" type="submit" name="btnDelZone" value="Удалить" /></div>
         </div>
     }
 }

@@ -7,6 +7,7 @@ using System.Web.Http;
 using JobSkillsDb.Entities;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using JobSkillsDb.Migrations;
 
 namespace Portal.Controllers
 {
@@ -43,6 +44,8 @@ namespace Portal.Controllers
         {
             using (JobSkillsContext db = new JobSkillsContext())
             {
+                markedZone.Vacancy = null;
+                markedZone.Skill = null;
                 db.MarkedZones.Add(markedZone);
                 db.SaveChanges();
                 MarkedZone textZone =
@@ -60,6 +63,13 @@ namespace Portal.Controllers
         // DELETE: api/MarkedZones/5
         public void Delete(int id)
         {
+            using (JobSkillsContext db = new JobSkillsContext())
+            {
+                MarkedZone zone = new MarkedZone() {Id = id};
+                db.MarkedZones.Attach(zone);
+                db.MarkedZones.Remove(zone);
+                db.SaveChanges();
+            }
         }
     }
 }

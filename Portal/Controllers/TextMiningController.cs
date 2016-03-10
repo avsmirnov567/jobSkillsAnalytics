@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using JobSkillsDb.Entities;
 using System.Threading.Tasks;
+using System.Web.Http.Results;
 
 namespace Portal.Controllers
 {
@@ -32,6 +34,18 @@ namespace Portal.Controllers
                 List<MarkedZone> zones =
                     await db.MarkedZones.Include(z => z.Skill).Where(z => z.Vacancy.Id == vacancyId).ToListAsync();
                 return PartialView(zones);
+            }
+        }
+
+        public ActionResult DeleteMarkedZone(int id)
+        {
+            using (JobSkillsContext db = new JobSkillsContext())
+            {
+                MarkedZone zone = new MarkedZone() { Id = id };
+                db.MarkedZones.Attach(zone);
+                db.MarkedZones.Remove(zone);
+                db.SaveChanges();
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
         }
     }

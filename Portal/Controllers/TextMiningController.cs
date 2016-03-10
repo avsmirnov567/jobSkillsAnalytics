@@ -49,14 +49,16 @@ namespace Portal.Controllers
             }
         }
 
-        public ActionResult ShowSkillsStats()
+        public ActionResult ShowSkillsStats(int minVacancies = 50)
         {
             using(JobSkillsContext db = new JobSkillsContext())
-            {                
+            {
+                var list = db.Skills.Include(s=>s.Vacancies).ToList();
                 Dictionary<Skill, int> stats = db.Skills
-                    .Include(s=>s.Vacancies)
+                    .Include(s => s.Vacancies)
+                    .Where(s => s.Vacancies.Count > minVacancies)
                     .OrderByDescending(s => s.Vacancies.Count)
-                    .ToDictionary(s => s, s => s.Vacancies.Count);
+                    .ToDictionary(s => s, s=>s.Vacancies.Count);
                 ViewBag.SkillRating = stats;
                 return View();
             }

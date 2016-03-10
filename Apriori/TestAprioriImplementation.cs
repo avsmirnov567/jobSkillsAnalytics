@@ -179,7 +179,7 @@ namespace Apriori
         [Test]
         public void GetL1FrequentItemsTest()
         {
-            var frequentItems = implementation.GetL1FrequentItems(_minsupport, _skills, _vacancies);
+            var frequentItems = implementation.GetL1FrequentSkills(_minsupport, _skills, _vacancies);
 
             Assert.AreEqual(5, frequentItems.Count());
         }
@@ -194,6 +194,12 @@ namespace Apriori
         public void SubsettingTest()
         {
 
+        }
+
+        [Test]
+        public void TestDivisionFromListOfSkillsToAprioriSkillset()
+        {
+            
         }
 
         [Test]

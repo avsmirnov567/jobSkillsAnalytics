@@ -46,6 +46,7 @@ namespace Apriori
             return frequentItemsL1.OrderBy(i => i.Id).ToList();
         }
 
+         
          public double GetSupport(Skill generatedCandidate, IList<Vacancy> vacancies)
          {
              var support = 0;
@@ -61,7 +62,6 @@ namespace Apriori
              return support;
          }
 
-         //CHECK FUCKING SUPPORT GENERATOR
          public double GetSupport(Skill generatedCandidate, IList<AprioriSkillSet> skillsets)
          {
              double support = 0;
@@ -86,18 +86,59 @@ namespace Apriori
              List<Skill> skills = skillset.Skills as List<Skill>;
 
              var howManySkills = skills.Count;
-             var counter = 0;
+             int counter = 0;
 
-             foreach (var set in skillsets)
+             foreach (var skillsets_item in skillsets)
              {
-                 foreach (var skill in set.Skills)
+                 //var set = skillsets_item.Skills as List<Skill>;
+                 foreach (var set_element in skillsets_item.Skills)
                  {
-                     
+                     for (var i = 0; i < skills.Count; i++)
+                     {
+                         if (set_element.Id == skills.ElementAt(i).Id)
+                         {
+                             counter++;
+                         }
+                     }
+                 }
+                 if (counter == skills.Count)
+                 {
+                     support++;
+                     counter = 0;
                  }
              }
 
              return support;
          }
+
+         public double GetSupport(AprioriSkillSet candidate, IList<Vacancy> vacancies)
+         {
+             var support = 0;
+             var counter = 0;
+
+             List<Skill> skills = candidate.Skills as List<Skill>;
+
+             foreach (var vac in vacancies)
+             {
+                 var temp = vac.Skills as List<Skill>;
+                 foreach (var skillOfVacancy in temp)
+                 {
+                     for (var i = 0; i < skills.Count; i++)
+                     {
+                         if (skillOfVacancy == skills.ElementAt(i))
+                             counter++;
+                     } 
+                 }
+                 if (counter == skills.Count)
+                 {
+                     counter = 0;
+                     support++;
+                 }
+             }
+
+             return support;
+         }
+
          public static int CheckIsSubset(Skill generatedCandidate, Vacancy vac)
          {
              int yesno = 0;
@@ -119,7 +160,7 @@ namespace Apriori
 
         public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills, IList<Vacancy> vacancies)
         {
-
+            
             IList<AprioriSkillSet> candidates = new List<AprioriSkillSet>();
 
             for (var i = 0; i < frequentSkills.Count - 1; i ++)
@@ -134,7 +175,9 @@ namespace Apriori
 
                     if (generatedCandidate.Skills.Count != 0)
                     {
-                        var support = GetSupport(generatedCandidate,);
+                        var support = GetSupport(generatedCandidate, vacancies);
+                        generatedCandidate.Support = (decimal)support;
+                        candidates.Add(generatedCandidate);
                     }
                 }
             }
@@ -176,7 +219,7 @@ namespace Apriori
 
                 Debug.Assert(candidate.Support == 0, "this shit is a fucking null");
 
-                if (candidate.Support != null && candidate.Support.Value/vacancyCount >= minSupport)
+                if (candidate.Support != null && candidate.Support/vacancyCount >= minSupport)
                 {
                     frequentItems.Add(candidate);
                 }
@@ -185,23 +228,23 @@ namespace Apriori
             return frequentItems;
         }
 
-        public HashSet<Rule> GenerateRules(List<Skill> allFrequentItems)
+        public HashSet<Rule> GenerateRules(List<AprioriSkillSet> allFrequentItems)
         {
 
             throw new System.NotImplementedException();
         }
 
-        public IList<Rule> GetStrongRules(double minconfidence, HashSet<Rule> rules, List<Skill> allFrequentItems)
+        public IList<Rule> GetStrongRules(decimal minconfidence, HashSet<Rule> rules, List<AprioriSkillSet> allFrequentItems)
         {
             throw new System.NotImplementedException();
         }
 
-        public AprioriSkillSet GetClosedItemsSets(List<Skill> allFrequentItems)
+        public AprioriSkillSet GetClosedItemsSets(List<AprioriSkillSet> allFrequentItems)
         {
             return null;
         }
 
-        public AprioriSkillSet GetMaximalItemSets(Tuple<Skill, Skill> closedItemsets)
+        public AprioriSkillSet GetMaximalItemSets(AprioriSkillSet closedItemsets)
         {
             throw new NotImplementedException();
         }

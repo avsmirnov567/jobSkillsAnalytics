@@ -18,12 +18,22 @@ namespace Portal.Controllers
             using(JobSkillsContext db = new JobSkillsContext())
             {
                 //these requests can go parallel to each other
-                Vacancy vacancy = id > 0 ? await db.Vacancies.FindAsync(id) : db.Vacancies.First();
-                List<Skill> skills = await db.Skills.OrderBy(s=>s.Name).ToListAsync();
-                List<MarkedZone> zones = await db.MarkedZones.Include(z => z.Skill).ToListAsync();
-                ViewBag.SkillsList = skills;
-                ViewBag.ZonesList = zones;
-                return View(vacancy);
+                try
+                {
+                    Vacancy vacancy = id > 0 ? await db.Vacancies
+                        .Include(v=>v.MarkedZones)
+                        .SingleAsync(v=>v.Id == id) : db.Vacancies.First();
+                    List<Skill> skills = await db.Skills.OrderBy(s => s.Name).ToListAsync();                    
+                    ViewBag.SkillsList = skills;
+                    ViewBag.ZonesList = vacancy.MarkedZones.ToList();
+                    return View(vacancy);
+                }
+                catch
+                {
+                    RouteData.Values.Remove("id");
+                    return RedirectToAction("Details");
+                }
+
             }
         }
 
@@ -53,13 +63,14 @@ namespace Portal.Controllers
         {
             using(JobSkillsContext db = new JobSkillsContext())
             {
-                var list = db.Skills.Include(s=>s.Vacancies).ToList();
-                Dictionary<Skill, int> stats = db.Skills
+                var sql = db.Skills
                     .Include(s => s.Vacancies)
                     .Where(s => s.Vacancies.Count > minVacancies)
                     .OrderByDescending(s => s.Vacancies.Count)
-                    .ToDictionary(s => s, s=>s.Vacancies.Count);
-                ViewBag.SkillRating = stats;
+                    .ToString();                 
+                //Dictionary<Skill, int> stats = sql
+                //    .ToDictionary(s => s, s=>s.Vacancies.Count);
+                //ViewBag.SkillRating = stats;
                 return View();
             }
         }

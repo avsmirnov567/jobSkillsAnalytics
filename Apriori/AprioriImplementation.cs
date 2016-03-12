@@ -19,6 +19,13 @@ namespace Apriori
 
     //}
 
+    class Rule
+    {
+
+        public Rule()
+        {
+        }
+    }
      class AprioriImplementation
     {
         private ISorter _sorter;
@@ -230,7 +237,7 @@ namespace Apriori
 
         public HashSet<Rule> GenerateRules(List<AprioriSkillSet> allFrequentItems)
         {
-
+            var rules = HashSet<Rule>
             throw new System.NotImplementedException();
         }
 

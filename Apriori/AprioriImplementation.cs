@@ -7,9 +7,12 @@ using System.Data;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Policy;
 using JobSkillsDb;
 using JobSkillsDb.Entities;
+using NUnit.Framework.Constraints;
 
 
 namespace Apriori
@@ -19,14 +22,8 @@ namespace Apriori
 
     //}
 
-    class Rule
-    {
 
-        public Rule()
-        {
-        }
-    }
-     class AprioriImplementation
+    class AprioriImplementation
     {
         private ISorter _sorter;
 
@@ -237,13 +234,131 @@ namespace Apriori
 
         public HashSet<Rule> GenerateRules(List<AprioriSkillSet> allFrequentItems)
         {
-            var rules = HashSet<Rule>
-            throw new System.NotImplementedException();
+            var rules = new HashSet<Rule>();
+
+            foreach (var item in allFrequentItems)
+            {
+                if (item.Skills.Count > 1)
+                {
+                    var subsetList = GenerateSubsets(item);
+
+                    foreach (var subset in subsetList)
+                    {
+                        //generate remaining tail
+                        var remaining = GetRemaining(subset, item);
+
+                        Rule rule = new Rule(subset, remaining, 0);
+
+                        if (!rules.Contains(rule))
+                        {
+                            rules.Add(rule);
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
-        public IList<Rule> GetStrongRules(decimal minconfidence, HashSet<Rule> rules, List<AprioriSkillSet> allFrequentItems)
+        private AprioriSkillSet GetRemaining(AprioriSkillSet subset, AprioriSkillSet item)
         {
-            throw new System.NotImplementedException();
+
+            return null;
+        }
+
+        private List<AprioriSkillSet> GenerateSubsets(AprioriSkillSet itemOfAllFrequentItemsets)
+         {
+             var skills = itemOfAllFrequentItemsets.Skills.ToList();
+             var allsubsets = new List<AprioriSkillSet>();
+
+             int subsetLength = skills.Count/2;
+
+             for (var i = 0; i < subsetLength; i++)
+             {
+                 //List<List<Skill>> subsets = new List<List<Skill>>();
+                 List<List<Skill>> subsets = new List<List<Skill>>();
+                 GenerateSubsetsRecursive(skills, i, new List<Skill>(skills.Count), subsets);
+
+                 //convert from list of skill lists to allSubsets variable signature
+                 foreach (var listElement in subsets)
+                 {
+                     var aprSkillset = new AprioriSkillSet {Skills = listElement};
+                     allsubsets.Add(aprSkillset);
+                 }
+                
+                //allsubsets.Add(subsets);
+                
+                //allsubsets = allsubsets.AddRange(subsets);
+                //generate List of apriori skillsets with support of current item in previous (calling) method
+             }
+             return allsubsets;
+         }
+
+         private void GenerateSubsetsRecursive(List<Skill> skills, int subsetLength, List<Skill> temp, List<List<Skill>> subsets, int q = 0, int r = 0)
+         {
+             if (q == subsetLength)
+             {
+                var tempSkilllist = new List<Skill>();
+
+                for (var j = 0; j < subsetLength; j++)
+                 {
+                     tempSkilllist.Add(temp.ElementAt(j));
+                     //subsets.Add(temp.ElementAt(j))
+                 }
+
+                 subsets.Add(tempSkilllist);
+             }
+             else
+             {
+                 for (int i = 0; i < temp.Count; i++)
+                 {
+                     temp[q] = skills.ElementAt(i); //possible error
+                     GenerateSubsetsRecursive(skills, subsetLength, temp, subsets, q + 1, i + 1);
+                 }
+             }
+         }
+
+         public IList<Rule> GetStrongRules(decimal minconfidence, HashSet<Rule> rules, List<AprioriSkillSet> allFrequentItems)
+         {
+             List<Rule> strongRules = new List<Rule>();
+
+             foreach (var rule in rules)
+             {
+                 var tempSkillset = new AprioriSkillSet();
+                 var tempSkills = new List<Skill>();
+
+                 tempSkills.AddRange(rule.X.Skills);
+                 tempSkills.AddRange(rule.Y.Skills);
+                 _sorter.Sort(tempSkills);
+                 tempSkillset.Skills = tempSkills;
+
+                 //var xy = new AprioriSkillset(new Skill_sorter.Sort(tempSkillset.Skills);
+                 var xy = new AprioriSkillSet {Skills = tempSkills};
+                 AddStrongRule(rule, xy, strongRules, minconfidence, allFrequentItems);
+             }
+
+             return strongRules;
+         }
+
+        private void AddStrongRule(Rule rule, AprioriSkillSet xy, List<Rule> strongRules, decimal minconfidence, List<AprioriSkillSet> allFrequentItems)
+        {
+            var confidence = GetConfidence(rule.X, xy, allFrequentItems);
+
+            if (confidence >= minconfidence)
+            {
+                var newRule = new Rule(rule.X, rule.Y, confidence);
+                strongRules.Add(newRule);
+            }
+            confidence = GetConfidence(rule.Y, xy, allFrequentItems);
+            if (confidence >= minconfidence)
+            {
+                var newRule = new Rule(rule.Y, xy, confidence);
+                strongRules.Add(newRule);
+            }
+        }
+
+        private decimal GetConfidence(AprioriSkillSet p0, AprioriSkillSet xy, List<AprioriSkillSet> allFrequentItems)
+        {
+            throw new NotImplementedException();
         }
 
         public AprioriSkillSet GetClosedItemsSets(List<AprioriSkillSet> allFrequentItems)
@@ -255,5 +370,7 @@ namespace Apriori
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

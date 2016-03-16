@@ -356,9 +356,36 @@ namespace Apriori
             }
         }
 
-        private decimal GetConfidence(AprioriSkillSet p0, AprioriSkillSet xy, List<AprioriSkillSet> allFrequentItems)
+        private decimal GetConfidence(AprioriSkillSet x, AprioriSkillSet xy, List<AprioriSkillSet> allFrequentItems)
         {
-            throw new NotImplementedException();
+            decimal xSupport = 0, xySupport = 0;
+            List<Skill> getXskills = new List<Skill>();
+            getXskills = x.Skills.ToList();
+
+            List<Skill> getXYSkills = new List<Skill>();
+            getXYSkills = xy.Skills.ToList();
+
+            var returnedXSkillset = allFrequentItems.Where(t => t.Skills.Intersect(getXskills).Any()).ToList();
+            if (returnedXSkillset.Count > 0)
+            {
+                //sorry
+                if (returnedXSkillset.Count < 2)
+                {
+                    xSupport = (decimal)returnedXSkillset.ElementAt(0).Support;
+                }
+            }
+
+            var returnedXYSkillset = allFrequentItems.Where(t => t.Skills.Intersect(getXYSkills).Any()).ToList();
+            if (returnedXYSkillset.Count > 0)
+            {
+                //sorry
+                if (returnedXYSkillset.Count < 2)
+                {
+                    xySupport = (decimal)returnedXYSkillset.ElementAt(0).Support;
+                }
+            }
+
+            return xySupport/xSupport;
         }
 
         public AprioriSkillSet GetClosedItemsSets(List<AprioriSkillSet> allFrequentItems)

@@ -65,8 +65,8 @@ namespace Apriori
             var rules = processingClass.GenerateRules(allFrequentItems);
 
             var strongRules = processingClass.GetStrongRules(minconfidence, rules, allFrequentItems);
-            var closedItemsets = processingClass.GetClosedItemsSets(allFrequentItems);
-            var maximalItemSets = processingClass.GetMaximalItemSets(closedItemsets);
+            //var closedItemsets = processingClass.GetClosedItemsSets(allFrequentItems);
+            //var maximalItemSets = processingClass.GetMaximalItemSets(closedItemsets);
 
         }
 

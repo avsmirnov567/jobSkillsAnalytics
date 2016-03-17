@@ -247,7 +247,7 @@ namespace Apriori
                         //generate remaining tail
                         var remaining = GetRemaining(subset, item);
 
-                        Rule rule = new Rule(subset, remaining, 0);
+                        var rule = new Rule(subset, remaining, 0);
 
                         if (!rules.Contains(rule))
                         {
@@ -256,13 +256,25 @@ namespace Apriori
                     }
                 }
             }
-            return null;
+            return rules;
         }
 
-        private AprioriSkillSet GetRemaining(AprioriSkillSet subset, AprioriSkillSet item)
+        private AprioriSkillSet GetRemaining(AprioriSkillSet child, AprioriSkillSet parent)
         {
+            var clearParent = new AprioriSkillSet {Skills = new List<Skill>(parent.Skills.Count - child.Skills.Count)};
 
-            return null;
+            var parentSkills = parent.Skills;
+            var childSkills = child.Skills;
+
+            foreach (var pa in parentSkills)
+            {
+                foreach (var ch in childSkills.Where(ch => pa.Name != ch.Name))
+                {
+                    clearParent.Skills.Add(pa);
+                }
+            }
+
+            return clearParent;
         }
 
         private List<AprioriSkillSet> GenerateSubsets(AprioriSkillSet itemOfAllFrequentItemsets)

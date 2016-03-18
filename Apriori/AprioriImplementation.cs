@@ -193,7 +193,7 @@ namespace Apriori
          {
              IList<AprioriSkillSet> candidates = new List<AprioriSkillSet>();
             //for (var i =0; i < frequentSkills.Coun)
-             return null;
+                return null;
          }
 
         public AprioriSkillSet GenerateCandidate(AprioriSkillSet firstSkill, AprioriSkillSet secondSkill)
@@ -329,7 +329,7 @@ namespace Apriori
              }
          }
 
-         public IList<Rule> GetStrongRules(decimal minconfidence, HashSet<Rule> rules, List<AprioriSkillSet> allFrequentItems)
+         public List<Rule> GetStrongRules(decimal minconfidence, HashSet<Rule> rules, List<AprioriSkillSet> allFrequentItems)
          {
              List<Rule> strongRules = new List<Rule>();
 

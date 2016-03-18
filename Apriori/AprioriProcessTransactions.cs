@@ -5,7 +5,7 @@ using JobSkillsDb.Entities;
 
 namespace Apriori
 {
-    public class AprioriProcessTransactions
+    public class AprioriProcessTransactions 
     {
         public AprioriProcessTransactions(decimal minsupport, decimal minconfidence, IList<Skill> givenSkills, IList<Vacancy> vacancies)
         {
@@ -18,7 +18,7 @@ namespace Apriori
             //    vacancyTransformed.Skills = vac.Skills;
             //}
             
-
+            
             //need to connect earlier (in implementation and pass these 
             //parameters to the method
             var databaseContext = new JobSkillsContext();
@@ -65,6 +65,13 @@ namespace Apriori
             var rules = processingClass.GenerateRules(allFrequentItems);
 
             var strongRules = processingClass.GetStrongRules(minconfidence, rules, allFrequentItems);
+
+            new Output
+            {
+                StrongRules = strongRules,
+                FrequentItems = allFrequentItems,
+            };
+
             //var closedItemsets = processingClass.GetClosedItemsSets(allFrequentItems);
             //var maximalItemSets = processingClass.GetMaximalItemSets(closedItemsets);
 
@@ -89,5 +96,6 @@ namespace Apriori
             frequentItems = dividedFrequentItems;
             return dividedFrequentItems;
         }
+
     }
 }

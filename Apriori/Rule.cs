@@ -4,7 +4,7 @@ using JobSkillsDb.Entities;
 
 namespace Apriori
 {
-    class Rule 
+    public class Rule
     {
         public AprioriSkillSet X { get; set; }
         public AprioriSkillSet Y { get; set; }
@@ -17,5 +17,10 @@ namespace Apriori
             this.Y = remaining;
             this.Confidence = confidence;
         }
+
+        //public int CompareTo(Rule other)
+        //{
+            
+        //}
     }
 }

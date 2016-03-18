@@ -39,7 +39,7 @@ namespace Apriori
             givenSkills.AddRange(givenVacancies.ElementAt(0).Skills);
             givenSkills.AddRange(givenVacancies.ElementAt(1).Skills);
 
-            AprioriProcessTransactions process = new AprioriProcessTransactions(minsupport, minconfidence, givenSkills,
+                AprioriProcessTransactions process = new AprioriProcessTransactions(minsupport, minconfidence, givenSkills,
                 givenVacancies);
         }
         

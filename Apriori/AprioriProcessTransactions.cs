@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System;
 using System.Linq;
 using JobSkillsDb.Entities;
 
@@ -22,8 +23,8 @@ namespace Apriori
             //need to connect earlier (in implementation and pass these 
             //parameters to the method
             var databaseContext = new JobSkillsContext();
-            var vacanciesAmount = databaseContext.Vacancies.Count();
-
+            //var vacanciesAmount = databaseContext.Vacancies.Count(); // PRODUCTION VALUE
+            var vacanciesAmount = 5; // TEST VALUE 
             var processingClass = new AprioriImplementation();
 
             Debug.Assert(vacancies != null, "vacancies != null");
@@ -52,16 +53,19 @@ namespace Apriori
             //fun begins
             do
             {
-                IList<AprioriSkillSet> skillset = new List<AprioriSkillSet>();
+                IList<AprioriSkillSet> skillset = new List<AprioriSkillSet>(); //idk why this initialization is here
 
-                candidates = processingClass.GenerateCandidates(skillset, vacancies);
+                candidates = processingClass.GenerateCandidates(frequentItems, vacancies);
+
                 frequentItems = processingClass.GetFrequentSkills(candidates, minsupport, vacanciesAmount);
                 
                 allFrequentItems.AddRange(frequentItems);
 
+                //TEST
+                Console.WriteLine(".");
             } while (candidates.Count != 0);
 
-
+            Console.Write("HI");
             var rules = processingClass.GenerateRules(allFrequentItems);
 
             var strongRules = processingClass.GetStrongRules(minconfidence, rules, allFrequentItems);

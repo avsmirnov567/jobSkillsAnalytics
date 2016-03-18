@@ -25,12 +25,14 @@ namespace Apriori
 
     class AprioriImplementation
     {
-        private ISorter _sorter;
+        //private ISorter _sorter;
+        readonly SkillSorter _sorter = new SkillSorter();
 
         public List<Skill> GetL1FrequentSkills(decimal minSupport, IList<Skill> skills,
             IList<Vacancy> vacancies)
         {
-            int vacanciesCount = vacancies.Count();
+            //int vacanciesCount = vacancies.Count(); // PRODUCTION 
+            int vacanciesCount = 5; //TEST VALUE
             var frequentItemsL1 = new List<Skill>();
            
             foreach (var skill in skills)
@@ -120,20 +122,20 @@ namespace Apriori
              var support = 0;
              var counter = 0;
 
-             List<Skill> skills = candidate.Skills as List<Skill>;
+             List<Skill> candidateSkills = candidate.Skills.ToList();
 
              foreach (var vac in vacancies)
              {
-                 var temp = vac.Skills as List<Skill>;
+                 var temp = vac.Skills.ToList();
                  foreach (var skillOfVacancy in temp)
                  {
-                     for (var i = 0; i < skills.Count; i++)
+                     for (var i = 0; i < candidateSkills.Count; i++)
                      {
-                         if (skillOfVacancy == skills.ElementAt(i))
+                         if (skillOfVacancy == candidateSkills.ElementAt(i))
                              counter++;
                      } 
                  }
-                 if (counter == skills.Count)
+                 if (counter == candidateSkills.Count)
                  {
                      counter = 0;
                      support++;
@@ -169,6 +171,7 @@ namespace Apriori
 
             for (var i = 0; i < frequentSkills.Count - 1; i ++)
             {
+                
                 var firstSkill = new AprioriSkillSet {Skills = _sorter.Sort(frequentSkills[i].Skills)};
 
                 for (var j = i + 1; j < frequentSkills.Count; j++)
@@ -219,15 +222,18 @@ namespace Apriori
 
             foreach (var candidate in candidates)
             {
-                var skillset = new AprioriSkillSet();
+                
+                ////Debug.Assert(candidate.Support == 0, "this shit is a fucking null");
 
-                Debug.Assert(candidate.Support == 0, "this shit is a fucking null");
+                //if (candidate.Support != null && candidate.Support/vacancyCount >= minSupport)
+                //{
+                //    frequentItems.Add(candidate);
+                //}
 
-                if (candidate.Support != null && candidate.Support/vacancyCount >= minSupport)
+                if (candidate.Support/vacancyCount >= minSupport)
                 {
                     frequentItems.Add(candidate);
                 }
-
             }
             return frequentItems;
         }

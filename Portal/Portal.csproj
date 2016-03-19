@@ -151,6 +151,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarkedZonesController.cs" />
+    <Compile Include="Controllers\StatController.cs" />
     <Compile Include="Controllers\TextMiningController.cs" />
     <Compile Include="Controllers\VacancyController.cs" />
     <Compile Include="Global.asax.cs">
@@ -202,6 +203,7 @@
     <Content Include="Views\TextMining\VacancyMarkedZones.cshtml" />
     <Content Include="Views\TextMining\ShowSkillsStats.cshtml" />
     <Content Include="Views\Vacancy\Index.cshtml" />
+    <Content Include="Views\Stat\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

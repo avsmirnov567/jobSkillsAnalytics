@@ -1,0 +1,45 @@
+﻿@model PagedList.IPagedList<Vacancy>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Список вакансий</h2>
+<h4>Всего вакансий: @Model.TotalItemCount</h4>
+
+<table class="table-hover">
+    <thead>
+        <tr>
+            <th>
+                Название
+            </th>
+            <th>
+                Размеченные навыки
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vacancy in Model)
+        {
+            <tr>
+                <td>
+                    @vacancy.Title
+                </td>
+                <td>
+                    @vacancy.Skills.Count
+                </td>
+                <td>
+                    @Html.ActionLink("Подробнее", "Details", "TextMining", new { id = vacancy.Id }, null)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br>
+
+Страница @(Model.PageCount < Model.PageNumber? 0: Model.PageNumber) из @Model.PageCount
+
+@Html.PagedListPager(Model, p => Url.Action("Index", new { page = p }))

@@ -33,9 +33,11 @@ generate.file.name <- function(algorithmTypeName)
   return(filename)
 }
 
-setwd("C:\\Users\\Vladislav\\Desktop\\job_skills_analytics\\Apriori\\bin\\Debug\\RSCRIPT\\");
-path <- "C:\\Users\\Vladislav\\Desktop\\job_skills_analytics\\Apriori\\bin\\Debug\\RSCRIPT\\dataset.csv";
-writepath <- "C:\\Users\\Vladislav\\Desktop\\job_skills_analytics\\Apriori\\bin\\Debug\\RSCRIPT\\";
+setwd(".");
+path <- ".\\dataset.csv";
+writepath <- "";
+
+
 
 inputSup <- 0.02;
 inputConf <- 0.1;

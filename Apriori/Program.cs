@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 //using Parser;
 
@@ -23,8 +24,7 @@ namespace Apriori
     {
         public static void ExportBasketType(List<Vacancy> vacancies, string fileName = "")
         {
-            Contract.Requires<ArgumentNullException>(vacancies.Count == 0);
-            
+           
             string name = string.IsNullOrEmpty(fileName)
                 ? @"session#" + Guid.NewGuid().ToString() + ".csv"
                 : fileName;
@@ -71,11 +71,10 @@ namespace Apriori
 
                 foreach (var vac in vacancies.Where(x => x.Id != idOfMaxVacancy && x.Id != idOfOptimalMaxVacancy))
                 {
-                    if (vac.Skills.Count == 0) continue;
-                    //if (!((IEnumerable<dynamic>) vac.Skills).(x => x.Name != "продажи" || x.Name != "продажи"))
-                    //if (!((IEnumerable<dynamic>) vac.Skills).Where(p => p.Name.To))
-                    
-                    continue;
+                    if (vac.Skills.Count == 0)
+                        continue;
+                    if (vac.Skills.Any(item => item.Name.Contains("Продажи") || item.Name.Contains("продажи")))
+                        continue;
 
                     foreach (var skill in vac.Skills)
                     {

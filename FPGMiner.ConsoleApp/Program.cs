@@ -19,6 +19,7 @@ namespace FPGMiner.ConsoleApp
                 vacancies = db.Vacancies
                     .Include(v => v.Skills)
                     .Select(v => new { v.Id , v.Skills})
+                    .Where(v => v.Skills.Count>0)
                     .ToList()
                     .Select(v => new Vacancy
                     {
@@ -27,7 +28,7 @@ namespace FPGMiner.ConsoleApp
                     })
                     .ToList();                   
             }
-            FPGrowthMiner miner = new FPGrowthMiner(3);
+            FPGrowthMiner miner = new FPGrowthMiner(0.05);
             miner.test(vacancies);
         }
     }

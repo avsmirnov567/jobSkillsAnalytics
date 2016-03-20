@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FPGMiner.Handler
 {
-    internal class SimplifiedVacancy
+    public class SimplifiedVacancy
     {
         public int VacancyId { get; set; }
         public List<int> SkillsIds { get; set; }

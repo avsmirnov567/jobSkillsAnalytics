@@ -10,7 +10,7 @@ namespace Apriori
     {
         public IList<Skill> Sort(ICollection<Skill> skillList)
         {
-            var sortedSkillList = skillList.OrderBy(q => q.Id).ToList();
+            var sortedSkillList = skillList.OrderBy(q => q.Name).ToList();
             return sortedSkillList;
         }
     }

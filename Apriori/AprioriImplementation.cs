@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Policy;
 using JobSkillsDb;
@@ -25,6 +26,7 @@ namespace Apriori
 
     class AprioriImplementation
     {
+        private static Random random;
         //private ISorter _sorter;
         readonly SkillSorter _sorter = new SkillSorter();
 
@@ -126,21 +128,32 @@ namespace Apriori
 
              foreach (var vac in vacancies)
              {
-                 var temp = vac.Skills.ToList();
-                 foreach (var skillOfVacancy in temp)
-                 {
-                     for (var i = 0; i < candidateSkills.Count; i++)
-                     {
-                         if (skillOfVacancy == candidateSkills.ElementAt(i))
-                             counter++;
-                     } 
-                 }
-                 if (counter == candidateSkills.Count)
-                 {
-                     counter = 0;
-                     support++;
-                 }
+                 var vacSkills = vac.Skills.ToList();
+                 var intersection = vacSkills.Select(a => a.Name).Intersect(candidateSkills.Select(b => b.Name));
+                 if (intersection.Count() == candidate.Skills.Count) support++;
              }
+             //foreach (var vac in vacancies)
+             //{
+             //    var temp = vac.Skills.ToList();
+             //    foreach (var skillOfVacancy in temp)
+             //    {
+             //        for (var i = 0; i < candidateSkills.Count; i++)
+             //        {
+             //            if (skillOfVacancy == candidateSkills.ElementAt(i))
+             //                counter++;
+             //            if (counter == candidateSkills.Count)
+             //            {
+             //                support++;
+                             
+             //            }
+             //        } 
+             //    }
+             //    if (counter == candidateSkills.Count)
+             //    {
+             //        counter = 0;
+             //        support++;
+             //    }
+             //}
 
              return support;
          }
@@ -166,12 +179,12 @@ namespace Apriori
 
         public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills, IList<Vacancy> vacancies)
         {
-            
+
             IList<AprioriSkillSet> candidates = new List<AprioriSkillSet>();
 
             for (var i = 0; i < frequentSkills.Count - 1; i ++)
             {
-                
+
                 var firstSkill = new AprioriSkillSet {Skills = _sorter.Sort(frequentSkills[i].Skills)};
 
                 for (var j = i + 1; j < frequentSkills.Count; j++)
@@ -182,16 +195,21 @@ namespace Apriori
 
                     if (generatedCandidate.Skills.Count != 0)
                     {
-                        var support = GetSupport(generatedCandidate, vacancies);
+                        var support = (int)GetSupport(generatedCandidate, vacancies);
                         generatedCandidate.Support = (decimal)support;
-                        candidates.Add(generatedCandidate);
+                        if (support != 0)
+                        {
+                            candidates.Add(generatedCandidate);
+                        }
+
                     }
                 }
+
             }
             return candidates;
         }
 
-         public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills,
+        public IList<AprioriSkillSet> GenerateCandidates(IList<AprioriSkillSet> frequentSkills,
              IList<AprioriSkillSet> transactions)
          {
              IList<AprioriSkillSet> candidates = new List<AprioriSkillSet>();
@@ -199,19 +217,79 @@ namespace Apriori
                 return null;
          }
 
+        //int GetHashCode(AprioriSkillSet skillset)
+        //{
+        //    int hash;
+        //    foreach (var item in skillset.Skills)
+        //    {
+        //        hash = item.Name.GetHashCode();
+        //    }
+        //}
+
         public AprioriSkillSet GenerateCandidate(AprioriSkillSet firstSkill, AprioriSkillSet secondSkill)
         {
+
             var candidate = new AprioriSkillSet();
-
-            foreach (var collectionElement in firstSkill.Skills)
+            if (firstSkill.Skills.Count == 1)
             {
-                candidate.Skills.Add(collectionElement);
+                foreach (var collectionElement in firstSkill.Skills)
+                {
+                    candidate.Skills.Add(collectionElement);
+                }
+                foreach (var collectionElement in secondSkill.Skills)
+                {
+                    candidate.Skills.Add(collectionElement);
+                }
             }
-            foreach (var collectionElement in secondSkill.Skills)
+            else
             {
-                candidate.Skills.Add(collectionElement);
-            }
+                //var firstSub = firstSkill.Skills.ElementAt(0);
+                //var secondSub = secondSkill.Skills.ElementAt(0);
+                
 
+                var firstSub = firstSkill.Skills.Reverse().Skip(1).Reverse().OrderBy(i => i.Name).ToList();
+                var secondSub = secondSkill.Skills.Reverse().Skip(1).Reverse().OrderBy(i=>i.Name).ToList();
+                //bool checker;
+                //int counter = 0;
+
+                var boolTemp = firstSub.SequenceEqual(secondSub);
+                if (boolTemp)
+                {
+                    foreach (var collectionElement in firstSkill.Skills)
+                    {
+                        candidate.Skills.Add(collectionElement);
+                    }
+                    for (var i = 0; i < secondSkill.Skills.Count - 1; i++)
+                    {
+                        candidate.Skills.Add((secondSub.ElementAt(i)));
+                    }
+                    return candidate;
+                }
+                //var firstSubSkills = firstSub as IList<Skill> ?? firstSub.ToList();
+                //var secondSubSkills = secondSub as IList<Skill> ?? secondSub.ToList();
+
+
+                //var intersect = firstSubSkills.Select(f => f.Name).Intersect(secondSubSkills.Select(b => b.Name));
+                //var intersectLength = intersect.Count();
+
+                //if (firstSubSkills.Count() == secondSubSkills.Count() && intersectLength == firstSubSkills.Count())
+                //{
+                //    //foreach (var collectionElement in firstSkill.Skills)
+                //    //{
+                //    //    candidate.Skills.Add(collectionElement);
+                //    //}
+                //    //for (var i = 0; i < secondSkill.Skills.Count - 1; i ++)
+                //    //{
+                //    //    candidate.Skills.Add(secondSkill.Skills.ElementAt(i));
+                //    //}
+                //    //candidate.Id = (int) idGenerator.GetId(candidate, out knownalready);
+                //    return candidate;
+                //}
+                return candidate;
+            }
+            //if (!new ObjectIDGenerator().HasId(candidate, this)) 
+            //candidate.Id = (int)idGenerator.GetId(candidate, out knownalready);
+           
             return candidate;
         }
 
@@ -289,11 +367,11 @@ namespace Apriori
              var allsubsets = new List<AprioriSkillSet>();
 
              int subsetLength = skills.Count/2;
-
-             for (var i = 0; i < subsetLength; i++)
+            List<List<Skill>> subsets = new List<List<Skill>>();
+            for (var i = 0; i < subsetLength; i++)
              {
                  //List<List<Skill>> subsets = new List<List<Skill>>();
-                 List<List<Skill>> subsets = new List<List<Skill>>();
+                 
                  GenerateSubsetsRecursive(skills, i, new List<Skill>(skills.Count), subsets);
 
                  //convert from list of skill lists to allSubsets variable signature

@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D955FAB2-A8C2-4332-A6A6-AF294BE7E6AE}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{67B27A53-1A82-4A4F-BDA7-39308C99E065}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JobSkillsDb</RootNamespace>
     <AssemblyName>JobSkillsDb</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -44,8 +41,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,30 +49,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\MarkedZone.cs" />
-    <Compile Include="Entities\JobSkillsContext.cs" />
     <Compile Include="Entities\AprioriSkillSet.cs" />
+    <Compile Include="Entities\JobSkillsContext.cs" />
+    <Compile Include="Entities\MarkedZone.cs" />
+    <Compile Include="Entities\SkillGroup.cs" />
+    <Compile Include="Entities\Skills.cs" />
+    <Compile Include="Entities\SkillToGroupConnection.cs" />
+    <Compile Include="Entities\Vacancy.cs" />
     <Compile Include="Migrations\201603050434522_UpdateSkills.cs" />
     <Compile Include="Migrations\201603050434522_UpdateSkills.Designer.cs">
       <DependentUpon>201603050434522_UpdateSkills.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.cs" />
+    <Compile Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.Designer.cs">
+      <DependentUpon>201603101150050_MarkedZonesAddForeignKeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603101623122_AddSkillsGroups.cs" />
+    <Compile Include="Migrations\201603101623122_AddSkillsGroups.Designer.cs">
+      <DependentUpon>201603101623122_AddSkillsGroups.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\Skills.cs" />
-    <Compile Include="Entities\Vacancy.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Db.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201603050434522_UpdateSkills.resx">
       <DependentUpon>201603050434522_UpdateSkills.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603101150050_MarkedZonesAddForeignKeys.resx">
+      <DependentUpon>201603101150050_MarkedZonesAddForeignKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603101623122_AddSkillsGroups.resx">
+      <DependentUpon>201603101623122_AddSkillsGroups.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

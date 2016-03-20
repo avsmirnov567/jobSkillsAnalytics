@@ -29,7 +29,7 @@ namespace Apriori
                 ? @"session#" + Guid.NewGuid().ToString() + ".csv"
                 : fileName;
 
-            using (var writingStream = new StreamWriter(name, false, Encoding.UTF8))
+            using (var writingStream = new StreamWriter(name, true, Encoding.UTF8))
             {
                 var fileWriter = new CsvWriter(writingStream);
                 //var recordContainer = "";
@@ -83,27 +83,17 @@ namespace Apriori
                     fileWriter.NextRecord();
                 }
             }
-
-        }
-
-        public void ExportSignleType(string fileName = "")
-        {
-
-        }
-
-        public static void WriteProgress()
-        {
-            Console.WriteLine(".");
+            Console.WriteLine("EXPORTED");
         }
 
         static void Main(string[] args)
         {
-            Console.WriteLine("WAIT");
+            Console.WriteLine("CONNECTING TO DB...");
             //var vacancies = new JobSkillsContext().Vacancies()
             var context = new JobSkillsContext();
 
             var minsupport = (decimal) 0.4;
-           var minconfidence = (decimal) 0.4;
+            var minconfidence = (decimal) 0.4;
 
             //var vacancies = context.Vacancies.Include(s => s.Skills).Select(s => s.Skills).ToList();
             //var vacancies = (from x in context.Vacancies.Include(x => x.Skills)
@@ -120,9 +110,11 @@ namespace Apriori
             //Debug.WriteLine(DateTime.Now);
             //var vacancies = context.Vacancies.Include(x => x.Skills).Select(x => new {x.Skills}).ToList();
             //Debug.WriteLine(DateTime.Now);
-            
 
-            ExportBasketType(vacancies);
+            const string RSCRIPT_DIRECTORY =
+                @".\RSCRIPT\dataset.csv";
+            
+            ExportBasketType(vacancies, RSCRIPT_DIRECTORY);
             Console.WriteLine("OK");
             Console.ReadLine();
 

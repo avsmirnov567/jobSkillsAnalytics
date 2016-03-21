@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AprioriRule.cs" />
-    <Compile Include="Entities\AprioriSkillSet.cs" />
     <Compile Include="Entities\EclatSet.cs" />
     <Compile Include="Entities\JobSkillsContext.cs" />
     <Compile Include="Entities\MarkedZone.cs" />

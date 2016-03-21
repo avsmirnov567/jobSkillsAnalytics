@@ -46,7 +46,11 @@ namespace Apriori
                 if (temp)
                 {
                     var newskill = skill;
+<<<<<<< HEAD
                     newskill.Support = skill.Support;
+=======
+                    //newskill.Support = (decimal?)support;
+>>>>>>> master
                     frequentItemsL1.Add(newskill);
                 }
             }

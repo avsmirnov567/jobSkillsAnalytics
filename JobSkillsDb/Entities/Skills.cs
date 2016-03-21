@@ -10,7 +10,6 @@ namespace JobSkillsDb.Entities
     {
         public Skill()
         {
-            AprioriSkillSet = new HashSet<AprioriSkillSet>();
             Vacancies = new HashSet<Vacancy>();
             SkillToGroupConnections = new HashSet<SkillToGroupConnection>();
         }
@@ -22,10 +21,6 @@ namespace JobSkillsDb.Entities
         [StringLength(255)]
         [Index(IsUnique = true)]
         public string Name { get; set; }
-
-        public decimal? Support { get; set; }
-
-        public virtual ICollection<AprioriSkillSet> AprioriSkillSet { get; set; }
 
         public virtual ICollection<Vacancy> Vacancies { get; set; }
 

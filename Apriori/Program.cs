@@ -45,6 +45,7 @@ namespace Apriori
                 int idOfOptimalMaxVacancy = 0;
 
                 Debug.WriteLine("SEARCH MAX...");
+
                 foreach (var vac in vacancies)
                 {
                     if (vac.Skills.Count > maxSkillsetLength)
@@ -61,6 +62,7 @@ namespace Apriori
                         idOfMaxVacancy = vac.Id;
                     }
                 }
+
 
                 Debug.WriteLine("WRITE TO FILE...");
                 foreach (var item in optimalMaxSet)
@@ -83,11 +85,13 @@ namespace Apriori
                     fileWriter.NextRecord();
                 }
             }
+
             Debug.WriteLine("EXPORTED");
         }
 
         static void Main(string[] args)
         {
+
             Debug.WriteLine("CONNECTING TO DB...");
             //var vacancies = new JobSkillsContext().Vacancies()
             var context = new JobSkillsContext();

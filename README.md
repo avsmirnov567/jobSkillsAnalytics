@@ -12,6 +12,13 @@ Parser used for calculations (associative rules between required skills) in [thi
 Implementation based on a given in the project database (EF) structure
 Apriori algorithm is based on first associative rules algorithms (1994) by Agarwal and Srikant.
 
-Output: Associative rules and filled database for future usage.
+Output: Associative rules and filled database by frequent (closed and maximal) combinations for future usage.
 
-Team: Alexey, Alexandr, Vladislav
+#Text mining module (Alexey)
+...
+
+
+
+
+
+Team: 

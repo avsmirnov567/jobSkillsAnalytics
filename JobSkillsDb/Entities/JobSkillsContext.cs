@@ -13,8 +13,6 @@ namespace JobSkillsDb.Entities
         {
             Database.SetInitializer<JobSkillsContext>(null);
         }
-
-        public virtual DbSet<AprioriSkillSet> AprioriSkillSet { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }
         public virtual DbSet<Vacancy> Vacancies { get; set; }
         public virtual DbSet<MarkedZone> MarkedZones { get; set; }
@@ -22,16 +20,11 @@ namespace JobSkillsDb.Entities
         public virtual DbSet<SkillToGroupConnection> SkillToGroupConnections { get; set; }
 
         public virtual DbSet<SkillsGroup> SkillsGroup { get; set; }
+        public virtual DbSet<AprioriRule> AprioriRules { get; set; }
+        public virtual DbSet<EclatSet> EclatSets { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AprioriSkillSet>()
-                .Property(e => e.Support)
-                .HasPrecision(18, 0);
-
-            modelBuilder.Entity<AprioriSkillSet>()
-                .Property(e => e.Confidence)
-                .HasPrecision(18, 0);
         }
     }
 }

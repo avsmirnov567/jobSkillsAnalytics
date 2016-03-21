@@ -36,7 +36,7 @@ namespace Apriori
                 if (support/transactionsCount >= minSupport)
                 {
                     var newskill = skill;
-                    newskill.Support = (decimal?)support;
+                    //newskill.Support = (decimal?)support;
                     frequentItemsL1.Add(newskill);
                 }
             }

@@ -70,7 +70,7 @@ namespace Apriori
                 var tempSkillset = new AprioriSkillSet
                 {
                     Id = skill.Id,
-                    Support = skill.Support,
+                    //Support = skill.Support,
                     Skills = new List<Skill> {skill}
                 };
 

@@ -55,20 +55,23 @@ namespace FPGMiner.Handler
             AddNodeContentToLists(root, threshold, new List<int>(), associations);
             return associations;
         }
-        //private FPGTree GetConditionalBaseTree(int skillId)
-        //{
 
-        //}
         private void AddNodeContentToLists(FPGTreeNode node, int threshold, List<int> nodeList, List<List<int>> associations)
         {
-            nodeList.Add(node.SkillId);
-            foreach(FPGTreeNode child in node.ChildNodes)
+            if (node.ChildNodes.Count > 0 && (node.FrequencyCount >= threshold || node.ParentNode == null))
             {
-                AddNodeContentToLists(child, threshold, nodeList, associations);
+                if (node.ParentNode != null)
+                {
+                    nodeList.Add(node.SkillId);
+                }
+                foreach (FPGTreeNode child in node.ChildNodes)
+                {
+                    AddNodeContentToLists(child, threshold, nodeList.ToList(), associations);
+                }                
             }
-            if (node.ChildNodes.Count == 0)
+            else
             {
-                associations.Add(nodeList);
+                associations.Add(nodeList.ToList());
             }
         }
     }

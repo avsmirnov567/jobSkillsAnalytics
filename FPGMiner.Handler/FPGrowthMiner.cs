@@ -5,14 +5,17 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace FPGMiner.Handler
 {
     public class FPGrowthMiner
     {
-        private double minSupport;
+        private int minSupport;
+        private List<Vacancy> originalVacancies;
+        private FPGTree tree;
 
-        public FPGrowthMiner(double minSupport)
+        public FPGrowthMiner(int minSupport)
         {
             this.minSupport = minSupport;
         }
@@ -33,9 +36,8 @@ namespace FPGMiner.Handler
                         skillsCounter.Add(skillId, 1);
                     }
                 }
-            }
-            int threshold = (int)Math.Round(skillsCounter.Keys.Count() * minSupport);
-            skillsCounter = skillsCounter.Where(x => x.Value >= threshold)
+            }           
+            skillsCounter = skillsCounter.Where(x => x.Value >= minSupport)
                 .ToDictionary(x => x.Key, x => x.Value);
             foreach(SimplifiedVacancy v in vacancies)
             {
@@ -61,29 +63,48 @@ namespace FPGMiner.Handler
             return tree;
         }
 
-        private List<List<int>> GetAssociations(FPGTree tree, int skillId = -1)
+        private List<List<int>> GetAssociationsIds(FPGTree tree, int skillId = -1)
         {
-            tree.GetNodes
+            return tree.GetAssociations(minSupport);
         }
 
-        public void test(List<Vacancy> vacs)
+        private List<SimplifiedVacancy> SimplifyVacancies(List<Vacancy> vacancies)
         {
-            List<SimplifiedVacancy> vacancies = vacs.Select(v => new SimplifiedVacancy(v)).ToList();
-            vacancies = SortSkillsInVacancy(vacancies);
-            //using (StreamWriter sw = new StreamWriter("vac-" + Guid.NewGuid().ToString() + ".txt"))
-            //{
-            //    foreach(var v in vacancies)
-            //    {
-            //        string line = v.VacancyId+":\t";
-            //        foreach(var s in v.SkillsIds)
-            //        {
-            //            line += s + "\t";
-            //        }
-            //        sw.WriteLine(line);
-            //    }
-            //}
-            FPGTree tree = BuildTree(vacancies);
-            int cSharpId = 720;
+            List<SimplifiedVacancy> vacancyVies = vacancies.Select(v => new SimplifiedVacancy(v)).ToList();
+            vacancyVies = SortSkillsInVacancy(vacancyVies);
+            return vacancyVies;
+        }
+
+        private List<Skill> GetAllSkillsFromVacancies(List<Vacancy> vacancies)
+        {
+            List<Skill> skills = new List<Skill>();
+            foreach(Vacancy v in vacancies)
+            {
+                skills.AddRange(v.Skills.Distinct().Where(s=>!skills.Contains(s)));
+            }
+            return skills;
+        }
+
+        public void BuildTree(List<Vacancy> vacancies)
+        {
+            originalVacancies = vacancies;
+            tree = BuildTree(SimplifyVacancies(originalVacancies));
+        }
+
+        public List<List<Skill>> GetAllAssociations()
+        {
+            List<Skill> allSkills = GetAllSkillsFromVacancies(originalVacancies);
+            List<List<int>> associationsIds = GetAssociationsIds(tree);
+            List<List<Skill>> associations = new List<List<Skill>>();
+            foreach (List<int> frequentSet in associationsIds)
+            {
+                List<Skill> set = frequentSet.Select(s => allSkills.Single(x => x.Id == s)).ToList();
+                if (set.Count > 0)
+                {
+                    associations.Add(set);
+                }
+            }
+            return associations;
         }
     }
 }

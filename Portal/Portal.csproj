@@ -149,6 +149,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AprioriRulesController.cs" />
+    <Compile Include="Controllers\EclatSetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarkedZonesController.cs" />
     <Compile Include="Controllers\StatController.cs" />
@@ -208,6 +210,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\AprioriRules\" />
+    <Folder Include="Views\EclatSet\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -218,6 +222,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Apriori\Apriori.csproj">
+      <Project>{9eb53a35-8221-4d1a-b971-8c49255a8a81}</Project>
+      <Name>Apriori</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JobSkillsDb\JobSkillsDb.csproj">
       <Project>{67b27a53-1a82-4a4f-bda7-39308c99e065}</Project>
       <Name>JobSkillsDb</Name>

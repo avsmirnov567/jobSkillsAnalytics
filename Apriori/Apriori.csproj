@@ -49,9 +49,18 @@
       <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RDotNet, Version=1.5.5.0, Culture=neutral, PublicKeyToken=5f72f6e23c6920d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\R.NET.1.5.5\lib\net40\RDotNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RDotNet.NativeLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5f72f6e23c6920d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\R.NET.1.5.5\lib\net40\RDotNet.NativeLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,28 +69,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AprioriImplementation.cs" />
-    <Compile Include="AprioriProcessTransactions.cs" />
-    <Compile Include="IApriori.cs" />
-    <Compile Include="Output.cs" />
+    <Compile Include="DbCsvHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sorter.cs" />
-    <Compile Include="TestAprioriImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Db.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JobSkillsDb\JobSkillsDb.csproj">
       <Project>{67b27a53-1a82-4a4f-bda7-39308c99e065}</Project>
       <Name>JobSkillsDb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Parser\Parser.csproj">
-      <Project>{efaedee3-a63f-4183-869f-115c4777a17b}</Project>
-      <Name>Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -24,16 +24,17 @@ generate.file.name <- function(algorithmTypeName)
   #otherwise it generates data to the same file each time 
   
   #documentid <- as.character(sample(1:99999999, 1));
-  filename <- paste(algorithmTypeName,"");
-  algorithmName <- paste(algorithmTypeName, "result", sep="#");
-  #filename <- paste(algorithmName, documentid, sep ="#");
-  filename <- paste(writepath, filename, sep = " ");
-  filename <- paste(filename,".csv", sep = " ");
+  filename <- paste(algorithmTypeName, sep = '');
+  #algorithmName <- paste(algorithmTypeName, "result", sep=NULL);
+  #filename <- paste(algorithmName, documentid, sep ="");
+  filename <- paste(writepath, filename, sep = '');
+  filename <- paste(filename,".csv", sep = '');
   
   return(filename)
 }
 
-setwd(".");
+#setwd(".")
+setwd("~/job_skills_analytics/Apriori/RSCRIPT")
 path <- ".\\dataset.csv";
 writepath <- "";
 
@@ -49,14 +50,14 @@ aprioriRules<- apriori(transactions, parameter=list(supp = inputSup, conf=inputC
 eclatRules <- eclat(transactions, parameter = list(supp = inputSup, maxlen = maxlenEclat));
   
 filenameApriori <- generate.file.name("APRIORI");
-write(aprioriRules, file = filenameApriori, sep="", row.names = FALSE);
+write(aprioriRules, file = filenameApriori, sep="/", row.names = FALSE, fileEncoding = "UTF-8");
 
 #as(rules, "data.frame");
 #write.csv(rules[,"lhs","rhs","support","confidence","lift"], file=filename, row.names = FALSE);
 
-filenameEclat <- generate.file.name("ELCAT");
+filenameEclat <- generate.file.name("ECLAT");
 
-write(eclatRules, file=filenameEclat,sep="", row.names = FALSE);
+write(eclatRules, file=filenameEclat,sep="/", row.names = FALSE, fileEncoding = "UTF-8");
 
 filenameEclat = "";
 filenameApriori = "";

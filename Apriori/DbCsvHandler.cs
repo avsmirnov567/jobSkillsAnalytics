@@ -13,162 +13,9 @@ using System.Globalization;
 namespace Apriori
 {
 
-    public class CsvRow : List<string>
-    {
-        public string LineText { get; set; }
-    }
-
-    /// <summary>
-    /// Class to write data to a CSV file
-    /// </summary>
-    public class CsvFileWriter : StreamWriter
-    {
-        public CsvFileWriter(Stream stream)
-            : base(stream)
-        {
-        }
-
-        public CsvFileWriter(string filename)
-            : base(filename)
-        {
-        }
-
-        /// <summary>
-        /// Writes a single row to a CSV file.
-        /// </summary>
-        /// <param name="row">The row to be written</param>
-        public void WriteRow(CsvRow row)
-        {
-            StringBuilder builder = new StringBuilder();
-            bool firstColumn = true;
-            foreach (string value in row)
-            {
-                // Add separator if this isn't the first value
-                if (!firstColumn)
-                    builder.Append(',');
-                // Implement special handling for values that contain comma or quote
-                // Enclose in quotes and double up any double quotes
-                if (value.IndexOfAny(new char[] { '"', ',' }) != -1)
-                    builder.AppendFormat("\"{0}\"", value.Replace("\"", "\"\""));
-                else
-                    builder.Append(value);
-                firstColumn = false;
-            }
-            row.LineText = builder.ToString();
-            WriteLine(row.LineText);
-        }
-    }
-
-    /// <summary>
-    /// Class to read data from a CSV file
-    /// </summary>
-    public class CsvFileReader : StreamReader
-    {
-        public CsvFileReader(Stream stream)
-            : base(stream)
-        {
-        }
-
-        public CsvFileReader(string filename)
-            : base(filename)
-        {
-        }
-
-        /// <summary>
-        /// Reads a row of data from a CSV file
-        /// </summary>
-        /// <param name="row"></param>
-        /// <returns></returns>
-        public bool ReadRow(CsvRow row)
-        {
-            row.LineText = ReadLine();
-            if (String.IsNullOrEmpty(row.LineText))
-                return false;
-
-            int pos = 0;
-            int rows = 0;
-
-            while (pos < row.LineText.Length)
-            {
-                string value;
-
-                // Special handling for quoted field
-                if (row.LineText[pos] == '"')
-                {
-                    // Skip initial quote
-                    pos++;
-
-                    // Parse quoted value
-                    int start = pos;
-                    while (pos < row.LineText.Length)
-                    {
-                        // Test for quote character
-                        if (row.LineText[pos] == '"')
-                        {
-                            // Found one
-                            pos++;
-
-                            // If two quotes together, keep one
-                            // Otherwise, indicates end of value
-                            if (pos >= row.LineText.Length || row.LineText[pos] != '"')
-                            {
-                                pos--;
-                                break;
-                            }
-                        }
-                        pos++;
-                    }
-                    value = row.LineText.Substring(start, pos - start);
-                    value = value.Replace("\"\"", "\"");
-                }
-                else
-                {
-                    // Parse unquoted value
-                    int start = pos;
-                    while (pos < row.LineText.Length && row.LineText[pos] != ',')
-                        pos++;
-                    value = row.LineText.Substring(start, pos - start);
-                }
-
-                // Add field to list
-                if (rows < row.Count)
-                    row[rows] = value;
-                else
-                    row.Add(value);
-                rows++;
-
-                // Eat up to and including next comma
-                while (pos < row.LineText.Length && row.LineText[pos] != ',')
-                    pos++;
-                if (pos < row.LineText.Length)
-                    pos++;
-            }
-            // Delete any unused items
-            while (row.Count > rows)
-                row.RemoveAt(rows);
-
-            // Return true if any columns read
-            return (row.Count > 0);
-        }
-    }
-
-
-
     class DbCsvHandler
     {
-        struct AprioriRecord
-        {
-            string rules;
-            double support;
-            double confidence;
-            double lift;
-        }
-
-        struct EclatRecord
-        {
-            string frequentItems;
-            string support;
-        }
+        
 
         private double sup;
         private double conf;
@@ -180,6 +27,16 @@ namespace Apriori
             this.conf = conf;
             this.context = context;
         }
+
+        
+        public void ProcessDataWithAlgorithms()
+        {
+            var rScriptDirectory = GetFileDirectory("rscript.R");
+            var strCmdLine = "R CMD BATCH " + rScriptDirectory + sup + " " + conf;
+            Process.Start("CMD.exe", strCmdLine);
+        }
+
+
         
         /// <summary>
         /// Return file (dataset.csv) in relative project directory
@@ -216,14 +73,14 @@ namespace Apriori
         }
 
         /// <summary>
-        /// Read rules from APRIORI.csv or ECLAT.csv
+        /// Read rules from APRIORI.csv
         /// </summary>
         /// <param name="file"></param>
         public List<AprioriRule> GetDataFromAprioriRulesCsv(string rules_file)
         {
-            this.context = new JobSkillsContext();
+            context = new JobSkillsContext();
 
-            var csv = File.ReadAllLines(rules_file).Select(a => a.Split('/').ToList()).ToList();
+            var csv = File.ReadAllLines(rules_file, Encoding.UTF8).Select(a => a.Split('/').ToList()).ToList();
             csv.RemoveAt(0); //remove headers
             
             var ruleEntityList = new List<AprioriRule>();
@@ -232,24 +89,37 @@ namespace Apriori
             {
                 var rules = row.ElementAt(0);
                 var lhsrhs = LHSRHSStringsGeneratorFromApriori(rules);
-                var rule = new AprioriRule
-                {
-                    Rules = row.ElementAt(0),
-                    Support = double.Parse(row.ElementAt(1), NumberStyles.AllowDecimalPoint),    //{...} => {...}      
-                    Confidence = double.Parse(row.ElementAt(2), NumberStyles.AllowDecimalPoint), //0.0000000000
-                    Lift = double.Parse(row.ElementAt(3), NumberStyles.AllowDecimalPoint)        //0.0000000000
-                };                                                                              
-                
-                
+                var lhs = lhsrhs[0];
+                var rhs = lhsrhs[1];
 
+                ruleEntityList.Add(
+                    new AprioriRule
+                    {
+                        LeftHandSide = lhs,
+                        RightHandSide = rhs,
+                        Rules = row.ElementAt(0),
+                        Support = double.Parse(row.ElementAt(1), CultureInfo.InvariantCulture), //{...} => {...}      
+                        Confidence = double.Parse(row.ElementAt(2), CultureInfo.InvariantCulture), //0.0000000000
+                        Lift = double.Parse(row.ElementAt(3), CultureInfo.InvariantCulture) //0.0000000000
+                    });
             }
-            
-            //rules, support, confidence, lift
-            return null;
+            FillDatabaseByAprioriRules(ruleEntityList);
+            return ruleEntityList;
         }
 
-        
+        private void FillDatabaseByAprioriRules(List<AprioriRule> ruleEntityList)
+        {
+            //context.Database.ExecuteSqlCommand("TRUNCATE TABLE [dbo.AprioriRules]");
+            foreach (var rule in ruleEntityList)
+                context.AprioriRules.Add(rule);
+            context.SaveChanges();
+        }
 
+
+        /// <summary>
+        /// Read frequent itemsets from ELCAT.csv
+        /// </summary>
+        /// <param name="eclat_file"></param>
         public void GetDataFromElcatRulesCsv(string eclat_file)
         {
             context = new JobSkillsContext();
@@ -270,8 +140,8 @@ namespace Apriori
         public List<string> LHSRHSStringsGeneratorFromApriori(string rule_record_part_of_record)
         {
             var splitted = rule_record_part_of_record.Split(new string[] { "=>" }, StringSplitOptions.None).ToList();
-            char[] charsToTrim = {'}', '{', '"', '/'}; 
-            for (int i = 0; i < splitted.Count; i++)
+            char[] charsToTrim = {' ','}', '{', '"', '/'}; 
+            for (var i = 0; i < splitted.Count; i++)
             {
                 splitted[i] = splitted[i].Replace(@"\", "");
                 splitted[i] = splitted[i].Trim(charsToTrim);
@@ -279,6 +149,11 @@ namespace Apriori
             return splitted;
         }
 
+        /// <summary>
+        /// Generate right (rules) part of record
+        /// </summary>
+        /// <param name="frequent_set_part_of_record"></param>
+        /// <returns></returns>
         public List<string> FrequentSetGeneratorFromEclat(string frequent_set_part_of_record)
         {
             var splitted = frequent_set_part_of_record.Split(new char[] { ',' }, StringSplitOptions.None).ToList();

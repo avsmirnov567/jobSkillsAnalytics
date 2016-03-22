@@ -9,6 +9,7 @@ using CsvHelper;
 using JobSkillsDb.Entities;
 using CsvHelper.Configuration;
 using System.Globalization;
+using RDotNet;
 
 namespace Apriori
 {
@@ -31,9 +32,15 @@ namespace Apriori
         
         public void ProcessDataWithAlgorithms()
         {
+            //REngine.SetEnvironmentVariables();
+            //REngine engine = REngine.GetInstance();
+            //// REngine requires explicit initialization.
+            //// You can set some parameters.
+            //engine.Initialize();
             var rScriptDirectory = GetFileDirectory("rscript.R");
-            var strCmdLine = "R CMD BATCH " + rScriptDirectory + " " + sup + " " + conf;
-            Process.Start("CMD.exe", strCmdLine);
+            //var strCmdLine = "R CMD BATCH " + rScriptDirectory + " " + sup + " " + conf;
+            //Process.Start("CMD.exe", strCmdLine);
+            engine.Evaluate("source('" + rScriptDirectory + "')");
         }
 
 

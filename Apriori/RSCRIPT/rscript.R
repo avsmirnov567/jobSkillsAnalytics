@@ -50,14 +50,14 @@ aprioriRules<- apriori(transactions, parameter=list(supp = inputSup, conf=inputC
 eclatRules <- eclat(transactions, parameter = list(supp = inputSup, maxlen = maxlenEclat));
   
 filenameApriori <- generate.file.name("APRIORI");
-write(aprioriRules, file = filenameApriori, sep="/", row.names = FALSE);
+write(aprioriRules, file = filenameApriori, sep="/", row.names = FALSE, fileEncoding = "UTF-8");
 
 #as(rules, "data.frame");
 #write.csv(rules[,"lhs","rhs","support","confidence","lift"], file=filename, row.names = FALSE);
 
-filenameEclat <- generate.file.name("ELCAT");
+filenameEclat <- generate.file.name("ECLAT");
 
-write(eclatRules, file=filenameEclat,sep="/", row.names = FALSE);
+write(eclatRules, file=filenameEclat,sep="/", row.names = FALSE, fileEncoding = "UTF-8");
 
 filenameEclat = "";
 filenameApriori = "";

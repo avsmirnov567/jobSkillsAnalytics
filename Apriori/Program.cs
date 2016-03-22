@@ -19,7 +19,6 @@ using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace Apriori
 {
-    
     class Program
     {
         public static void ExportBasketType(List<Vacancy> vacancies, string fileName = "")
@@ -91,34 +90,28 @@ namespace Apriori
 
         static void Main(string[] args)
         {
-
+            
             Debug.WriteLine("CONNECTING TO DB...");
-            //var vacancies = new JobSkillsContext().Vacancies()
+            string fileName = "";
+
             var context = new JobSkillsContext();
 
-            var minsupport = (decimal) 0.4;
-            var minconfidence = (decimal) 0.4;
-
-            //var vacancies = context.Vacancies.Include(s => s.Skills).Select(s => s.Skills).ToList();
-            //var vacancies = (from x in context.Vacancies.Include(x => x.Skills)
-            //    select x).ToList();
-
-            var vacancies = context.Vacancies.Include(v => v.Skills)
-                .Select(v => new  {v.Id, v.Skills}).ToList()
-                .Select(v => new Vacancy()
-            {
-                Id = v.Id,
-                Skills = v.Skills
-            }).ToList();
+            var minsupport = 0.4;
+            var minconfidence = 0.4;
             
-            //Debug.WriteLine(DateTime.Now);
-            //var vacancies = context.Vacancies.Include(x => x.Skills).Select(x => new {x.Skills}).ToList();
-            //Debug.WriteLine(DateTime.Now);
+            var dch = new DbCsvHandler(minsupport, minconfidence, new JobSkillsContext());
+            dch.GetVacanciesCsv();
 
-            const string RSCRIPT_DIRECTORY =
-                @".\RSCRIPT\dataset.csv";
+            Console.WriteLine("GOING TO FILES");
+
+            fileName = "APRIORI.csv";
+            var arulesFile = DbCsvHandler.GetFileDirectory(fileName);
+            dch.GetDataFromAprioriRulesCsv(arulesFile);
+
+            fileName = "ECLAT.csv";
+            var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
+            dch.GetDataFromElcatRulesCsv(eclatFile);
             
-            ExportBasketType(vacancies, RSCRIPT_DIRECTORY);
             Console.WriteLine("OK");
             Console.ReadLine();
 

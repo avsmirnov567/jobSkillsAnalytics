@@ -60,14 +60,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AprioriImplementation.cs" />
-    <Compile Include="AprioriProcessTransactions.cs" />
-    <Compile Include="IApriori.cs" />
-    <Compile Include="Output.cs" />
+    <Compile Include="DbCsvHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sorter.cs" />
-    <Compile Include="TestAprioriImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -32,7 +32,7 @@ namespace Apriori
         public void ProcessDataWithAlgorithms()
         {
             var rScriptDirectory = GetFileDirectory("rscript.R");
-            var strCmdLine = "R CMD BATCH " + rScriptDirectory + sup + " " + conf;
+            var strCmdLine = "R CMD BATCH " + rScriptDirectory + " " + sup + " " + conf;
             Process.Start("CMD.exe", strCmdLine);
         }
 

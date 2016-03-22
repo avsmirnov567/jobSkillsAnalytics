@@ -102,17 +102,24 @@ namespace Apriori
             var dch = new DbCsvHandler(minsupport, minconfidence, new JobSkillsContext());
             dch.GetVacanciesCsv();
 
+            dch.ProcessDataWithAlgorithms();
+
             Console.WriteLine("GOING TO FILES");
 
             fileName = "APRIORI.csv";
             var arulesFile = DbCsvHandler.GetFileDirectory(fileName);
             dch.GetDataFromAprioriRulesCsv(arulesFile);
 
-            fileName = "ECLAT.csv";
-            var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
-            dch.GetDataFromElcatRulesCsv(eclatFile);
-            
-            Console.WriteLine("OK");
+           // fileName = "ECLAT.csv";
+            //var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
+            //dch.GetDataFromElcatRulesCsv(eclatFile);
+            int counter = 0;
+            foreach (var el in context.AprioriRules)
+            {
+                Console.WriteLine(el.LeftHandSide + "=>" + el.RightHandSide);
+                counter++;
+            }
+            Console.WriteLine("OK " + counter);
             Console.ReadLine();
 
             #region old - Contains custom apriori implementation

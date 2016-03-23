@@ -27,10 +27,6 @@ namespace JobSkillsDb.Entities
 
         public string Currency { get; set; }
 
-        public string ContentText { get; set; }
-
-        public string ContentHtml { get; set; }
-
         [Required(ErrorMessage = "Link is required")]
         [Index(IsUnique = true)]
         [MaxLength(255)]
@@ -38,7 +34,9 @@ namespace JobSkillsDb.Entities
 
         public string Employer { get; set; }
 
-        public DateTime Date { get; set; }     
+        public DateTime Date { get; set; }
+
+        public virtual VacancyContent VacancyContent { get; set; }
 
         public virtual ICollection<Skill> Skills { get; set; }
 

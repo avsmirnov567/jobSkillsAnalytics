@@ -39,8 +39,11 @@ namespace Parser
                     vacancy.Title = vacancyView.Title;
                     vacancy.Employer = vacancyView.Employer;
                     vacancy.Date = vacancyView.PublishingDate ?? DateTime.Now; //add current date if date is null
-                    vacancy.ContentText = vacancyView.ContentText;
-                    vacancy.ContentHtml = vacancyView.ContentHtml;
+                    vacancy.VacancyContent = new VacancyContent()
+                    {
+                        Text = vacancyView.ContentText,
+                        Html = vacancyView.ContentHtml
+                    };
                     vacancy.Currency = vacancyView.Currency;
                     try
                     {

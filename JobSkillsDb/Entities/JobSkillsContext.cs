@@ -17,6 +17,8 @@ namespace JobSkillsDb.Entities
         public virtual DbSet<Vacancy> Vacancies { get; set; }
         public virtual DbSet<MarkedZone> MarkedZones { get; set; }
 
+        public virtual DbSet<VacancyContent> VacancyContents { get; set; }
+
         public virtual DbSet<SkillToGroupConnection> SkillToGroupConnections { get; set; }
 
         public virtual DbSet<SkillsGroup> SkillsGroup { get; set; }

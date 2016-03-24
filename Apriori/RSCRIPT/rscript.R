@@ -7,13 +7,13 @@ get.data <- function(path)
 get.plots <- function(foldername, rulesSource)
 {
   plot(ruleSource, measure=c("support", "lift"), shading="confidence");
-  plot(ruleSource);
-  head(quality(ruleSource));
-  plot(ruleSource, shading="order", control=list(main="Two-key plot"));
-  sel <- plot(ruleSource, measure=c("support", "lift"), shading="confidence", interactive=TRUE);
-  subrulesByLift <- head(sort(ruleSource, by="lift"), 10);
-  subrulesByConfidence <- head(sort(ruleSource, by="confidence"), 10); 
-  subrulesBySupport <- head(sort(ruleSource, by="support"), 10);  
+  #plot(ruleSource);
+  #head(quality(ruleSource));
+  #plot(ruleSource, shading="order", control=list(main="Two-key plot"));
+  #sel <- plot(ruleSource, measure=c("support", "lift"), shading="confidence", interactive=TRUE);
+  #subrulesByLift <- head(sort(ruleSource, by="lift"), 10);
+  #subrulesByConfidence <- head(sort(ruleSource, by="confidence"), 10); 
+  #subrulesBySupport <- head(sort(ruleSource, by="support"), 10);  
 }
 
 generate.file.name <- function(algorithmTypeName)
@@ -32,17 +32,21 @@ generate.file.name <- function(algorithmTypeName)
   
   return(filename)
 }
-
+library(arules)
+library(arulesViz)
 #setwd(".")
-setwd("~/job_skills_analytics/Apriori/RSCRIPT")
-path <- ".\\dataset.csv";
+#setwd("~/job_skills_analytics/Apriori/RSCRIPT")
+wd <- getwd()
+path <- paste(wd, "/dataset.csv", sep = '');
 writepath <- "";
 
 
-
-inputSup <- 0.02;
+#args <- commandArgs(trailingOnly = TRUE);
+#inputSup <- as.numeric(args[1]);
+#inputConf <- as.numeric(args[2]);
+inputSup <- 0.003;
 inputConf <- 0.1;
-maxlenEclat <- 15;
+maxlenEclat <- 17;
 transactions <- get.data(path);
 
 #aprioriRules <- calculate.rules.apriori(inputSup, inputConf, transactions);
@@ -62,4 +66,5 @@ write(eclatRules, file=filenameEclat,sep="/", row.names = FALSE, fileEncoding = 
 filenameEclat = "";
 filenameApriori = "";
 
+#plot(aprioriRules, method = NULL, measure = "support", shading = "lift", interactive = FALSE, data = null, controll = NULL)
 gc();

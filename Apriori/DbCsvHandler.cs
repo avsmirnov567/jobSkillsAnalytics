@@ -16,8 +16,6 @@ namespace Apriori
 
     class DbCsvHandler
     {
-        
-
         private double sup;
         private double conf;
         private JobSkillsContext context;
@@ -29,18 +27,53 @@ namespace Apriori
             this.context = context;
         }
 
-        
-        public void ProcessDataWithAlgorithms()
+        public static string RunFromCmd(string rCodeFilePath, string rScriptExecutablePath, string args)
+        {
+            string file = rCodeFilePath;
+            string result = string.Empty;
+
+            try
+            {
+
+                var info = new ProcessStartInfo();
+                info.FileName = rScriptExecutablePath;
+                info.WorkingDirectory = Path.GetDirectoryName(rScriptExecutablePath);
+                info.Arguments = rCodeFilePath + " " + args;
+
+                info.RedirectStandardInput = false;
+                info.RedirectStandardOutput = true;
+                info.UseShellExecute = false;
+                info.CreateNoWindow = true;
+
+                using (var proc = new Process())
+                {
+                    proc.StartInfo = info;
+                    proc.Start();
+                    result = proc.StandardOutput.ReadToEnd();
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("R Script failed: " + result, ex);
+            }
+        }
+    
+    public void ProcessDataWithAlgorithms()
         {
             //REngine.SetEnvironmentVariables();
             //REngine engine = REngine.GetInstance();
             //// REngine requires explicit initialization.
             //// You can set some parameters.
             //engine.Initialize();
-            var rScriptDirectory = GetFileDirectory("rscript.R");
+            var rScriptDirectory = GetFileDirectory("rscript.r");
+            var execPath = @"C:\Program Files\R\R-3.2.4revised\bin\Rscript.exe";
             //var strCmdLine = "R CMD BATCH " + rScriptDirectory + " " + sup + " " + conf;
-            //Process.Start("CMD.exe", strCmdLine);
-            engine.Evaluate("source('" + rScriptDirectory + "')");
+         
+            RunFromCmd(rScriptDirectory, execPath, "0,02 0,1");
+        //Process.Start("CMD.exe", strCmdLine);
+        //engine.Evaluate("source('" + rScriptDirectory + "')");
         }
 
 
@@ -244,6 +277,54 @@ namespace Apriori
             Debug.WriteLine("EXPORTED");
         }
 
-        
+        public List<string> ParseInputForRecomment(string input)
+        {
+            var parsedInput = input.Split(new char[] { ',' }, StringSplitOptions.None).ToList();
+            for (int i = 0; i < parsedInput.Count; i++)
+            {
+                parsedInput[i] = parsedInput[i].Trim(' ');
+            }
+            return parsedInput;
+        }
+
+        public static List<AprioriRule> Top(string type)
+        {
+            
+            var context = new JobSkillsContext();
+            var dbRules = context.AprioriRules;
+            var rules = new List<AprioriRule>();
+
+            switch (type)
+            {
+                case "conf":
+                    rules= (from t in dbRules
+                        orderby t.Confidence
+                        select t).Take(30).ToList();
+                    break;
+                case "supp":
+                    rules = (from t in dbRules
+                        orderby t.Support
+                        select t).Take(30).ToList();
+                    
+                    break;
+                case "lift":
+                    rules = (from t in dbRules
+                        orderby t.Lift
+                        select t).Take(30).ToList();
+                   
+                    break;
+            }
+            rules.Reverse();
+            return rules;
+        } 
+        public static List<string> Recommend(List<string> input)
+        {
+            var recommend = new List<string>();
+            
+            var context = new JobSkillsContext();
+            var listOfRules = new List<string>();
+
+            return null;
+        }
     }
 }

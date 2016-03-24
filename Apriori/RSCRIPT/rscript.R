@@ -7,13 +7,13 @@ get.data <- function(path)
 get.plots <- function(foldername, rulesSource)
 {
   plot(ruleSource, measure=c("support", "lift"), shading="confidence");
-  #plot(ruleSource);
+  plot(ruleSource);
   #head(quality(ruleSource));
-  #plot(ruleSource, shading="order", control=list(main="Two-key plot"));
+  plot(ruleSource, shading="order", control=list(main="Two-key plot"));
   #sel <- plot(ruleSource, measure=c("support", "lift"), shading="confidence", interactive=TRUE);
-  #subrulesByLift <- head(sort(ruleSource, by="lift"), 10);
-  #subrulesByConfidence <- head(sort(ruleSource, by="confidence"), 10); 
-  #subrulesBySupport <- head(sort(ruleSource, by="support"), 10);  
+  subrulesByLift <- head(sort(ruleSource, by="lift"), 10);
+  subrulesByConfidence <- head(sort(ruleSource, by="confidence"), 10); 
+  subrulesBySupport <- head(sort(ruleSource, by="support"), 10);  
 }
 
 generate.file.name <- function(algorithmTypeName)
@@ -44,27 +44,27 @@ writepath <- "";
 #args <- commandArgs(trailingOnly = TRUE);
 #inputSup <- as.numeric(args[1]);
 #inputConf <- as.numeric(args[2]);
-inputSup <- 0.003;
+inputSup <- 0.1;
 inputConf <- 0.1;
 maxlenEclat <- 17;
 transactions <- get.data(path);
 
 #aprioriRules <- calculate.rules.apriori(inputSup, inputConf, transactions);
-aprioriRules<- apriori(transactions, parameter=list(supp = inputSup, conf=inputConf, target="rules"));
-eclatRules <- eclat(transactions, parameter = list(supp = inputSup, maxlen = maxlenEclat));
+#aprioriRules<- apriori(transactions, parameter=list(supp = inputSup, conf=inputConf, target="rules"));
+#eclatRules <- eclat(transactions, parameter = list(supp = inputSup, maxlen = maxlenEclat));
   
-filenameApriori <- generate.file.name("APRIORI");
-write(aprioriRules, file = filenameApriori, sep="/", row.names = FALSE, fileEncoding = "UTF-8");
+#filenameApriori <- generate.file.name("APRIORI");
+#write(aprioriRules, file = filenameApriori, sep="/", row.names = FALSE, fileEncoding = "UTF-8");
 
 #as(rules, "data.frame");
 #write.csv(rules[,"lhs","rhs","support","confidence","lift"], file=filename, row.names = FALSE);
 
-filenameEclat <- generate.file.name("ECLAT");
+#filenameEclat <- generate.file.name("ECLAT");
 
-write(eclatRules, file=filenameEclat,sep="/", row.names = FALSE, fileEncoding = "UTF-8");
+#write(eclatRules, file=filenameEclat,sep="/", row.names = FALSE, fileEncoding = "UTF-8");
 
-filenameEclat = "";
-filenameApriori = "";
+#filenameEclat = "";
+#filenameApriori = "";
 
-#plot(aprioriRules, method = NULL, measure = "support", shading = "lift", interactive = FALSE, data = null, controll = NULL)
+
 gc();

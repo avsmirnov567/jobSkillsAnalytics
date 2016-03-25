@@ -25,8 +25,7 @@ namespace Apriori
     {
         static void Main(string[] args)
         {
-            
-            Console.WriteLine("CONNECTIN' TO DB...");
+            //Console.WriteLine("CONNECTIN' TO DB...");
             string fileName = "";
 
             var context = new JobSkillsContext();
@@ -35,90 +34,110 @@ namespace Apriori
             var minsupport = 0.03;
             var minconfidence = 0.1;
 
-            Console.WriteLine("INITIALIZE DATA FROM DB...");
+            //Console.WriteLine("INITIALIZE DATA FROM DB...");
             var dch = new DbCsvHandler(minsupport, minconfidence, context);
             //dch.GetVacanciesCsv();
-            
-            Console.WriteLine("GETTIN' APRORI RULES...");
-            Thread.Sleep(1000);
+
+            //Console.WriteLine("GETTIN' APRORI RULES...");
+            //Thread.Sleep(1000);
 
             //dch.ProcessDataWithAlgorithms();
 
-            fileName = "APRIORI.csv";
-            var arulesFile = DbCsvHandler.GetFileDirectory(fileName);
-            var rules = dch.GetDataFromAprioriRulesCsv(arulesFile);
+            // fileName = "APRIORI.csv";
+            //var arulesFile = DbCsvHandler.GetFileDirectory(fileName);
+            //var rules = dch.GetDataFromAprioriRulesCsv(arulesFile);
 
             //context.AprioriRules.RemoveRange(context.AprioriRules.ToList());
             //context.SaveChanges();
             //context.AprioriRules.RemoveRange(context.AprioriRules.ToList());
             //context.SaveChanges();
-            dch.FillDatabase(rules);
+            //dch.FillDatabase(rules);
 
-            fileName = "ECLAT.csv";
-            var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
-            var sets = dch.GetDataFromElcatRulesCsv(eclatFile);
+            //fileName = "ECLAT.csv";
+            //var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
+            //var sets = dch.GetDataFromElcatRulesCsv(eclatFile);
             //dch.FillDatabase(sets);
 
             string input = "";
             do
             {
-                Console.WriteLine("choose one: ");
-                Console.WriteLine("1. recommend");
-                Console.WriteLine("2. top");
-                Console.WriteLine("3. close sample");
+                //Console.WriteLine("choose one: ");
+                //Console.WriteLine("1. recommend");
+                //Console.WriteLine("2. top");
+                //Console.WriteLine("3. close sample");
 
-                input = Console.ReadLine();
+                //input = Console.ReadLine();
 
-                switch (input)
-                {
-                    case "1":
+                //switch (input)
+                //{
+                //    case "1":
+                        Console.WriteLine();
                         Console.Write("enter the current your skills set:  ");
                         var textSet = Console.ReadLine();
-
+                        Console.WriteLine("processing...");
                         var rec = dch.Recomend(textSet);
-                        Console.WriteLine("processing recommendation...");
-                        Console.WriteLine(rec);
+                if (rec.Count != 0)
+                {
+                    Console.WriteLine("Hey, we got some close skills for you based on your skills: ");
+                    var result1 = string.Join(", ", rec.Take(rec.Count/2));
 
-                        break;
-                    case "2":
-                        Console.Write("1. lift / 2. conf / 3. supp: ");
-                        
-                        var userInput = Console.ReadLine();
-                        var top = new List<AprioriRule>();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(result1);
+                    Console.ResetColor();
 
-                        switch (userInput)
-                        {
-                            case "1":
-                                top = DbCsvHandler.Top("lift");
-                                foreach (var t in top)
-                                {
-                                    Console.WriteLine(t.LeftHandSide + " " + " =>>> " + t.RightHandSide + " " + t.Lift.ToString(CultureInfo.InvariantCulture));
-                                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
-                                }
-                                break;
-                            case "2":
-                                top = DbCsvHandler.Top("conf");
-                                foreach (var t in top)
-                                {
-                                    Console.WriteLine(t.LeftHandSide + " " + " =>>> " + " " + t.RightHandSide + " " + t.Confidence.ToString(CultureInfo.InvariantCulture));
-                                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
-                                }
-                                break;
-                            case "3":
-                                top = DbCsvHandler.Top("supp");
-                                foreach (var t in top)
-                                {
-                                    Console.WriteLine(t.LeftHandSide  + " =>>> " + t.RightHandSide + " " + " " + t.Support.ToString(CultureInfo.InvariantCulture));
-                                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
-
-                                }
-                                break;
-                        }
-                        break;
-                    case "3":
-                        break;
+                    Console.WriteLine();
+                    Console.WriteLine("There are also some skills that you can learn with skills above: ");
+                    var result2 = string.Join(", ", rec.Skip(rec.Count/2).Take(rec.Count/2));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(result2);
+                    Console.ResetColor();
                 }
-            } while (input != "3");
+                else
+                {
+                    Console.WriteLine("Oops! Some input error, or we don't have any correlation");
+                    Console.WriteLine("Make one attempt more, please!");
+                }
+                //        break;
+                //    case "2":
+
+                //        Console.Write("1. lift / 2. conf / 3. supp: ");
+                        
+                //        var userInput = Console.ReadLine();
+                //        var top = new List<AprioriRule>();
+
+                //        switch (userInput)
+                //        {
+                //            case "1":
+                //                top = DbCsvHandler.Top("lift");
+                //                foreach (var t in top)
+                //                {
+                //                    Console.WriteLine(t.LeftHandSide + " " + " =>>> " + t.RightHandSide + " " + t.Lift.ToString(CultureInfo.InvariantCulture));
+                //                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
+                //                }
+                //                break;
+                //            case "2":
+                //                top = DbCsvHandler.Top("conf");
+                //                foreach (var t in top)
+                //                {
+                //                    Console.WriteLine(t.LeftHandSide + " " + " =>>> " + " " + t.RightHandSide + " " + t.Confidence.ToString(CultureInfo.InvariantCulture));
+                //                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
+                //                }
+                //                break;
+                //            case "3":
+                //                top = DbCsvHandler.Top("supp");
+                //                foreach (var t in top)
+                //                {
+                //                    Console.WriteLine(t.LeftHandSide  + " =>>> " + t.RightHandSide + " " + " " + t.Support.ToString(CultureInfo.InvariantCulture));
+                //                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
+
+                //                }
+                //                break;
+                //        }
+                //        break;
+                //    case "3":
+                //        break;
+                //}
+            } while (input != "0");
 
             #region old - Contains custom apriori implementation
 

@@ -44,17 +44,17 @@ writepath <- "";
 #args <- commandArgs(trailingOnly = TRUE);
 #inputSup <- as.numeric(args[1]);
 #inputConf <- as.numeric(args[2]);
-inputSup <- 0.1;
+inputSup <- 0.02;
 inputConf <- 0.1;
 maxlenEclat <- 17;
 transactions <- get.data(path);
 
 #aprioriRules <- calculate.rules.apriori(inputSup, inputConf, transactions);
-#aprioriRules<- apriori(transactions, parameter=list(supp = inputSup, conf=inputConf, target="rules"));
-#eclatRules <- eclat(transactions, parameter = list(supp = inputSup, maxlen = maxlenEclat));
+aprioriRules<- apriori(transactions, parameter=list(supp = inputSup, conf=inputConf, target="rules"));
+eclatRules <- eclat(transactions, parameter = list(supp = inputSup, maxlen = maxlenEclat));
   
-#filenameApriori <- generate.file.name("APRIORI");
-#write(aprioriRules, file = filenameApriori, sep="/", row.names = FALSE, fileEncoding = "UTF-8");
+filenameApriori <- generate.file.name("APRIORI");
+write(aprioriRules, file = filenameApriori, sep="/", row.names = FALSE, fileEncoding = "UTF-8");
 
 #as(rules, "data.frame");
 #write.csv(rules[,"lhs","rhs","support","confidence","lift"], file=filename, row.names = FALSE);

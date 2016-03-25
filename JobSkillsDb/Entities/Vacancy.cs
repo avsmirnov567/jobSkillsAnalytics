@@ -1,4 +1,4 @@
-namespace JobSkillsDb.Entities
+ namespace JobSkillsDb.Entities
 {
     using System;
     using System.Collections.Generic;

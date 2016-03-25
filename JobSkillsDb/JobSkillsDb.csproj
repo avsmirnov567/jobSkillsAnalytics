@@ -87,6 +87,14 @@
     <Compile Include="Migrations\201603251946196_AddVacancyLabelTypes.Designer.cs">
       <DependentUpon>201603251946196_AddVacancyLabelTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603252045521_AddVacancyIdForLabelTypes.cs" />
+    <Compile Include="Migrations\201603252045521_AddVacancyIdForLabelTypes.Designer.cs">
+      <DependentUpon>201603252045521_AddVacancyIdForLabelTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603252055225_DropOldForeignKey.cs" />
+    <Compile Include="Migrations\201603252055225_DropOldForeignKey.Designer.cs">
+      <DependentUpon>201603252055225_DropOldForeignKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -111,6 +119,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603251946196_AddVacancyLabelTypes.resx">
       <DependentUpon>201603251946196_AddVacancyLabelTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603252045521_AddVacancyIdForLabelTypes.resx">
+      <DependentUpon>201603252045521_AddVacancyIdForLabelTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603252055225_DropOldForeignKey.resx">
+      <DependentUpon>201603252055225_DropOldForeignKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

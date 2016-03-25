@@ -31,43 +31,55 @@ namespace Apriori
 
             var context = new JobSkillsContext();
 
-            var minsupport = 0.4;
-            var minconfidence = 0.4;
+            var minsupport = 0.03;
+            var minconfidence = 0.1;
 
             Console.WriteLine("INITIALIZE DATA FROM DB...");
             var dch = new DbCsvHandler(minsupport, minconfidence, new JobSkillsContext());
             dch.GetVacanciesCsv();
             
             Console.WriteLine("GETTIN' APRORI RULES...");
+            Thread.Sleep(100000);
             //dch.ProcessDataWithAlgorithms();
 
             fileName = "APRIORI.csv";
             var arulesFile = DbCsvHandler.GetFileDirectory(fileName);
-            dch.GetDataFromAprioriRulesCsv(arulesFile);
+            var rules = dch.GetDataFromAprioriRulesCsv(arulesFile);
 
-            // fileName = "ECLAT.csv";
-            //var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
-            //dch.GetDataFromElcatRulesCsv(eclatFile);
+            //context.AprioriRules.RemoveRange(context.AprioriRules.ToList());
+            //context.SaveChanges();
+            //context.AprioriRules.Remove(context.AprioriRules.ToList());
+            //dch.FillDatabase(rules);
+
+            fileName = "ECLAT.csv";
+            var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
+            var sets = dch.GetDataFromElcatRulesCsv(eclatFile);
+            dch.FillDatabase(sets);
 
             string input = "";
             do
             {
-                Console.WriteLine("Choose: ");
-                Console.WriteLine("1. Recommend");
-                Console.WriteLine("2. Top");
-                Console.WriteLine("3. Exit");
+                Console.WriteLine("choose one: ");
+                Console.WriteLine("1. recommend");
+                Console.WriteLine("2. top");
+                Console.WriteLine("3. close sample");
 
                 input = Console.ReadLine();
 
                 switch (input)
                 {
                     case "1":
+                        Console.Write("enter the current your skills set:  ");
+                        var textSet = Console.ReadLine();
+
+                        var rec = dch.Recomend(textSet);
+                        Console.WriteLine("processing recommendation...");
+                        Console.WriteLine(rec);
+
                         break;
                     case "2":
-                        Console.WriteLine("1. lift");
-                        Console.WriteLine("2. conf");
-                        Console.WriteLine("3. supp");
-
+                        Console.Write("1. lift / 2. conf / 3. supp: ");
+                        
                         var userInput = Console.ReadLine();
                         var top = new List<AprioriRule>();
 

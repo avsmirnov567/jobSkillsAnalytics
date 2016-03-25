@@ -14,7 +14,7 @@ using RDotNet;
 namespace Apriori
 {
 
-    class DbCsvHandler
+    public class DbCsvHandler
     {
         private double sup;
         private double conf;
@@ -59,25 +59,25 @@ namespace Apriori
                 throw new Exception("R Script failed: " + result, ex);
             }
         }
-    
-    public void ProcessDataWithAlgorithms()
+
+        public void ProcessDataWithAlgorithms()
         {
             //REngine.SetEnvironmentVariables();
             //REngine engine = REngine.GetInstance();
             //// REngine requires explicit initialization.
             //// You can set some parameters.
             //engine.Initialize();
-            var rScriptDirectory = GetFileDirectory("rscript.r");
-            var execPath = @"C:\Program Files\R\R-3.2.4revised\bin\Rscript.exe";
+            //var rScriptDirectory = GetFileDirectory("rscript.r");
+            // var execPath = @"C:\Program Files\R\R-3.2.4revised\bin\Rscript.exe";
             //var strCmdLine = "R CMD BATCH " + rScriptDirectory + " " + sup + " " + conf;
-         
-            RunFromCmd(rScriptDirectory, execPath, "0,02 0,1");
-        //Process.Start("CMD.exe", strCmdLine);
-        //engine.Evaluate("source('" + rScriptDirectory + "')");
+
+            //RunFromCmd(rScriptDirectory, execPath, "0,02 0,1");
+            //Process.Start("CMD.exe", strCmdLine);
+            //engine.Evaluate("source('" + rScriptDirectory + "')");
         }
 
 
-        
+
         /// <summary>
         /// Return file (dataset.csv) in relative project directory
         /// File consist of data from db (transactions = vacancies)
@@ -127,7 +127,8 @@ namespace Apriori
 
             foreach (var row in csv)
             {
-                var rules = row.ElementAt(0);
+                var rules = row.ElementAt(0); //getting rule part of the row
+
                 var lhsrhs = LHSRHSStringsGeneratorFromApriori(rules);
                 var lhs = lhsrhs[0];
                 var rhs = lhsrhs[1];
@@ -143,35 +144,51 @@ namespace Apriori
                         Lift = double.Parse(row.ElementAt(3), CultureInfo.InvariantCulture) //0.0000000000
                     });
             }
-            FillDatabaseByAprioriRules(ruleEntityList);
             return ruleEntityList;
         }
 
-        private void FillDatabaseByAprioriRules(List<AprioriRule> ruleEntityList)
+        /// <summary>
+        /// Read frequent itemsets from ELCAT.csv
+        /// </summary>
+        /// <param name="eclat_file"></param>
+        public List<EclatSet> GetDataFromElcatRulesCsv(string eclat_file)
+        {
+            context = new JobSkillsContext();
+            var csv = File.ReadAllLines(eclat_file, Encoding.UTF8).Select(a => a.Split('/').ToList()).ToList(); 
+            csv.RemoveAt(0); // remove headers
+
+            var setList = new List<EclatSet>();
+
+            foreach (var row in csv)
+            {
+                var set = row.ElementAt(0); // get set of items
+                var setSupport = double.Parse(row.ElementAt(1));
+
+                setList.Add(
+                    new EclatSet
+                    {
+                        ItemSet = set,
+                        Support = setSupport
+                    });
+            }
+            
+            return setList;
+        }
+
+        public void FillDatabase(List<AprioriRule> ruleEntityList)
         {
             //context.Database.ExecuteSqlCommand("TRUNCATE TABLE [dbo.AprioriRules]");
             foreach (var rule in ruleEntityList)
                 context.AprioriRules.Add(rule);
             context.SaveChanges();
         }
-
-
-        /// <summary>
-        /// Read frequent itemsets from ELCAT.csv
-        /// </summary>
-        /// <param name="eclat_file"></param>
-        public void GetDataFromElcatRulesCsv(string eclat_file)
+        public void FillDatabase(List<EclatSet> setList)
         {
-            context = new JobSkillsContext();
-
-            using (var readingStream = new StreamReader(eclat_file, Encoding.UTF8))
-            {
-                var reader = new CsvReader(readingStream);
-                //var records = reader.GetRecords<>();
-            }
+            foreach (var set in setList)
+                context.EclatSets.Add(set);
+            context.SaveChanges();
         }
         
-
         /// <summary>
         /// Parse rules from row of file
         /// </summary>
@@ -188,6 +205,7 @@ namespace Apriori
             }
             return splitted;
         }
+
 
         /// <summary>
         /// Generate right (rules) part of record
@@ -277,7 +295,7 @@ namespace Apriori
             Debug.WriteLine("EXPORTED");
         }
 
-        public List<string> ParseInputForRecomment(string input)
+        public static List<string> ParseInputForRecommend(string input)
         {
             var parsedInput = input.Split(new char[] { ',' }, StringSplitOptions.None).ToList();
             for (int i = 0; i < parsedInput.Count; i++)
@@ -316,15 +334,55 @@ namespace Apriori
             }
             rules.Reverse();
             return rules;
-        } 
-        public static List<string> Recommend(List<string> input)
-        {
-            var recommend = new List<string>();
-            
-            var context = new JobSkillsContext();
-            var listOfRules = new List<string>();
+        }
 
-            return null;
+        /// <summary>
+        /// Generate recomendation
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public string Recomend(string input)
+        {
+            //final recomendation to the Console formatting in this method
+            var rec = "";
+
+            var parsedInput = ParseInputForRecommend(input);
+
+            var context = new JobSkillsContext();
+            var dbApriori = context.AprioriRules;
+            var dbEclat = context.EclatSets;
+
+            //contains intersections
+            var tupleSet = new List<Tuple<double, string>>();
+            var recomendedTupleSet = new List<Tuple<double, string>>();
+
+            //initialized in 2nd part
+            int counterMin;
+            int counterEntries;
+
+            foreach (var set in dbEclat)
+            {
+                var parsedSet = ParseInputForRecommend(set.ItemSet);
+                var checkIntersection = parsedSet.Intersect(parsedInput).Any();
+                
+                if (checkIntersection)
+                {
+                    var support = set.Support;
+
+                    tupleSet.Add(
+                        new Tuple<double, string>(support, set.ItemSet)
+                        );
+
+                    var recommendedItems = parsedSet.Except(parsedInput).ToList();
+                    recomendedTupleSet.Add(
+                        new Tuple<double, string>(support, set.ItemSet));
+                }
+
+                //sort recomendation
+                var sortedTupleRecomendationList = recomendedTupleSet.OrderBy(i => i.Item1).ToList();
+            }
+            
+            return rec;
         }
     }
 }

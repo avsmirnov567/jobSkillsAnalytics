@@ -13,7 +13,6 @@ using RDotNet;
 
 namespace Apriori
 {
-
     public class DbCsvHandler
     {
         private double sup;
@@ -192,7 +191,7 @@ namespace Apriori
 
         public void FillDatabase(List<AprioriRule> ruleEntityList)
         {
-            //context.Database.ExecuteSqlCommand("TRUNCATE TABLE [dbo.AprioriRules]");
+            
             foreach (var rule in ruleEntityList)
                 context.AprioriRules.Add(rule);
             context.SaveChanges();
@@ -358,7 +357,7 @@ namespace Apriori
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public string Recomend(string input)
+        public List<string> Recomend(string input)
         {
             //final recomendation to the Console formatting in this method
             var rec = "";
@@ -366,40 +365,65 @@ namespace Apriori
             var parsedInput = ParseInputForRecommend(input);
 
             var context = new JobSkillsContext();
-            var dbApriori = context.AprioriRules;
             var dbEclat = context.EclatSets;
-
+            
             //contains intersections
             var tupleSet = new List<Tuple<double, string>>();
             var recomendedTupleSet = new List<Tuple<double, string>>();
 
-            //initialized in 2nd part
-            int counterMin;
-            int counterEntries;
-
-            foreach (var set in dbEclat)
+            while (parsedInput.Count != 0)
             {
-                var parsedSet = ParseInputForRecommend(set.ItemSet);
-                var checkIntersection = parsedSet.Intersect(parsedInput).Any();
-                
-                if (checkIntersection)
+                foreach (var set in dbEclat)
                 {
-                    var support = set.Support;
+                    var templist = new List<string>();
+                    var parsedSet = ParseInputForRecommend(set.ItemSet);
 
-                    tupleSet.Add(
-                        new Tuple<double, string>(support, set.ItemSet)
-                        );
+                    if (parsedSet[parsedSet.Count - 1] == "")
+                    {
 
-                    var recommendedItems = parsedSet.Except(parsedInput).ToList();
-                    recomendedTupleSet.Add(
-                        new Tuple<double, string>(support, set.ItemSet));
+                        for (var i = 1; i < parsedSet.Count - 1; i++)
+                        {
+                            templist.Add(parsedSet[i]);
+                        }
+                        parsedSet = templist;
+                    }
+                    
+                    var checkIntersection = parsedInput.All(s => parsedSet.Contains(s));
+
+                    if (checkIntersection && parsedSet.Count > parsedInput.Count)
+                    {
+                        var support = set.Support;
+
+                        tupleSet.Add(
+                            new Tuple<double, string>(support, set.ItemSet)
+                            );
+
+                        var recommendedItemsTail = parsedSet.Except(parsedInput).ToList();
+                        var recommendedString = string.Join(",", recommendedItemsTail);
+
+                        recomendedTupleSet.Add(
+                           new Tuple<double, string>(support, recommendedString));
+                        
+                    }
                 }
+                if (parsedInput.Count != 0)
+                    parsedInput.RemoveAt(parsedInput.Count - 1);
 
-                //sort recomendation
-                var sortedTupleRecomendationList = recomendedTupleSet.OrderBy(i => i.Item1).ToList();
+                if (recomendedTupleSet.Count > 100) break;
             }
+            var sortedTupleRecomendationList = recomendedTupleSet.OrderBy(i => i.Item1).Take(10).ToList();
+
+            List<string> united = new List<string>();
+
+            foreach (var a in sortedTupleRecomendationList)
+            {
+                var spl = a.Item2.Split(',');
+                united.AddRange(spl);
+            }
+
+            var noDups = united.Distinct().ToList();
             
-            return rec;
+            return noDups;
         }
     }
 }

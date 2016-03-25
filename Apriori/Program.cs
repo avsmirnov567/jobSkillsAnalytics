@@ -12,6 +12,8 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Globalization;
+using System.Net.Mime;
 using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
@@ -21,106 +23,99 @@ namespace Apriori
 {
     class Program
     {
-        public static void ExportBasketType(List<Vacancy> vacancies, string fileName = "")
-        {
-           
-            string name = string.IsNullOrEmpty(fileName)
-                ? @"session#" + Guid.NewGuid().ToString() + ".csv"
-                : fileName;
-
-            using (var writingStream = new StreamWriter(name, true, Encoding.UTF8))
-            {
-                var fileWriter = new CsvWriter(writingStream);
-                //var recordContainer = "";
-
-                //const string separator = ",";
-                int maxSkillsetLength = 0;
-                int optimalSkillsetLength = 0;
-
-                IEnumerable<Skill> maxSet = null;
-                IEnumerable<Skill> optimalMaxSet = null;
-
-                int idOfMaxVacancy = 0;
-                int idOfOptimalMaxVacancy = 0;
-
-                Debug.WriteLine("SEARCH MAX...");
-
-                foreach (var vac in vacancies)
-                {
-                    if (vac.Skills.Count > maxSkillsetLength)
-                    {
-
-                        //return previous fact of condition
-                        optimalSkillsetLength = maxSkillsetLength;
-                        idOfOptimalMaxVacancy = idOfMaxVacancy;
-                        optimalMaxSet = maxSet;
-
-                        //return fact of condition
-                        maxSkillsetLength = vac.Skills.Count;
-                        maxSet = vac.Skills;
-                        idOfMaxVacancy = vac.Id;
-                    }
-                }
-
-
-                Debug.WriteLine("WRITE TO FILE...");
-                foreach (var item in optimalMaxSet)
-                {
-                    fileWriter.WriteField(item.Name);
-                }
-                fileWriter.NextRecord();
-
-                foreach (var vac in vacancies.Where(x => x.Id != idOfMaxVacancy && x.Id != idOfOptimalMaxVacancy))
-                {
-                    if (vac.Skills.Count == 0)
-                        continue;
-                    if (vac.Skills.Any(item => item.Name.Contains("Продажи") || item.Name.Contains("продажи")))
-                        continue;
-
-                    foreach (var skill in vac.Skills)
-                    {
-                        fileWriter.WriteField(skill.Name);
-                    }
-                    fileWriter.NextRecord();
-                }
-            }
-
-            Debug.WriteLine("EXPORTED");
-        }
-
         static void Main(string[] args)
         {
             
-            Debug.WriteLine("CONNECTING TO DB...");
+            Debug.WriteLine("CONNECTIN' TO DB...");
             string fileName = "";
 
             var context = new JobSkillsContext();
 
-            var minsupport = 0.4;
-            var minconfidence = 0.4;
-            
+            var minsupport = 0.03;
+            var minconfidence = 0.1;
+
+            Console.WriteLine("INITIALIZE DATA FROM DB...");
             var dch = new DbCsvHandler(minsupport, minconfidence, new JobSkillsContext());
             dch.GetVacanciesCsv();
-
-            dch.ProcessDataWithAlgorithms();
-
-            Console.WriteLine("GOING TO FILES");
+            
+            Console.WriteLine("GETTIN' APRORI RULES...");
+            Thread.Sleep(100000);
+            //dch.ProcessDataWithAlgorithms();
 
             fileName = "APRIORI.csv";
             var arulesFile = DbCsvHandler.GetFileDirectory(fileName);
-            dch.GetDataFromAprioriRulesCsv(arulesFile);
+            var rules = dch.GetDataFromAprioriRulesCsv(arulesFile);
 
-           // fileName = "ECLAT.csv";
-            //var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
-            //dch.GetDataFromElcatRulesCsv(eclatFile);
-            int counter = 0;
-            foreach (var el in context.AprioriRules)
+            //context.AprioriRules.RemoveRange(context.AprioriRules.ToList());
+            //context.SaveChanges();
+            //context.AprioriRules.Remove(context.AprioriRules.ToList());
+            //dch.FillDatabase(rules);
+
+            fileName = "ECLAT.csv";
+            var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
+            var sets = dch.GetDataFromElcatRulesCsv(eclatFile);
+            dch.FillDatabase(sets);
+
+            string input = "";
+            do
             {
-                Console.WriteLine(el.LeftHandSide + "=>" + el.RightHandSide);
-                counter++;
-            }
-            Console.WriteLine("OK " + counter);
-            Console.ReadLine();
+                Console.WriteLine("choose one: ");
+                Console.WriteLine("1. recommend");
+                Console.WriteLine("2. top");
+                Console.WriteLine("3. close sample");
+
+                input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        Console.Write("enter the current your skills set:  ");
+                        var textSet = Console.ReadLine();
+
+                        var rec = dch.Recomend(textSet);
+                        Console.WriteLine("processing recommendation...");
+                        Console.WriteLine(rec);
+
+                        break;
+                    case "2":
+                        Console.Write("1. lift / 2. conf / 3. supp: ");
+                        
+                        var userInput = Console.ReadLine();
+                        var top = new List<AprioriRule>();
+
+                        switch (userInput)
+                        {
+                            case "1":
+                                top = DbCsvHandler.Top("lift");
+                                foreach (var t in top)
+                                {
+                                    Console.WriteLine(t.LeftHandSide + " " + " =>>> " + t.RightHandSide + " " + t.Lift.ToString(CultureInfo.InvariantCulture));
+                                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
+                                }
+                                break;
+                            case "2":
+                                top = DbCsvHandler.Top("conf");
+                                foreach (var t in top)
+                                {
+                                    Console.WriteLine(t.LeftHandSide + " " + " =>>> " + " " + t.RightHandSide + " " + t.Confidence.ToString(CultureInfo.InvariantCulture));
+                                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
+                                }
+                                break;
+                            case "3":
+                                top = DbCsvHandler.Top("supp");
+                                foreach (var t in top)
+                                {
+                                    Console.WriteLine(t.LeftHandSide  + " =>>> " + t.RightHandSide + " " + " " + t.Support.ToString(CultureInfo.InvariantCulture));
+                                    //Console.WriteLine(t.Lift.ToString(CultureInfo.InvariantCulture));
+
+                                }
+                                break;
+                        }
+                        break;
+                    case "3":
+                        break;
+                }
+            } while (input != "3");
 
             #region old - Contains custom apriori implementation
 

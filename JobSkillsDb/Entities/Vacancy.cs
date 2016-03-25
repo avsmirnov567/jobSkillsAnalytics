@@ -36,10 +36,14 @@
 
         public DateTime Date { get; set; }
 
+        public int VacancyLabelId { get; set; }
+
         public virtual VacancyContent VacancyContent { get; set; }
 
         public virtual ICollection<Skill> Skills { get; set; }
 
         public virtual ICollection<MarkedZone> MarkedZones { get; set; }
+
+        public virtual VacancyLabelType VacancyLabelType { get; set; }
     }
 }

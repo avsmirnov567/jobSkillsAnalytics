@@ -25,6 +25,8 @@ namespace JobSkillsDb.Entities
         public virtual DbSet<AprioriRule> AprioriRules { get; set; }
         public virtual DbSet<EclatSet> EclatSets { get; set; }
 
+        public virtual DbSet<VacancyLabelType> VacancyLabelTypes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
         }

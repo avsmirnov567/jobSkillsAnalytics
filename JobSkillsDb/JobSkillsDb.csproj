@@ -58,6 +58,7 @@
     <Compile Include="Entities\SkillToGroupConnection.cs" />
     <Compile Include="Entities\Vacancy.cs" />
     <Compile Include="Entities\VacancyContent.cs" />
+    <Compile Include="Entities\VacancyLabelType.cs" />
     <Compile Include="Migrations\201603050434522_UpdateSkills.cs" />
     <Compile Include="Migrations\201603050434522_UpdateSkills.Designer.cs">
       <DependentUpon>201603050434522_UpdateSkills.cs</DependentUpon>
@@ -82,6 +83,10 @@
     <Compile Include="Migrations\201603230012222_RemoveContentFromVacancyTable.Designer.cs">
       <DependentUpon>201603230012222_RemoveContentFromVacancyTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603251946196_AddVacancyLabelTypes.cs" />
+    <Compile Include="Migrations\201603251946196_AddVacancyLabelTypes.Designer.cs">
+      <DependentUpon>201603251946196_AddVacancyLabelTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -103,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603230012222_RemoveContentFromVacancyTable.resx">
       <DependentUpon>201603230012222_RemoveContentFromVacancyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603251946196_AddVacancyLabelTypes.resx">
+      <DependentUpon>201603251946196_AddVacancyLabelTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

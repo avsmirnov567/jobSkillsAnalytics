@@ -49,9 +49,8 @@ namespace TextMining.ConsoleApp
             using (JobSkillsContext db = new JobSkillsContext())
             {
                 var contents = db.VacancyContents.Include(v=>v.Vacancy.Skills)
-                    .Where(v=>v.Vacancy.Skills.Count>=4)
+                    .Where(v=>v.Vacancy.Skills.Count>=2)
                     .Select(c => new { c.VacancyId, c.Text, Skills = c.Vacancy.Skills })
-                    .Take(1000)
                     .ToList();
                 var programContent = contents.Where(c => c.Skills
                     .Any(s => Regex.IsMatch(s.Name, "([A-z])+")))
@@ -126,8 +125,6 @@ namespace TextMining.ConsoleApp
             }
             return contents;
         }
-
-        
 
         static void Main(string[] args)
         {

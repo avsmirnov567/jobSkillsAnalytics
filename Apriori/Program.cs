@@ -26,20 +26,22 @@ namespace Apriori
         static void Main(string[] args)
         {
             
-            Debug.WriteLine("CONNECTIN' TO DB...");
+            Console.WriteLine("CONNECTIN' TO DB...");
             string fileName = "";
 
             var context = new JobSkillsContext();
-
+            //var apriori = context.AprioriRules.Count();
+            //var eclat = context.EclatSets.Count();
             var minsupport = 0.03;
             var minconfidence = 0.1;
 
             Console.WriteLine("INITIALIZE DATA FROM DB...");
-            var dch = new DbCsvHandler(minsupport, minconfidence, new JobSkillsContext());
-            dch.GetVacanciesCsv();
+            var dch = new DbCsvHandler(minsupport, minconfidence, context);
+            //dch.GetVacanciesCsv();
             
             Console.WriteLine("GETTIN' APRORI RULES...");
-            Thread.Sleep(100000);
+            Thread.Sleep(1000);
+
             //dch.ProcessDataWithAlgorithms();
 
             fileName = "APRIORI.csv";
@@ -48,13 +50,14 @@ namespace Apriori
 
             //context.AprioriRules.RemoveRange(context.AprioriRules.ToList());
             //context.SaveChanges();
-            //context.AprioriRules.Remove(context.AprioriRules.ToList());
-            //dch.FillDatabase(rules);
+            //context.AprioriRules.RemoveRange(context.AprioriRules.ToList());
+            //context.SaveChanges();
+            dch.FillDatabase(rules);
 
             fileName = "ECLAT.csv";
             var eclatFile = DbCsvHandler.GetFileDirectory(fileName);
             var sets = dch.GetDataFromElcatRulesCsv(eclatFile);
-            dch.FillDatabase(sets);
+            //dch.FillDatabase(sets);
 
             string input = "";
             do

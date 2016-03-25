@@ -127,10 +127,14 @@ namespace Apriori
 
             foreach (var row in csv)
             {
+                if (row[1].Contains("C++} => {C++}")) continue;
+
                 var rules = row.ElementAt(0); //getting rule part of the row
 
                 var lhsrhs = LHSRHSStringsGeneratorFromApriori(rules);
+
                 var lhs = lhsrhs[0];
+                if (lhs.Contains("Oracle Pl")) continue;
                 var rhs = lhsrhs[1];
 
                 ruleEntityList.Add(
@@ -158,21 +162,32 @@ namespace Apriori
             csv.RemoveAt(0); // remove headers
 
             var setList = new List<EclatSet>();
-
+            var counter = 0;
             foreach (var row in csv)
             {
-                var set = row.ElementAt(0); // get set of items
-                var setSupport = double.Parse(row.ElementAt(1));
+                var set = FrequentSetGeneratorFromEclat(row.ElementAt(0)); // get set of items
+                var supp = row.ElementAt(1);
+                if (supp.Contains("SQL}") || supp.Contains("IP}"))
+                { continue;}
+                if (counter == 6497 || counter == 18983)
+                {
+                    counter++;
+                    continue;
+                }
+                var setSupport = double.Parse(row.ElementAt(1), CultureInfo.InvariantCulture);
+
+                var writeSet = string.Join(",", set.Select(p => p.ToString()).ToList());
 
                 setList.Add(
                     new EclatSet
                     {
-                        ItemSet = set,
+                        ItemSet = writeSet,
                         Support = setSupport
                     });
+                counter++;
             }
             
-            return setList;
+          return setList;
         }
 
         public void FillDatabase(List<AprioriRule> ruleEntityList)
@@ -215,9 +230,11 @@ namespace Apriori
         public List<string> FrequentSetGeneratorFromEclat(string frequent_set_part_of_record)
         {
             var splitted = frequent_set_part_of_record.Split(new char[] { ',' }, StringSplitOptions.None).ToList();
+            char[] charsToTrim = { ' ', '}', '{', '"', '/' };
             for (int i = 0; i < splitted.Count; i++)
             {
-                splitted[i] = splitted[i].Trim(' ');
+                splitted[i] = splitted[i].Replace(@"\", "");
+                splitted[i] = splitted[i].Trim(charsToTrim);
             }
             return splitted;
         }

@@ -233,7 +233,7 @@
     <Content Include="Views\Vacancy\Index.cshtml" />
     <Content Include="Views\Stat\Index.cshtml" />
     <Content Include="Views\Stat\GetTop.cshtml" />
-    <Content Include="Views\Recommendations\RecomendationList.cshtml" />
+    <Content Include="Views\Recommendations\RecommendationList.cshtml" />
     <Content Include="Views\Recommendations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

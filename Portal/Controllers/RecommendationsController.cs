@@ -15,8 +15,9 @@ namespace Portal.Controllers
             return View();
         }
 
-        public ActionResult RecomendationList(string name)
+        public ActionResult RecommendationList(string name)
         {
+            name = name ?? "";
             string[] userQuery = name.Split(',')
                 .Select(s => s.Trim().ToLower())
                 .ToArray();

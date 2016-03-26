@@ -1,23 +1,28 @@
 ﻿@model Vacancy
 @{
     ViewBag.Title = "Details";
+    string skillsNames = String.Join(",", Model.Skills.Select(s => s.Name).ToArray());
 }
-
-<div class="row">    
-    <h2><a href="@Model.Link">@Model.Title</a></h2>
-</div>
 <div class="row">
-    <div class="chip">                
-        @Model.VacancyLabelType.Name
-    </div>
-</div>
-<div class="row">
-    @Html.HiddenFor(m=>m.Id)
     <div class="col s8">
-        @Html.Raw(Model.VacancyContent.Html)
+        <div class="row">    
+            <h2><a href="@Model.Link">@Model.Title</a></h2>
+        </div>
+        <div class="row">
+            <div class="chip">                
+                @Model.VacancyLabelType.Name
+            </div>
+        </div>
+        <div class="row">
+            @Html.HiddenFor(m=>m.Id)
+            @Html.Raw(Model.VacancyContent.Html)
+        </div>
+    </div>
+    <div class="col s4">
+        @Html.Action("RecommendationList", "Recommendations",
+                new { name = skillsNames });
     </div>
 </div>
-@*<div id="markedZones">@Html.Partial("VacancyMarkedZones",zones)</div>*@
 
 @section scripts
 {

@@ -153,6 +153,7 @@
     <Compile Include="Controllers\EclatSetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarkedZonesController.cs" />
+    <Compile Include="Controllers\RecommendationsController.cs" />
     <Compile Include="Controllers\StatController.cs" />
     <Compile Include="Controllers\TextMiningController.cs" />
     <Compile Include="Controllers\VacancyController.cs" />
@@ -164,9 +165,11 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\materialize.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\Material-Design-Icons.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
@@ -174,6 +177,30 @@
     <Content Include="Db.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="fonts\Roboto-Bold.eot" />
+    <Content Include="fonts\Roboto-Bold.ttf" />
+    <Content Include="fonts\Roboto-Bold.woff" />
+    <Content Include="fonts\Roboto-Bold.woff2" />
+    <Content Include="fonts\Roboto-Light.eot" />
+    <Content Include="fonts\Roboto-Light.ttf" />
+    <Content Include="fonts\Roboto-Light.woff" />
+    <Content Include="fonts\Roboto-Light.woff2" />
+    <Content Include="fonts\Roboto-Medium.eot" />
+    <Content Include="fonts\Roboto-Medium.ttf" />
+    <Content Include="fonts\Roboto-Medium.woff" />
+    <Content Include="fonts\Roboto-Medium.woff2" />
+    <Content Include="fonts\Roboto-Regular.eot" />
+    <Content Include="fonts\Roboto-Regular.ttf" />
+    <Content Include="fonts\Roboto-Regular.woff" />
+    <Content Include="fonts\Roboto-Regular.woff2" />
+    <Content Include="fonts\Roboto-Thin.eot" />
+    <Content Include="fonts\Roboto-Thin.ttf" />
+    <Content Include="fonts\Roboto-Thin.woff" />
+    <Content Include="fonts\Roboto-Thin.woff2" />
+    <Content Include="fonts\Material-Design-Icons.eot" />
+    <Content Include="fonts\Material-Design-Icons.ttf" />
+    <Content Include="fonts\Material-Design-Icons.woff" />
+    <Content Include="fonts\Material-Design-Icons.woff2" />
     <None Include="Properties\PublishProfiles\skillsminer-demo.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -183,6 +210,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\materialize.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -206,12 +234,16 @@
     <Content Include="Views\TextMining\ShowSkillsStats.cshtml" />
     <Content Include="Views\Vacancy\Index.cshtml" />
     <Content Include="Views\Stat\Index.cshtml" />
+    <Content Include="Views\Stat\GetTop.cshtml" />
+    <Content Include="Views\Recommendations\RecomendationList.cshtml" />
+    <Content Include="Views\Recommendations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\AprioriRules\" />
     <Folder Include="Views\EclatSet\" />
+    <Folder Include="Views\Recomendation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

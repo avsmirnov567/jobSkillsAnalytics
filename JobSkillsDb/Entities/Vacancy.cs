@@ -36,7 +36,7 @@
 
         public DateTime Date { get; set; }
 
-        public int VacancyLabelId { get; set; }
+        public int VacancyLabelTypeId { get; set; }
 
         public virtual VacancyContent VacancyContent { get; set; }
 

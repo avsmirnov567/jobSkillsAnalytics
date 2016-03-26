@@ -22,9 +22,12 @@ namespace Portal.Controllers
                 {
                     Vacancy vacancy = id > 0 ? await db.Vacancies
                         .Include(v=>v.MarkedZones)
+                        .Include(v=>v.VacancyContent)
+                        .Include(v=>v.VacancyLabelType)
+                        .Include(v=>v.Skills)
                         .SingleAsync(v=>v.Id == id) : db.Vacancies.First();
-                    List<Skill> skills = await db.Skills.OrderBy(s => s.Name).ToListAsync();                    
-                    ViewBag.SkillsList = skills;
+                    //List<Skill> skills = await db.Skills.OrderBy(s => s.Name).ToListAsync();
+                    //ViewBag.SkillsList = skills;
                     ViewBag.ZonesList = vacancy.MarkedZones.ToList();
                     return View(vacancy);
                 }

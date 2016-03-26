@@ -1,15 +1,15 @@
 ﻿@{
     ViewBag.Title = "Главная";
 }
-
-<div class="jumbotron">
+<div class="container">
     <h1>Skills-Miner</h1>
     <p class="lead">Аналитическая система для выявления атуальных компетенций на основе трбований, описанных в вакансих</p>
     <p>
-        @Html.ActionLink("Переидти", "Index", "Vacancy", null, new { @class = "btn btn-primary btn-lg" })
+        @Html.ActionLink("Переидти", "Index", "Vacancy", null, new { @class = "waves-effect waves-light btn-large" })
     </p>
 </div>
-
-<div class="row">
-    
+<br>
+<br>
+<div class="container">
+    @Html.Action("GetTop", "Stat")
 </div>

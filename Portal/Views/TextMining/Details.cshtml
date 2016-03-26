@@ -1,26 +1,23 @@
 ﻿@model Vacancy
 @{
     ViewBag.Title = "Details";
-    List<Skill> skills = ViewBag.SkillsList;
-    List<MarkedZone> zones = ViewBag.ZonesList;
 }
 
-<h2><a href="@Model.Link">@Model.Title</a></h2>
+<div class="row">    
+    <h2><a href="@Model.Link">@Model.Title</a></h2>
+</div>
 <div class="row">
-    @Html.HiddenFor(m=>m.Id)
-    <div class="col-md-8">
-        @Html.Raw(Model.ContentHtml)
-    </div>
-    <div class="col-md-4">
-        <div class="row">
-            @Html.DropDownList("skillsDropDown", new SelectList(skills, "Id", "Name"))
-        </div>
-        <div class="row">
-            <input id="btnAddZone" type="submit" name="AddZone" value="Добавить"/>
-        </div>
+    <div class="chip">                
+        @Model.VacancyLabelType.Name
     </div>
 </div>
-<div id="markedZones">@Html.Partial("VacancyMarkedZones",zones)</div>
+<div class="row">
+    @Html.HiddenFor(m=>m.Id)
+    <div class="col s8">
+        @Html.Raw(Model.VacancyContent.Html)
+    </div>
+</div>
+@*<div id="markedZones">@Html.Partial("VacancyMarkedZones",zones)</div>*@
 
 @section scripts
 {

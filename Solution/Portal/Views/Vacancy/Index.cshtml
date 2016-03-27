@@ -1,0 +1,52 @@
+﻿@model PagedList.IPagedList<Vacancy>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Список вакансий</h2>
+<h4>Всего вакансий: @Model.TotalItemCount</h4>
+<div class="row">
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>
+                    Название
+                </th>
+                <th class="center-align">
+                    Размеченные навыки
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vacancy in Model)
+            {
+                <tr>
+                    <td>
+                        @vacancy.Title
+                    </td>
+                    <td class="center-align">
+                        @vacancy.Skills.Count
+                    </td>
+                    <td>
+                        @Html.ActionLink("Подробнее", "Details", "TextMining", new { id = vacancy.Id }, null)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br>
+</div>
+<div class="row center-align">
+    Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+</div>
+
+@Html.PagedListPager(Model, p => Url.Action("Index", "Vacancy",  new { page = p }), new PagedListRenderOptions()
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "waves-effect" },
+    ContainerDivClasses = new[] { "row", "center-align" }
+})

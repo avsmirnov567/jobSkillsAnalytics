@@ -1,4 +1,4 @@
-#Skills miner
+#SkillsMiner
 Competence analysis system
 
 Project contains 4 general parts: 
@@ -17,6 +17,6 @@ _Maltsev Alexey (parser, neural network, web client)_
 
 _Rudskoy Vladislav (association rules)_
 
-_Smirnov Alexander (parser)_
+_Smirnov Alexandr (parser)_
 
 _**HSE Perm**_
